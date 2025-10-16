@@ -1,0 +1,60 @@
+:root {
+    /* 🎨 Colors
+        /* Primary */
+    --primary-200: #c7d2fe;
+    --primary-500: #6366f1;
+    --primary-800: #3730a3;
+
+    /* Secondary */
+    --secondary-200: #fed7aa;
+    --secondary-500: #f59e0b;
+    --secondary-600: #ea580c;
+
+    /* Terciary */
+    --terciary-200: #fbcfe8;
+    --terciary-500: #ec4899;
+    --terciary-700: #be185d;
+
+    /* Neutral */
+    --neutral-250: #F2F2F2;
+    --neutral-500: #D7D7D7;
+    --neutral-750: #404040;
+
+    --black: #101010;
+    --white: #ffffff;
+
+
+    /* Error */
+    --border-red: #ef4444;
+    --background-red: #fee2e2;
+
+    /* ✍️ Typography (Host Grotesk) */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --h1-size: 32px;
+    --h1-weight: 700;
+
+    --h2-size: 24px;
+    --h2-weight: 600;
+
+    --h3-size: 20px;
+    --h3-weight: 500;
+
+    --body-size: 16px;
+    --body-weight: 400;
+
+    --button-size: 16px;
+    --button-weight: 600;
+
+    /* 📏 Spacing */
+    --space-section: 32px; /* between sections*/
+    --space-card: 28px; /* between cards*/
+    --space-margin: 24px;
+    --space-body: 20px; /* title + text / in the same section */
+    --space-button: 16px; /* text + buttons / buttons */
+    --space-s: 8px;
+
+
+    /* ⚙️ Border radius */
+    --border-radius: 7px;
+}
