@@ -1,0 +1,181 @@
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+  transition: color 0.2s ease;
+}
+
+.input-label.required::after {
+  content: ' *';
+  color: var(--border-red);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--neutral-500);
+  border-radius: 12px;
+  font-size: 15px;
+  color: var(--black);
+  background: var(--white);
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  font-family: var(--font-primary);
+}
+
+.input-field.has-left-icon {
+  padding-left: 48px;
+}
+
+.input-field.has-right-icon {
+  padding-right: 48px;
+}
+
+.input-field::placeholder {
+  color: var(--neutral-500);
+  transition: color 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+.input-field:disabled {
+  background-color: var(--neutral-250);
+  color: var(--neutral-500);
+  cursor: not-allowed;
+}
+
+.input-field:disabled::placeholder {
+  color: var(--neutral-500);
+}
+
+.input-icon {
+  position: absolute;
+  color: var(--neutral-500);
+  transition: color 0.2s ease;
+  z-index: 1;
+}
+
+.input-icon-left {
+  left: 16px;
+}
+
+.input-icon-right {
+  right: 16px;
+}
+
+.password-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle:hover {
+  color: var(--neutral-750);
+}
+
+.password-toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.input-wrapper.focused .input-icon {
+  color: var(--primary-500);
+}
+
+.input-wrapper.focused .input-label {
+  color: var(--primary-500);
+}
+
+.input-wrapper.error .input-field {
+  border-color: var(--border-red);
+  box-shadow: 0 0 0 3px var(--background-red);
+}
+
+.input-wrapper.error .input-icon {
+  color: var(--border-red);
+}
+
+.input-wrapper.disabled {
+  opacity: 0.6;
+}
+
+.input-error {
+  font-size: 12px;
+  color: var(--border-red);
+  font-family: var(--font-primary);
+  margin-top: -4px;
+  display: block;
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados hover */
+.input-field:hover:not(:disabled) {
+  border-color: var(--neutral-750);
+}
+
+.input-wrapper:not(.error):not(.disabled) .input-field:hover {
+  border-color: var(--neutral-750);
+}
+
+.input-wrapper:not(.error):not(.disabled) .input-field:focus:hover {
+  border-color: var(--primary-500);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .input-field {
+    padding: 12px 14px;
+    font-size: 16px; /* Previene zoom en iOS */
+  }
+  
+  .input-field.has-left-icon {
+    padding-left: 44px;
+  }
+  
+  .input-field.has-right-icon {
+    padding-right: 44px;
+  }
+  
+  .input-icon-left {
+    left: 14px;
+  }
+  
+  .input-icon-right {
+    right: 14px;
+  }
+}

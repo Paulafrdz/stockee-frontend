@@ -1,0 +1,196 @@
+body {
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+}
+
+
+.register-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  text-align: center;
+
+}
+
+.form{
+    width: 100%;
+
+}
+.register-form .form-header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.register-form .welcome-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.register-form .welcome-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--black);
+  font-family: var(--font-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.register-form .welcome-subtitle {
+  font-size: 15px;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.register-form .form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-form .form-error {
+  background: var(--background-red);
+  border: 1px solid var(--border-red);
+  color: var(--border-red);
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: var(--font-primary);
+  text-align: center;
+  animation: slideDown 0.3s ease;
+}
+
+.terms-notice {
+  margin: 4px;
+}
+
+.terms-notice p {
+  font-size: 12px;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+  line-height: 1.4;
+  margin: 0;
+  text-align: center;
+}
+
+.terms-link {
+  color: var(--primary-500);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.terms-link:hover {
+  color: var(--primary-800);
+  text-decoration: underline;
+}
+
+.register-form .form-footer {
+  border-top: 1px solid var(--neutral-500);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.register-form .toggle-text {
+  font-size: 14px;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+}
+
+.register-form .toggle-button {
+  background: none;
+  border: none;
+  color: var(--primary-500);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.register-form .toggle-button:hover {
+  color: var(--primary-800);
+}
+
+.register-form .features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+}
+
+.register-form .feature-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+}
+
+.register-form .check-icon {
+  width: 18px;
+  height: 18px;
+  background: var(--secondary-200);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-600);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .register-form {
+    gap: 20px;
+    padding: 0 16px;
+  }
+  
+  .register-form .welcome-title {
+    font-size: 22px;
+  }
+  
+  .register-form .welcome-subtitle {
+    font-size: 14px;
+  }
+  
+  .register-form .form {
+    gap: 16px;
+  }
+  
+  .register-form .form-footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .terms-notice p {
+    font-size: 11px;
+  }
+}
