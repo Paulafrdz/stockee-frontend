@@ -74,7 +74,7 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="main-form">
+      <form onSubmit={handleSubmit} className="form">
         <Input
           type="email"
           label="Email"
@@ -134,7 +134,7 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
         </button>
       </div>
 
-      
+  
     </div>
   );
 };

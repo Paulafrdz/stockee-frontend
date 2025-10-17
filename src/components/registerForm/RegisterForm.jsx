@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Mail, Lock, ArrowRight, User, ChefHat } from 'lucide-react';
+import { User, ChefHat, Mail, Lock, ArrowRight } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
 import './RegisterForm.css';
 
-const RegisterForm = ({ onSubmit, onToggleMode }) => {
+const RegisterForm = ({ onSuccess, onToggleMode }) => {
   const [formData, setFormData] = useState({
-    name: '',
     userName: '',
     email: '',
     password: '',
@@ -39,10 +38,10 @@ const RegisterForm = ({ onSubmit, onToggleMode }) => {
       newErrors.name = 'El nombre debe tener al menos 2 caracteres';
     }
     
-    if (!formData.userName.trim()) {
-      newErrors.userName = 'El nombre de usuario es requerido';
-    } else if (formData.userName.trim().length < 2) {
-      newErrors.userName = 'El nombre de usuario debe tener al menos 2 caracteres';
+    if (!formData.businessName.trim()) {
+      newErrors.businessName = 'El nombre del negocio es requerido';
+    } else if (formData.businessName.trim().length < 2) {
+      newErrors.businessName = 'El nombre del negocio debe tener al menos 2 caracteres';
     }
     
     if (!formData.email) {
@@ -53,10 +52,8 @@ const RegisterForm = ({ onSubmit, onToggleMode }) => {
     
     if (!formData.password) {
       newErrors.password = 'La contraseña es requerida';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'La contraseña debe tener al menos 8 caracteres';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'La contraseña debe contener al menos una mayúscula, una minúscula y un número';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
     }
     
     if (!formData.confirmPassword) {
@@ -77,9 +74,18 @@ const RegisterForm = ({ onSubmit, onToggleMode }) => {
     setIsLoading(true);
     
     try {
-      await onSubmit?.(formData);
+      // Usar el servicio de autenticación
+      const user = await authService.register(formData);
+      
+      // Notificar éxito al componente padre
+      if (onSuccess) {
+        onSuccess(user);
+      } else {
+        alert(`¡Bienvenido ${user.username}! Tu cuenta ha sido creada exitosamente.`);
+      }
+      
     } catch (error) {
-      setErrors({ submit: 'Error al crear la cuenta. Inténtalo de nuevo.' });
+      setErrors({ submit: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -98,25 +104,15 @@ const RegisterForm = ({ onSubmit, onToggleMode }) => {
       </div>
 
       <form onSubmit={handleSubmit} className="form">
-        <Input
-          type="text"
-          label="Nombre Completo"
-          placeholder="Juan Pérez"
-          value={formData.name}
-          onChange={handleChange('name')}
-          icon={User}
-          error={errors.name}
-          required
-        />
 
         <Input
           type="text"
           label="Nombre de Usuario"
           placeholder="Usuario123"
           value={formData.userName}
-          onChange={handleChange('userName')}
+          onChange={handleChange('businessName')}
           icon={ChefHat}
-          error={errors.userName}
+          error={errors.businessName}
           required
         />
 
@@ -191,8 +187,6 @@ const RegisterForm = ({ onSubmit, onToggleMode }) => {
           Inicia sesión
         </button>
       </div>
-
-      
     </div>
   );
 };

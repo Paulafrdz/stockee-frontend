@@ -1,8 +1,8 @@
 import React, { useState } from 'react'; 
 import './components/styles/Variables.css';
 import './App.css'
-// import RegisterForm from './components/registerForm/RegisterForm.jsx';
-import LoginForm from './components/loginForm/LoginForm.jsx';
+
+import AuthPage from './pages/AuthPage.jsx';
 
 function App() {
   const [email, setEmail] = useState('');
@@ -10,8 +10,7 @@ function App() {
 
   return (
     <div>
-     {/* <RegisterForm></RegisterForm> */}
-     <LoginForm></LoginForm>
+     <AuthPage></AuthPage>
     </div>
   );
 }
