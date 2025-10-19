@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
+import { AuthService } from '../../services/AuthService.js';
+
 import './LoginForm.css';
 
 const LoginForm = ({ onSubmit, onToggleMode }) => {
@@ -48,15 +50,14 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
-    
     setIsLoading(true);
-    
+
     try {
-      await onSubmit?.(formData);
-    } catch (error) {
-      setErrors({ submit: 'Error al iniciar sesión. Verifica tus credenciales.' });
+      const user = await AuthService.login(formData);
+      onSubmit?.(user);
+    } catch (err) {
+      setErrors({ submit: err.response?.data?.message || err.message });
     } finally {
       setIsLoading(false);
     }

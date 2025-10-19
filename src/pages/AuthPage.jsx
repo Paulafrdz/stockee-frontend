@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import LoginForm from '../components/loginForm/LoginForm.jsx';
 import RegisterForm from '../components/registerForm/RegisterForm.jsx';
 import DashboardPreview from '../components/preview/Preview.jsx';
+import { AuthService } from '../services/AuthService.js';
 import './AuthPage.css';
 
 const AuthPage = ({ onUserAuthenticated }) => {
   const [authMode, setAuthMode] = useState('login');
 
-  // Verificar si ya hay un usuario logueado al cargar la página
-//   useEffect(() => {
-//     const currentUser = authService.getCurrentUser();
-//     if (currentUser && onUserAuthenticated) {
-//       onUserAuthenticated(currentUser);
-//     }
-//   }, [onUserAuthenticated]);
+//   Verificar si ya hay un usuario logueado al cargar la página
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    if (currentUser && onUserAuthenticated) {
+      onUserAuthenticated(currentUser);
+    }
+  }, [onUserAuthenticated]);
 
   const handleAuthSuccess = (user) => {
     console.log('Usuario autenticado:', user);

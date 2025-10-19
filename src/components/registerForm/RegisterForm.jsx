@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { User, ChefHat, Mail, Lock, ArrowRight } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
+import { AuthService } from '../../services/AuthService.js';
 import './RegisterForm.css';
 
 const RegisterForm = ({ onSuccess, onToggleMode }) => {
   const [formData, setFormData] = useState({
-    userName: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -31,65 +32,30 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'El nombre es requerido';
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'El nombre debe tener al menos 2 caracteres';
-    }
-    
-    if (!formData.businessName.trim()) {
-      newErrors.businessName = 'El nombre del negocio es requerido';
-    } else if (formData.businessName.trim().length < 2) {
-      newErrors.businessName = 'El nombre del negocio debe tener al menos 2 caracteres';
-    }
-    
-    if (!formData.email) {
-      newErrors.email = 'El email es requerido';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'El email no es válido';
-    }
-    
-    if (!formData.password) {
-      newErrors.password = 'La contraseña es requerida';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
-    }
-    
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Confirma tu contraseña';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-    }
-    
+    if (!formData.username) newErrors.username = 'Username required';
+    if (!formData.email) newErrors.email = 'Email required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email';
+    if (!formData.password) newErrors.password = 'Password required';
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateForm()) return;
-    
     setIsLoading(true);
-    
+
     try {
-      // Usar el servicio de autenticación
-      const user = await authService.register(formData);
-      
-      // Notificar éxito al componente padre
-      if (onSuccess) {
-        onSuccess(user);
-      } else {
-        alert(`¡Bienvenido ${user.username}! Tu cuenta ha sido creada exitosamente.`);
-      }
-      
-    } catch (error) {
-      setErrors({ submit: error.message });
+      const user = await AuthService.register(formData);
+      onSuccess?.(user);
+    } catch (err) {
+      setErrors({ submit: err.response?.data?.message || err.message });
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="register-form">
@@ -109,10 +75,10 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
           type="text"
           label="Nombre de Usuario"
           placeholder="Usuario123"
-          value={formData.userName}
-          onChange={handleChange('businessName')}
+          value={formData.username}
+          onChange={handleChange('username')}
           icon={ChefHat}
-          error={errors.businessName}
+          error={errors.username}
           required
         />
 
