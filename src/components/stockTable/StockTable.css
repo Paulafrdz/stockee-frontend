@@ -43,7 +43,7 @@
 /* Table */
 .stock-table {
   background: var(--white);
-  border-radius: 12px;
+  border-radius: 5px;
   border: 1px solid var(--neutral-500);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -170,25 +170,7 @@
   text-align: center;
 }
 
-.status-empty {
-  background: var(--neutral-500);
-  color: var(--white);
-}
 
-.status-critical {
-  background: var(--terciary-200);
-  color: var(--terciary-700);
-}
-
-.status-low {
-  background: var(--secondary-200);
-  color: var(--secondary-500);
-}
-
-.status-ok {
-  background: var(--secondary-200);
-  color: var(--secondary-600);
-}
 
 .text-muted {
   color: var(--neutral-750);
@@ -256,7 +238,7 @@
 /* Statistics */
 .table-stats {
   background: var(--white);
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px solid var(--neutral-500);
   padding: 16px 20px;
 }
@@ -306,90 +288,3 @@
   }
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .table-head,
-  .table-row {
-    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    gap: 12px;
-    padding: 12px 16px;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Mobile card layout */
-  .table-head {
-    display: none;
-  }
-  
-  .table-row {
-    display: block;
-    background: var(--white);
-    border: 1px solid var(--neutral-500);
-    border-radius: 8px;
-    margin-bottom: 12px;
-    padding: 16px;
-  }
-  
-  .td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--neutral-250);
-  }
-  
-  .td:last-child {
-    border-bottom: none;
-  }
-  
-  .td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: var(--neutral-750);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .actions {
-    justify-content: flex-end;
-    padding-top: 8px;
-  }
-  
-  .stats-row {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
-  }
-  
-  .stat-item {
-    justify-content: space-between;
-  }
-}
-
-@media (max-width: 640px) {
-  .stock-alert-banner {
-    padding: 12px 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .table-header {
-    padding: 12px 16px;
-  }
-  
-  .table-title {
-    font-size: 14px;
-  }
-  
-  .table-row {
-    padding: 12px;
-    margin-bottom: 8px;
-  }
-  
-  .td {
-    padding: 6px 0;
-    font-size: 13px;
-  }
-}

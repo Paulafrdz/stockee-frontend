@@ -14,7 +14,6 @@ const StockTable = ({
 }) => {
   // Función para determinar el estado del stock
   const getStockStatus = (actual, minimo) => {
-    if (actual <= 0) return 'empty';
     if (actual <= minimo * 0.5) return 'critical';
     if (actual <= minimo) return 'low';
     return 'ok';
@@ -23,7 +22,6 @@ const StockTable = ({
   // Función para obtener el label del estado
   const getStatusLabel = (status) => {
     switch (status) {
-      case 'empty': return 'Vacío';
       case 'critical': return 'Crítico';
       case 'low': return 'Low';
       case 'ok': return 'Ok';
@@ -47,7 +45,6 @@ const StockTable = ({
 
   // Contar items por estado
   const statusCounts = {
-    empty: processedItems.filter(item => item.status === 'empty').length,
     critical: processedItems.filter(item => item.status === 'critical').length,
     low: processedItems.filter(item => item.status === 'low').length,
     ok: processedItems.filter(item => item.status === 'ok').length,
@@ -68,15 +65,14 @@ const StockTable = ({
   return (
     <div className="stock-table-container">
       {/* Alert Banner */}
-      {(statusCounts.empty > 0 || statusCounts.critical > 0 || statusCounts.low > 0) && (
+      {(statusCounts.critical > 0 || statusCounts.low > 0) && (
         <div className="stock-alert-banner">
           <AlertTriangle className="alert-icon" size={20} />
           <div className="alert-content">
             <div className="alert-title">
-              {statusCounts.empty + statusCounts.critical + statusCounts.low} items necesitan atención
+              {statusCounts.critical + statusCounts.low} items necesitan atención
             </div>
             <div className="alert-text">
-              {statusCounts.empty > 0 && `${statusCounts.empty} vacíos, `}
               {statusCounts.critical > 0 && `${statusCounts.critical} críticos, `}
               {statusCounts.low > 0 && `${statusCounts.low} stock bajo`}
             </div>
@@ -93,7 +89,6 @@ const StockTable = ({
         statusCounts={statusCounts}
         totalLabel="Total"
         filterLabels={{
-          empty: 'Vacío',
           critical: 'Crítico',
           low: 'Low',
           ok: 'Ok'
@@ -103,9 +98,6 @@ const StockTable = ({
 
       {/* Table */}
       <div className="stock-table">
-        <div className="table-header">
-          <div className="table-title">Inventario de Stock</div>
-        </div>
 
         <div className="table-content">
           <div className="table-head">
@@ -115,7 +107,7 @@ const StockTable = ({
             <div className="th">Unidad</div>
             <div className="th">Estado</div>
             <div className="th">Última actualización</div>
-            <div className="th">Acciones</div>
+            <div className="th"></div>
           </div>
 
           <div className="table-body">
@@ -197,7 +189,7 @@ const StockTable = ({
           <div className="stat-item">
             <span className="stat-label">Necesitan atención:</span>
             <span className="stat-value critical">
-              {statusCounts.empty + statusCounts.critical + statusCounts.low}
+              {statusCounts.critical + statusCounts.low}
             </span>
           </div>
           <div className="stat-item">
