@@ -3,11 +3,12 @@
   height: 700px;
   min-width: 240px;
   background: var(--neutral-250);
-  border-radius: 7px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   padding: 16px;
   font-family: var(--font-primary);
+  z-index: 2;
 }
 
 .sidebar-header {

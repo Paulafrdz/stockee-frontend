@@ -3,11 +3,9 @@
 .content-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
   height: 100%;
   font-family: var(--font-primary);
-  flex: 1;
-
+  z-index: 2;
 }
 
 .content-header {
@@ -32,11 +30,11 @@
 }
 
 .content-body {
+  height: 700px;
   background: var(--neutral-250);
-  border-radius: 16px;
-  padding: 24px;
-  min-height: calc(100vh - 200px);
-
+  border-radius: 10px;
+  padding: 16px;
+  width: 1180px;
 }
 
 /* Responsive */

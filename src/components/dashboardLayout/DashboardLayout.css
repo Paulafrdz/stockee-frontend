@@ -1,0 +1,125 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  font-family: var(--font-primary);
+}
+
+
+.sidebar-container {
+  position: relative;
+  z-index: 1000;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    flex-direction: column;
+    padding-top: 60px;
+  }
+  
+  .mobile-header {
+    display: flex;
+  }
+  
+  .sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform var(--transition-normal);
+  }
+  
+  .sidebar-container.sidebar-open {
+    transform: translateX(0);
+  }
+  
+  .sidebar-overlay {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .mobile-header {
+    padding: 10px 12px;
+    height: 56px;
+  }
+  
+  .dashboard-layout {
+    padding-top: 56px;
+  }
+  
+  .mobile-title {
+    font-size: 16px;
+  }
+}
+
+/* Animaciones suaves */
+.sidebar-container {
+  transition: transform var(--transition-normal);
+}
+
+.sidebar-overlay {
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+.sidebar-container.sidebar-open ~ .sidebar-overlay {
+  opacity: 1;
+}
+
+/* Estados de loading para toda la página */
+.dashboard-layout.loading {
+  pointer-events: none;
+}
+
+.dashboard-layout.loading::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tema oscuro (futuro) */
+@media (prefers-color-scheme: dark) {
+  .dashboard-layout {
+    background: var(--black);
+  }
+  
+  .mobile-header {
+    background: var(--neutral-750);
+    border-bottom-color: var(--neutral-500);
+  }
+  
+  .mobile-menu-button {
+    color: var(--white);
+  }
+  
+  .mobile-menu-button:hover {
+    background: var(--black);
+  }
+  
+  .mobile-title {
+    color: var(--white);
+  }
+}

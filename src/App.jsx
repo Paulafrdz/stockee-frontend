@@ -1,9 +1,9 @@
 import React, { useState } from 'react'; 
 import './components/styles/Variables.css';
 import './App.css'
-// import { BrowserRouter } from "react-router-dom";
 // import AuthPage from './pages/AuthPage.jsx';
-import MainContent from './components/mainContent/MainContent';
+import DashboardLayout from './components/dashboardLayout/DashboardLayout';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   const [email, setEmail] = useState('');
@@ -11,7 +11,9 @@ function App() {
 
   return (
     <div>
-      <MainContent></MainContent>
+      <BrowserRouter>
+      <DashboardLayout></DashboardLayout>
+      </BrowserRouter>
     </div>
   );
 }
