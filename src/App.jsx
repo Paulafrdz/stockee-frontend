@@ -4,7 +4,7 @@ import './App.css'
 // import AuthPage from './pages/AuthPage.jsx';
 // import DashboardLayout from './components/dashboardLayout/DashboardLayout';
 // import { BrowserRouter } from 'react-router-dom';
-import AddIngredientModal from './components/addIngredientModal/AddIngredientModal';
+import AddIngredientButton from './components/addIngredientButton/AddIngredientButton';
 
 function App() {
   const [email, setEmail] = useState('');
@@ -12,11 +12,7 @@ function App() {
 
   return (
     <div>
-      <AddIngredientModal isOpen={true}
-  onClose={() => {}}
-  onSubmit={(data) => console.log(data)}>
-        
-      </AddIngredientModal>
+     <AddIngredientButton></AddIngredientButton>
     </div>
   );
 }

@@ -134,10 +134,10 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
           type="submit"
           variant="primary"
           size="medium"
-          fullWidth
           loading={isLoading}
           icon={ArrowRight}
           iconPosition="right"
+          fullWidth={true}
         >
           Crear Cuenta
         </Button>

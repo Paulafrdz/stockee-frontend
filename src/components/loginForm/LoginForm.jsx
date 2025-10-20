@@ -115,7 +115,7 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
           type="submit"
           variant="primary"
           size="medium"
-          fullWidth
+          fullWidth={true}
           loading={isLoading}
           icon={ArrowRight}
           iconPosition="right"
