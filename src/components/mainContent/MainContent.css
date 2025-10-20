@@ -1,0 +1,148 @@
+
+
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  height: 100%;
+  font-family: var(--font-primary);
+  flex: 1;
+
+}
+
+.content-header {
+  margin-bottom: 32px;
+}
+
+.content-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--black);
+  font-family: var(--font-primary);
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+}
+
+.content-subtitle {
+  font-size: 16px;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.content-body {
+  background: var(--neutral-250);
+  border-radius: 16px;
+  padding: 24px;
+  min-height: calc(100vh - 200px);
+
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .content-container {
+    padding: 24px 20px;
+  }
+  
+  .content-title {
+    font-size: 28px;
+  }
+  
+  .content-body {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .content-container {
+    padding: 20px 16px;
+  }
+  
+  .content-title {
+    font-size: 24px;
+  }
+  
+  .content-subtitle {
+    font-size: 15px;
+  }
+  
+  .content-body {
+    padding: 16px;
+    border-radius: 12px;
+    min-height: calc(100vh - 160px);
+  }
+}
+
+@media (max-width: 640px) {
+  .content-container {
+    padding: 16px 12px;
+  }
+  
+  .content-header {
+    margin-bottom: 24px;
+  }
+  
+  .content-title {
+    font-size: 22px;
+  }
+  
+  .content-body {
+    padding: 12px;
+  }
+}
+
+/* Estados de carga */
+.content-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--neutral-750);
+}
+
+.content-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--neutral-750);
+  text-align: center;
+}
+
+.content-empty h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--black);
+}
+
+.content-empty p {
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Tema oscuro (futuro) */
+@media (prefers-color-scheme: dark) {
+  .main-content {
+    background: var(--black);
+  }
+  
+  .content-title {
+    color: var(--white);
+  }
+  
+  .content-subtitle {
+    color: var(--neutral-500);
+  }
+  
+  .content-body {
+    background: var(--neutral-750);
+    border-color: var(--neutral-500);
+  }
+}
