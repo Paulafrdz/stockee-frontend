@@ -13,9 +13,9 @@ const StockTable = ({
   onFilterChange 
 }) => {
   // Función para determinar el estado del stock
-  const getStockStatus = (actual, minimo) => {
-    if (actual <= minimo * 0.5) return 'critical';
-    if (actual <= minimo) return 'low';
+  const getStockStatus = (currentStock, minimumStock) => {
+    if (currentStock <= minimumStock * 0.5) return 'critical';
+    if (currentStock <= minimumStock) return 'low';
     return 'ok';
   };
 
@@ -32,13 +32,13 @@ const StockTable = ({
   // Procesar items con estado calculado
   const processedItems = stockItems.map(item => ({
     ...item,
-    status: getStockStatus(item.actual, item.minimo),
-    statusLabel: getStatusLabel(getStockStatus(item.actual, item.minimo))
+    status: getStockStatus(item.currentStock, item.minimumStock),
+    statusLabel: getStatusLabel(getStockStatus(item.currentStock, item.minimumStock))
   }));
 
   // Filtrar items según búsqueda y filtros
   const filteredItems = processedItems.filter(item => {
-    const matchesSearch = item.ingredient.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterStatus === 'all' || item.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
@@ -116,21 +116,21 @@ const StockTable = ({
               filteredItems.map((item) => (
                 <div key={item.id} className={`table-row status-row-${item.status}`}>
                   <div className="td ingredient-name">
-                    {item.ingredient}
+                    {item.name}
                   </div>
                   
-                  <div className="td stock-actual">
+                  <div className="td stock-currentStock">
                     <span className={`stock-value stock-${item.status}`}>
-                      {item.actual}
+                      {item.currentStock}
                     </span>
                   </div>
                   
                   <div className="td stock-minimum">
-                    {item.minimo}
+                    {item.minimumStock}
                   </div>
                   
                   <div className="td stock-unit">
-                    {item.unidad}
+                    {item.unit}
                   </div>
                   
                   <div className="td stock-status">
@@ -140,7 +140,7 @@ const StockTable = ({
                   </div>
                   
                   <div className="td last-updated text-muted">
-                    {formatTimeAgo(item.ultimaActualizacion)}
+                    {formatTimeAgo(item.lastUpdate)}
                   </div>
                   
                   <div className="td actions">

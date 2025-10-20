@@ -6,21 +6,22 @@ import './AddIngredientModal.css';
 
 const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    nombre: '',
-    stockActual: '',
-    stockMinimo: '',
-    unidad: 'kg'
+    name: '',
+    currentStock: '',
+    minimumStock: '',
+    unit: 'kg'
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const unidades = [
+
+  const unites = [
     { value: 'kg', label: 'kg' },
     { value: 'g', label: 'g' },
     { value: 'L', label: 'L' },
     { value: 'ml', label: 'ml' },
-    { value: 'unidades', label: 'unidades' },
-    { value: 'paquetes', label: 'paquetes' }
+    { value: 'units', label: 'unites' },
+    { value: 'packages', label: 'paquetes' }
   ];
 
   const handleChange = (field) => (e) => {
@@ -42,20 +43,20 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = 'El nombre del ingrediente es requerido';
+    if (!formData.name.trim()) {
+      newErrors.name = 'El name del ingrediente es requerido';
     }
     
-    if (!formData.stockActual) {
-      newErrors.stockActual = 'El stock actual es requerido';
-    } else if (isNaN(formData.stockActual) || parseFloat(formData.stockActual) < 0) {
-      newErrors.stockActual = 'Debe ser un número válido mayor o igual a 0';
+    if (!formData.currentStock) {
+      newErrors.currentStock = 'El stock actual es requerido';
+    } else if (isNaN(formData.currentStock) || parseFloat(formData.currentStock) < 0) {
+      newErrors.currentStock = 'Debe ser un número válido mayor o igual a 0';
     }
     
-    if (!formData.stockMinimo) {
-      newErrors.stockMinimo = 'El stock mínimo es requerido';
-    } else if (isNaN(formData.stockMinimo) || parseFloat(formData.stockMinimo) < 0) {
-      newErrors.stockMinimo = 'Debe ser un número válido mayor o igual a 0';
+    if (!formData.minimumStock) {
+      newErrors.minimumStock = 'El stock mínimo es requerido';
+    } else if (isNaN(formData.minimumStock) || parseFloat(formData.minimumStock) < 0) {
+      newErrors.minimumStock = 'Debe ser un número válido mayor o igual a 0';
     }
     
     setErrors(newErrors);
@@ -71,20 +72,20 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
     
     try {
       const ingredientData = {
-        nombre: formData.nombre.trim(),
-        stockActual: parseFloat(formData.stockActual),
-        stockMinimo: parseFloat(formData.stockMinimo),
-        unidad: formData.unidad
+        name: formData.name.trim(),
+        currentStock: parseFloat(formData.currentStock),
+        minimumStock: parseFloat(formData.minimumStock),
+        unit: formData.unit
       };
       
       await onSubmit(ingredientData);
       
       // Resetear formulario y cerrar modal
       setFormData({
-        nombre: '',
-        stockActual: '',
-        stockMinimo: '',
-        unidad: 'kg'
+        name: '',
+        currentStock: '',
+        minimumStock: '',
+        unit: 'kg'
       });
       setErrors({});
       onClose();
@@ -100,10 +101,10 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
     if (!isLoading) {
       // Resetear formulario al cerrar
       setFormData({
-        nombre: '',
-        stockActual: '',
-        stockMinimo: '',
-        unidad: 'kg'
+        name: '',
+        currentStock: '',
+        minimumStock: '',
+        unit: 'kg'
       });
       setErrors({});
       onClose();
@@ -135,9 +136,9 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
               type="text"
               label="Nombre del Ingrediente"
               placeholder="Ej: Tomates Cherry"
-              value={formData.nombre}
-              onChange={handleChange('nombre')}
-              error={errors.nombre}
+              value={formData.name}
+              onChange={handleChange('name')}
+              error={errors.name}
               required
               disabled={isLoading}
             />
@@ -150,9 +151,9 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
                 type="number"
                 label="Stock Actual"
                 placeholder="10"
-                value={formData.stockActual}
-                onChange={handleChange('stockActual')}
-                error={errors.stockActual}
+                value={formData.currentStock}
+                onChange={handleChange('currentStock')}
+                error={errors.currentStock}
                 required
                 disabled={isLoading}
                 min="0"
@@ -164,9 +165,9 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
                 type="number"
                 label="Stock Mínimo"
                 placeholder="5"
-                value={formData.stockMinimo}
-                onChange={handleChange('stockMinimo')}
-                error={errors.stockMinimo}
+                value={formData.minimumStock}
+                onChange={handleChange('minimumStock')}
+                error={errors.minimumStock}
                 required
                 disabled={isLoading}
                 min="0"
@@ -180,14 +181,14 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
             <label className="input-label required">Unidad</label>
             <select 
               className="select-field"
-              value={formData.unidad}
-              onChange={handleChange('unidad')}
+              value={formData.unit}
+              onChange={handleChange('unit')}
               disabled={isLoading}
               required
             >
-              {unidades.map(unidad => (
-                <option key={unidad.value} value={unidad.value}>
-                  {unidad.label}
+              {unites.map(unit => (
+                <option key={unit.value} value={unit.value}>
+                  {unit.label}
                 </option>
               ))}
             </select>
