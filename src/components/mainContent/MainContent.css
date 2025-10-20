@@ -1,40 +1,10 @@
 
 
-.content-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  height: 100%;
-  font-family: var(--font-primary);
-  z-index: 2;
-}
-
-.content-header {
-  margin-bottom: 32px;
-}
-
-.content-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--black);
-  font-family: var(--font-primary);
-  margin: 0 0 8px 0;
-  line-height: 1.2;
-}
-
-.content-subtitle {
-  font-size: 16px;
-  color: var(--neutral-750);
-  font-family: var(--font-primary);
-  margin: 0;
-  line-height: 1.5;
-}
-
 .content-body {
-  height: 700px;
+  flex-grow: 1;
   background: var(--neutral-250);
   border-radius: 10px;
   padding: 16px;
-  width: 1180px;
 }
 
 /* Responsive */

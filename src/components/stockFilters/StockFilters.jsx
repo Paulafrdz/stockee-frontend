@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import Input from '../inputLog/InputLog';
+import Button from '../button/Button';
+import { Plus } from 'lucide-react';
+
 import './StockFilters.css';
 
 const StockFilters = ({ 
@@ -42,6 +45,14 @@ const StockFilters = ({
 
   return (
     <div className="table-filters">
+         <Button
+            variant="primary"
+            size="medium"
+            icon={Plus}
+            onClick={() => setIsModalOpen(true)}
+          >
+            + Añadir ingrediente
+          </Button>
 
       <div className="filters-right">
        {showFilters && (

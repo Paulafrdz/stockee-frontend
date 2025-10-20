@@ -32,7 +32,7 @@
 
 .filter-btn {
   padding: 6px 12px;
-  border: 2px solid var(--neutral-500);
+  border: none;
   border-radius: 8px;
   background: var(--white);
   color: var(--neutral-750);
@@ -75,7 +75,18 @@
   border-color: var(--secondary-600);
 }
 
-.search-container {
-  min-width: 280px;
+.input-group {
+    all: unset;
+
+    margin-bottom: 0;
 }
 
+
+.filter-buttons .status-critical{
+  background-color: var(--white);
+  color: var(--black);
+}
+.filter-buttons .status-low{
+  background-color: var(--white);
+  color: var(--black);
+}

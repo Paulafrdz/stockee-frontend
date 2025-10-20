@@ -1,23 +1,21 @@
 .sidebar {
-  width: 240px;
-  height: 700px;
-  min-width: 240px;
   background: var(--neutral-250);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   padding: 16px;
   font-family: var(--font-primary);
-  z-index: 2;
+  height: 100%;
 }
 
 .sidebar-header {
   margin-bottom: 32px;
   margin-top: 20px;
 }
+
 img{
-    width: 240px;
-    height: 50px;
+    width: 100%;
+    height: auto;
 }
 
 .sidebar-nav {

@@ -80,6 +80,7 @@ const StockTable = ({
         </div>
       )}
 
+    
       {/* Filtros reutilizables */}
       <StockFilters
         searchTerm={searchTerm}
