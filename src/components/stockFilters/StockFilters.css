@@ -30,6 +30,15 @@
   flex-wrap: wrap;
 }
 
+.search-container{
+  padding: 5px;
+  border-radius: 5px;
+  background: var(--white);
+}
+.input-wrapped :focus{
+    all: unset;
+}
+
 .filter-btn {
   padding: 6px 12px;
   border: none;
@@ -54,6 +63,7 @@
   color: var(--white);
 }
 
+
 /* Filter status colors */
 .filter-btn.status-empty.active {
   background: var(--neutral-750);
@@ -71,17 +81,34 @@
 }
 
 .filter-btn.status-ok.active {
-  background: var(--secondary-600);
-  border-color: var(--secondary-600);
+  background: var(--primary-500);
+  border-color: var(--primary-500);
 }
 
 .input-group {
     all: unset;
-
     margin-bottom: 0;
+}
+.input-field{
+  all: unset;
 }
 
 
+.filter-buttons .status-critical.active:hover{
+  color: var(--black)
+}
+
+.filter-buttons .status-critical:hover{
+  color: var(--terciary-500)
+}
+
+.filter-buttons .status-low.active:hover{
+  color: var(--black)
+}
+
+.filter-buttons .status-low:hover{
+  color: var(--secondary-500)
+}
 .filter-buttons .status-critical{
   background-color: var(--white);
   color: var(--black);

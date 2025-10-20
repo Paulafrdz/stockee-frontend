@@ -41,6 +41,7 @@ img{
   transition: all var(--transition-normal);
   text-align: left;
   width: 100%;
+  text-decoration-line: none;
 }
 
 .nav-item:hover {

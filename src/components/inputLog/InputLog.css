@@ -53,10 +53,7 @@
   transition: color 0.2s ease;
 }
 
-.input-field:focus {
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 3px var(--primary-200);
-}
+
 
 .input-field:disabled {
   background-color: var(--neutral-250);
@@ -102,13 +99,6 @@
   opacity: 0.5;
 }
 
-.input-wrapper.focused .input-icon {
-  color: var(--primary-500);
-}
-
-.input-wrapper.focused .input-label {
-  color: var(--primary-500);
-}
 
 .input-wrapper.error .input-field {
   border-color: var(--border-red);
@@ -143,18 +133,7 @@
   }
 }
 
-/* Estados hover */
-.input-field:hover:not(:disabled) {
-  border-color: var(--neutral-750);
-}
 
-.input-wrapper:not(.error):not(.disabled) .input-field:hover {
-  border-color: var(--neutral-750);
-}
-
-.input-wrapper:not(.error):not(.disabled) .input-field:focus:hover {
-  border-color: var(--primary-500);
-}
 
 /* Responsive */
 @media (max-width: 640px) {

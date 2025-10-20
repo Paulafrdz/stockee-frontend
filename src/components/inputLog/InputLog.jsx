@@ -33,7 +33,7 @@ const InputLog = ({
         </label>
       )}
       
-      <div className={`input-wrapper ${isFocused ? 'focused' : ''} ${error ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
+      <div className={`input-wrapper ${error ? 'error' : ''} ${disabled ? 'disabled' : ''}`}>
         {Icon && (
           <Icon className="input-icon input-icon-left" />
         )}
