@@ -1,0 +1,81 @@
+.table-filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.filters-left {
+  flex-shrink: 0;
+}
+
+.status-summary {
+  font-size: 14px;
+  color: var(--neutral-750);
+  font-family: var(--font-primary);
+  font-weight: 500;
+}
+
+.filters-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 2px solid var(--neutral-500);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--neutral-750);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-500);
+  color: var(--primary-500);
+}
+
+.filter-btn.active {
+  background: var(--primary-500);
+  border-color: var(--primary-500);
+  color: var(--white);
+}
+
+/* Filter status colors */
+.filter-btn.status-empty.active {
+  background: var(--neutral-750);
+  border-color: var(--neutral-750);
+}
+
+.filter-btn.status-critical.active {
+  background: var(--terciary-500);
+  border-color: var(--terciary-500);
+}
+
+.filter-btn.status-low.active {
+  background: var(--secondary-500);
+  border-color: var(--secondary-500);
+}
+
+.filter-btn.status-ok.active {
+  background: var(--secondary-600);
+  border-color: var(--secondary-600);
+}
+
+.search-container {
+  min-width: 280px;
+}
+

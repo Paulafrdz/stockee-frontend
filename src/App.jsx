@@ -4,7 +4,7 @@ import './App.css'
 // import AuthPage from './pages/AuthPage.jsx';
 // import DashboardLayout from './components/dashboardLayout/DashboardLayout';
 // import { BrowserRouter } from 'react-router-dom';
-import AddIngredientButton from './components/addIngredientButton/AddIngredientButton';
+import StockTable from './components/stockTable/StockTable';
 
 function App() {
   const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ function App() {
 
   return (
     <div>
-     <AddIngredientButton></AddIngredientButton>
+      <StockTable></StockTable>
     </div>
   );
 }
