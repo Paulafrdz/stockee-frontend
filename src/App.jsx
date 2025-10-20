@@ -1,8 +1,9 @@
 import React, { useState } from 'react'; 
 import './components/styles/Variables.css';
 import './App.css'
-
-import AuthPage from './pages/AuthPage.jsx';
+import { BrowserRouter } from "react-router-dom";
+// import AuthPage from './pages/AuthPage.jsx';
+import Sidebar from './components/sidebar/Sidebar';
 
 function App() {
   const [email, setEmail] = useState('');
@@ -10,7 +11,9 @@ function App() {
 
   return (
     <div>
-     <AuthPage></AuthPage>
+     <BrowserRouter>
+      <Sidebar></Sidebar>
+    </BrowserRouter>
     </div>
   );
 }
