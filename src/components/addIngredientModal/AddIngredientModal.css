@@ -85,7 +85,7 @@
 .input-label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--neutral-750);
+  color: var(--font-color);
   font-family: var(--font-primary);
 }
 

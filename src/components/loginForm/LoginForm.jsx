@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 import { Mail, Lock, ArrowRight } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
 import { AuthService } from '../../services/AuthService.js';
+import Logo from "../../assets/logoPositive.svg";
+
 
 import './LoginForm.css';
 
@@ -66,7 +69,11 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
   return (
     <div className="login-form">
       <div className="form-header">
-        
+        <div className="sidebar-header">
+                <Link to="/dashboard">
+                    <img src={Logo} alt="logotype" className="logo" />
+                </Link>
+            </div>
         <div className="welcome-section">
           <h2 className="welcome-title">Bienvenido de nuevo</h2>
           <p className="welcome-subtitle">

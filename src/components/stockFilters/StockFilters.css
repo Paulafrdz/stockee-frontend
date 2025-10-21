@@ -30,11 +30,7 @@
   flex-wrap: wrap;
 }
 
-.search-container{
-  padding: 5px;
-  border-radius: 5px;
-  background: var(--white);
-}
+
 .input-wrapped :focus{
     all: unset;
 }
@@ -85,13 +81,7 @@
   border-color: var(--primary-500);
 }
 
-.input-group {
-    all: unset;
-    margin-bottom: 0;
-}
-.input-field{
-  all: unset;
-}
+
 
 
 .filter-buttons .status-critical.active:hover{

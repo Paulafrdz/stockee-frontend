@@ -1,78 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import DashboardLayout from '../components/DashboardLayout/DashboardLayout';
-import StockTable from '../components/stockTable/StockTable'
+import StockTable from '../components/stockTable/StockTable';
 import AddIngredientModal from '../components/addIngredientModal/AddIngredientModal';
 import Button from '../components/button/Button';
 import './StockPage.css';
+import {
+  getStockItems,
+  addStockItem,
+  updateStockItem,
+  deleteStockItem,
+} from '../services/stockService';
 
 const StockPage = () => {
-  // Estados principales
-  const [stockItems, setStockItems] = useState([
-    {
-      id: 1,
-      name: 'Tomates',
-      currentStock: 2.5,
-      minimumStock: 5,
-      unit: 'kg',
-      lastUpdate: '2h ago'
-    },
-    {
-      id: 2,
-      name: 'Mozzarella',
-      currentStock: 4,
-      minimumStock: 3,
-      unit: 'kg',
-      lastUpdate: '5h ago'
-    },
-    {
-      id: 3,
-      name: 'Aceite de oliva',
-      currentStock: 1.5,
-      minimumStock: 2,
-      unit: 'L',
-      lastUpdate: '1d ago'
-    }
-  ]);
-
-  // Estados para filtros y búsqueda
+  const [stockItems, setStockItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+  const [loading, setLoading] = useState(true);
 
-  // Funciones para manejar los items
-  const handleAddIngredient = (newIngredient) => {
-    const newItem = {
-      id: Date.now(),
-      name: newIngredient.name,
-      currentStock: parseFloat(newIngredient.currentStock),
-      minimumStock: parseFloat(newIngredient.minimumStock),
-      unit: newIngredient.unit,
-      lastUpdate: 'ahora'
+  // 🔹 Cargar stock desde el backend
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getStockItems();
+        setStockItems(data);
+      } catch (error) {
+        console.error("Error al obtener el stock:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    
-    setStockItems(prev => [...prev, newItem]);
-    setIsModalOpen(false);
-  };
+    fetchData();
+  }, []);
 
-  const handleUpdateStock = (itemId, newActual) => {
-    setStockItems(prev => 
-      prev.map(item => 
-        item.id === itemId 
-          ? { ...item, currentStock: newActual, lastUpdate: 'ahora' }
-          : item
-      )
-    );
-  };
-
-  const handleDeleteIngredient = (itemId) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar este ingrediente?')) {
-      setStockItems(prev => prev.filter(item => item.id !== itemId));
+  // 🔹 Añadir ingrediente (POST)
+  const handleAddIngredient = async (newIngredient) => {
+    try {
+      const savedItem = await addStockItem({
+        name: newIngredient.name,
+        currentStock: parseFloat(newIngredient.currentStock),
+        minimumStock: parseFloat(newIngredient.minimumStock),
+        unit: newIngredient.unit,
+      });
+      setStockItems((prev) => [...prev, savedItem]);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error al añadir ingrediente:", error);
     }
   };
 
-  // Función para determinar el estado del stock
+  // 🔹 Actualizar stock (PUT)
+  const handleUpdateStock = async (itemId, newActual) => {
+    try {
+      const updated = await updateStockItem(itemId, newActual);
+      setStockItems((prev) =>
+        prev.map((item) => (item.id === itemId ? updated : item))
+      );
+    } catch (error) {
+      console.error("Error al actualizar stock:", error);
+    }
+  };
+
+  // 🔹 Eliminar ingrediente (DELETE)
+  const handleDeleteIngredient = async (itemId) => {
+    if (window.confirm("¿Estás seguro de que quieres eliminar este ingrediente?")) {
+      try {
+        await deleteStockItem(itemId);
+        setStockItems((prev) => prev.filter((item) => item.id !== itemId));
+      } catch (error) {
+        console.error("Error al eliminar ingrediente:", error);
+      }
+    }
+  };
+
+  // 🔹 Determinar el estado del stock
   const getStockStatus = (currentStock, minimumStock) => {
     if (currentStock <= 0) return 'empty';
     if (currentStock <= minimumStock * 0.5) return 'critical';
@@ -80,38 +82,47 @@ const StockPage = () => {
     return 'ok';
   };
 
-  // Calcular estadísticas para el alert banner
-  const statusCounts = stockItems.reduce((acc, item) => {
-    const status = getStockStatus(item.currentStock, item.minimumStock);
-    acc[status] = (acc[status] || 0) + 1;
-    acc.total = stockItems.length;
-    return acc;
-  }, { empty: 0, critical: 0, low: 0, ok: 0, total: 0 });
+  // 🔹 Calcular estadísticas (alertas, totales, etc.)
+  const statusCounts = stockItems.reduce(
+    (acc, item) => {
+      const status = getStockStatus(item.currentStock, item.minimumStock);
+      acc[status] = (acc[status] || 0) + 1;
+      acc.total = stockItems.length;
+      return acc;
+    },
+    { empty: 0, critical: 0, low: 0, ok: 0, total: 0 }
+  );
 
   const needsAttention = statusCounts.empty + statusCounts.critical + statusCounts.low;
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="stock-page">
+          <h2>Cargando inventario...</h2>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
       <div className="stock-page">
-        {/* Header */}
         <div className="stock-page-header">
           <div className="page-title-section">
             <h1 className="page-title">Stock inventory</h1>
-            
           </div>
-
-         
         </div>
-         <Button
-            variant="primary"
-            size="medium"
-            icon={Plus}
-            onClick={() => setIsModalOpen(true)}
-          >
-            Añadir ingrediente
-          </Button>
 
-        {/* Table Container */}
+        <Button
+          variant="primary"
+          size="medium"
+          icon={Plus}
+          onClick={() => setIsModalOpen(true)}
+        >
+          Añadir ingrediente
+        </Button>
+
         <div className="stock-content">
           <StockTable
             stockItems={stockItems}
@@ -123,7 +134,7 @@ const StockPage = () => {
             onFilterChange={setFilterStatus}
           />
         </div>
-        {/* Modal */}
+
         {isModalOpen && (
           <AddIngredientModal
             isOpen={isModalOpen}

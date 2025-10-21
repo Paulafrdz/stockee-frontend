@@ -42,7 +42,7 @@ const AuthPage = ({ onUserAuthenticated }) => {
 
       {/* Right Side - Formularios de Auth */}
       <div className="auth-form-section">
-        <div className="auth-form-container">
+      
           {authMode === 'login' ? (
             <LoginForm 
               onSuccess={handleAuthSuccess}
@@ -54,7 +54,7 @@ const AuthPage = ({ onUserAuthenticated }) => {
               onToggleMode={toggleAuthMode}
             />
           )}
-        </div>
+        
       </div>
     </div>
   );

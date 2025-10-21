@@ -11,6 +11,11 @@
 
 }
 
+img{
+    width: 100%;
+    height: auto;
+}
+
 .welcome-subtitle{
 margin-top: 0;
 }
@@ -28,7 +33,7 @@ margin-top: 0;
   align-items: center;
   gap: 12px;
   font-size: 14px;
-  color: var(--neutral-750);
+  color:  var(--font-color);
   font-family: var(--font-primary);
 }
 
@@ -53,7 +58,7 @@ margin-top: 0;
 .forgot-password {
   background: none;
   border: none;
-  color: var(--neutral-750);
+  color:  var(--font-color);
   font-family: var(--font-primary);
   font-size: 12px;
   font-weight: 500;
