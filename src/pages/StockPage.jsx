@@ -9,6 +9,7 @@ import {
   getStockItems,
   addStockItem,
   updateStockItem,
+  updateStockOnly,
   deleteStockItem,
 } from '../services/stockService';
 
@@ -17,9 +18,10 @@ const StockPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Cargar stock desde el backend
+  // Cargar stock desde el backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -34,7 +36,17 @@ const StockPage = () => {
     fetchData();
   }, []);
 
-  // 🔹 Añadir ingrediente (POST)
+  const handleOpenModal = (item = null) => {
+    setEditingItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingItem(null);
+  };
+
+  // Añadir ingrediente (POST)
   const handleAddIngredient = async (newIngredient) => {
     try {
       const savedItem = await addStockItem({
@@ -44,16 +56,38 @@ const StockPage = () => {
         unit: newIngredient.unit,
       });
       setStockItems((prev) => [...prev, savedItem]);
-      setIsModalOpen(false);
+      handleCloseModal();
     } catch (error) {
       console.error("Error al añadir ingrediente:", error);
+      throw error; // Re-throw para que el modal pueda manejar el error
     }
   };
 
-  // 🔹 Actualizar stock (PUT)
-  const handleUpdateStock = async (itemId, newActual) => {
+  // Actualizar ingrediente completo (PUT) - desde modal de edición
+  const handleUpdateIngredient = async (ingredientData) => {
     try {
-      const updated = await updateStockItem(itemId, newActual);
+      console.log('🔍 handleUpdateIngredient - Data recibida:', ingredientData);
+      
+      // Extraer el ID y crear objeto sin ID para el body
+      const { id, ...dataToSend } = ingredientData;
+      console.log('🔍 handleUpdateIngredient - ID:', id);
+      console.log('🔍 handleUpdateIngredient - Data a enviar:', dataToSend);
+      
+      const updated = await updateStockItem(id, dataToSend);
+      setStockItems((prev) =>
+        prev.map((item) => (item.id === updated.id ? updated : item))
+      );
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error al actualizar ingrediente:", error);
+      throw error; // Re-throw para que el modal pueda manejar el error
+    }
+  };
+
+  // Actualización rápida solo del stock (para edición inline en tabla)
+  const handleQuickStockUpdate = async (itemId, newStock) => {
+    try {
+      const updated = await updateStockOnly(itemId, parseFloat(newStock));
       setStockItems((prev) =>
         prev.map((item) => (item.id === itemId ? updated : item))
       );
@@ -62,7 +96,7 @@ const StockPage = () => {
     }
   };
 
-  // 🔹 Eliminar ingrediente (DELETE)
+  // Eliminar ingrediente (DELETE)
   const handleDeleteIngredient = async (itemId) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este ingrediente?")) {
       try {
@@ -74,7 +108,7 @@ const StockPage = () => {
     }
   };
 
-  // 🔹 Determinar el estado del stock
+  // Determinar el estado del stock
   const getStockStatus = (currentStock, minimumStock) => {
     if (currentStock <= 0) return 'empty';
     if (currentStock <= minimumStock * 0.5) return 'critical';
@@ -82,7 +116,7 @@ const StockPage = () => {
     return 'ok';
   };
 
-  // 🔹 Calcular estadísticas (alertas, totales, etc.)
+  // Calcular estadísticas (alertas, totales, etc.)
   const statusCounts = stockItems.reduce(
     (acc, item) => {
       const status = getStockStatus(item.currentStock, item.minimumStock);
@@ -118,7 +152,7 @@ const StockPage = () => {
           variant="primary"
           size="medium"
           icon={Plus}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => handleOpenModal()}
         >
           Añadir ingrediente
         </Button>
@@ -126,7 +160,8 @@ const StockPage = () => {
         <div className="stock-content">
           <StockTable
             stockItems={stockItems}
-            onUpdateStock={handleUpdateStock}
+            onEditIngredient={handleOpenModal}
+            onUpdateStock={handleQuickStockUpdate}
             onDeleteIngredient={handleDeleteIngredient}
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
@@ -138,8 +173,9 @@ const StockPage = () => {
         {isModalOpen && (
           <AddIngredientModal
             isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            onSubmit={handleAddIngredient}
+            onClose={handleCloseModal}
+            onSubmit={editingItem ? handleUpdateIngredient : handleAddIngredient}
+            initialData={editingItem}
           />
         )}
       </div>

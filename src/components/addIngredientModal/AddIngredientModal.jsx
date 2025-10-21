@@ -1,19 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
 import './AddIngredientModal.css';
 
-const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
+const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
     name: '',
     currentStock: '',
     minimumStock: '',
-    unit: 'kg'
+    unit: 'kg' // Valor por defecto agregado
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        id: initialData.id,
+        name: initialData.name || '',
+        currentStock: initialData.currentStock || '',
+        minimumStock: initialData.minimumStock || '',
+        unit: initialData.unit || 'kg',
+      });
+    } else {
+      // Reset form when switching from edit to add
+      setFormData({
+        name: '',
+        currentStock: '',
+        minimumStock: '',
+        unit: 'kg'
+      });
+    }
+  }, [initialData]);
 
   const unites = [
     { value: 'kg', label: 'kg' },
@@ -44,7 +63,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
     const newErrors = {};
     
     if (!formData.name.trim()) {
-      newErrors.name = 'El name del ingrediente es requerido';
+      newErrors.name = 'El nombre del ingrediente es requerido';
     }
     
     if (!formData.currentStock) {
@@ -58,6 +77,10 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
     } else if (isNaN(formData.minimumStock) || parseFloat(formData.minimumStock) < 0) {
       newErrors.minimumStock = 'Debe ser un número válido mayor o igual a 0';
     }
+
+    if (!formData.unit) {
+      newErrors.unit = 'La unidad es requerida';
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -65,33 +88,42 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
     
     setIsLoading(true);
     
     try {
       const ingredientData = {
+        ...(initialData && { id: formData.id }), // Include ID only if editing
         name: formData.name.trim(),
         currentStock: parseFloat(formData.currentStock),
         minimumStock: parseFloat(formData.minimumStock),
         unit: formData.unit
       };
       
+      console.log('🔍 Modal - Enviando data:', ingredientData);
+      
       await onSubmit(ingredientData);
       
-      // Resetear formulario y cerrar modal
-      setFormData({
-        name: '',
-        currentStock: '',
-        minimumStock: '',
-        unit: 'kg'
-      });
-      setErrors({});
-      onClose();
+      // Reset only happens in parent component now
       
     } catch (error) {
-      setErrors({ submit: error.message || 'Error al añadir el ingrediente' });
+      console.error('❌ Error en modal:', error);
+      let errorMessage = 'Error al procesar el ingrediente';
+      
+      if (error.response) {
+        // El servidor respondió con un error
+        errorMessage = error.response.data?.message || error.response.data?.error || `Error ${error.response.status}: ${error.response.statusText}`;
+      } else if (error.request) {
+        // No se pudo conectar al servidor
+        errorMessage = 'No se pudo conectar al servidor';
+      } else {
+        // Otro tipo de error
+        errorMessage = error.message || errorMessage;
+      }
+      
+      setErrors({ submit: errorMessage });
     } finally {
       setIsLoading(false);
     }
@@ -113,12 +145,16 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
 
   if (!isOpen) return null;
 
+  const isEditing = !!initialData;
+
   return (
     <div className="modal-overlay" onClick={handleClose}>
       <div className="modal-container" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="modal-header">
-          <h2 className="modal-title">Añadir Ingrediente al Stock</h2>
+          <h2 className="modal-title">
+            {isEditing ? 'Editar Ingrediente' : 'Añadir Ingrediente al Stock'}
+          </h2>
           <button 
             className="modal-close-button"
             onClick={handleClose}
@@ -192,6 +228,9 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
                 </option>
               ))}
             </select>
+            {errors.unit && (
+              <div className="input-error">{errors.unit}</div>
+            )}
           </div>
 
           {/* Error de submit */}
@@ -219,7 +258,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit }) => {
               loading={isLoading}
               disabled={isLoading}
             >
-              Añadir al Inventario
+              {isEditing ? 'Actualizar Ingrediente' : 'Añadir al Inventario'}
             </Button>
           </div>
         </form>

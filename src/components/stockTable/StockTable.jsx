@@ -6,6 +6,7 @@ import './StockTable.css';
 const StockTable = ({ 
   stockItems = [], 
   onUpdateStock, 
+  onEditIngredient,
   onDeleteIngredient,
   searchTerm = '',
   onSearchChange,
@@ -51,9 +52,9 @@ const StockTable = ({
     total: processedItems.length
   };
 
-  const handleStockUpdate = (itemId, newActual) => {
+  const handleStockUpdate = (item, newActual) => {
     if (onUpdateStock) {
-      onUpdateStock(itemId, parseFloat(newActual));
+      onUpdateStock(item.id, parseFloat(newActual));
     }
   };
 
@@ -146,7 +147,7 @@ const StockTable = ({
                   <div className="td actions">
                     <button 
                       className="action-btn edit-btn"
-                      onClick={() => {/* TODO: Abrir modal de edición */}}
+                      onClick={() => onEditIngredient && onEditIngredient(item)}
                       title="Editar ingrediente"
                     >
                       <Edit size={16} />
