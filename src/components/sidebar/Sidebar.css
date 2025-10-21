@@ -112,7 +112,7 @@ img{
 .user-name {
   font-size: 15px;
   font-weight: 600;
-  color: var(--black);
+  color: var(--font-color);
   font-family: var(--font-primary);
   white-space: nowrap;
   overflow: hidden;

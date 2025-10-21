@@ -108,7 +108,7 @@ const StockPage = () => {
             icon={Plus}
             onClick={() => setIsModalOpen(true)}
           >
-            + Añadir ingrediente
+            Añadir ingrediente
           </Button>
 
         {/* Table Container */}

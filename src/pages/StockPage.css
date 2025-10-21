@@ -24,9 +24,9 @@
 }
 
 .page-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--black);
+  font-size: var(--h1-size);
+  font-weight: var(--h2-weight);
+  color: var(--font-color);
   font-family: var(--font-primary);
   margin: 0;
   line-height: 1.2;
@@ -138,3 +138,4 @@
     font-size: 20px;
   }
 }
+
