@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
-import DashboardLayout from '../components/DashboardLayout/DashboardLayout';
+import DashboardLayout from '../components/dashboardLayout/DashboardLayout';
 import StockTable from '../components/stockTable/StockTable';
 import AddIngredientModal from '../components/addIngredientModal/AddIngredientModal';
 import Button from '../components/button/Button';

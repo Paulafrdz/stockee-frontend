@@ -1,22 +1,15 @@
-import React, { useState } from 'react'; 
-import './components/styles/Variables.css';
-import './App.css'
-import AuthPage from './pages/AuthPage.jsx';
-// import DashboardLayout from './components/dashboardLayout/DashboardLayout';
-import { BrowserRouter } from 'react-router-dom';
-import StockPage from './pages/StockPage';
+import { BrowserRouter as Router } from 'react-router-dom';
+import React from 'react';
+import "./components/styles/Variables.css";
+import './App.css';
+import AppRouter from './router/AppRouter';
 
 function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   return (
-    <>
-      <BrowserRouter>
-      <AuthPage></AuthPage>
-      
-      </BrowserRouter>
-    </>
+    <Router>
+      <AppRouter />
+    </Router>
   );
 }
-export default App
+
+export default App;

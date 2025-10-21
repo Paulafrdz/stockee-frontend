@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import axios from 'axios';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
 import { AuthService } from '../../services/AuthService.js';
 import Logo from "../../assets/logoPositive.svg";
 
-
 import './LoginForm.css';
 
-const LoginForm = ({ onSubmit, onToggleMode }) => {
+const LoginForm = ({ onSuccess, onToggleMode }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -54,13 +54,32 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+    
     setIsLoading(true);
+    setErrors({}); // Limpiar errores previos
 
     try {
+      console.log('🔍 Intentando login con:', formData);
+      
+      // Usar el AuthService directamente
       const user = await AuthService.login(formData);
-      onSubmit?.(user);
+      console.log('🔍 AuthService devolvió:', user);
+      
+      // Verificar que el usuario tenga datos válidos
+      if (!user || (!user.token && !user.username)) {
+        throw new Error('El servidor no devolvió datos de usuario válidos');
+      }
+      
+      // Llamar al callback de éxito
+      if (onSuccess) {
+        onSuccess(user);
+      }
+
     } catch (err) {
-      setErrors({ submit: err.response?.data?.message || err.message });
+      console.error('❌ Error en login:', err);
+      setErrors({ 
+        submit: err.response?.data?.message || err.message || 'Error al iniciar sesión' 
+      });
     } finally {
       setIsLoading(false);
     }
@@ -70,10 +89,10 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
     <div className="login-form">
       <div className="form-header">
         <div className="sidebar-header">
-                <Link to="/dashboard">
-                    <img src={Logo} alt="logotype" className="logo" />
-                </Link>
-            </div>
+          <Link to="/login">
+            <img src={Logo} alt="logotype" className="logo" />
+          </Link>
+        </div>
         <div className="welcome-section">
           <h2 className="welcome-title">Bienvenido de nuevo</h2>
           <p className="welcome-subtitle">
@@ -126,8 +145,9 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
           loading={isLoading}
           icon={ArrowRight}
           iconPosition="right"
+          disabled={isLoading}
         >
-          Iniciar Sesión
+          {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </Button>
       </form>
 
@@ -141,8 +161,6 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
           Regístrate gratis
         </button>
       </div>
-
-  
     </div>
   );
 };
