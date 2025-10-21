@@ -115,7 +115,6 @@ export const AuthService = {
 
     logout: async () => {
         try {
-            // Con JWT stateless, solo necesitamos limpiar el localStorage
             localStorage.removeItem("token");
             localStorage.removeItem("user");
             console.log("✅ Sesión cerrada correctamente");

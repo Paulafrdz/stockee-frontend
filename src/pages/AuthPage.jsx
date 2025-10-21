@@ -12,7 +12,6 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Detectar si estamos en la ruta de registro
   useEffect(() => {
     if (location.pathname === '/register') {
       setAuthMode('register');
@@ -21,29 +20,25 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
     }
   }, [location.pathname]);
 
-  // Verificar si ya está autenticado (solo una vez al montar)
   useEffect(() => {
     const currentUser = AuthService.getCurrentUser();
     if (currentUser && (currentUser.token || currentUser.username)) {
       navigate('/stock', { replace: true });
     }
-  }, []); // Sin dependencias para que solo se ejecute una vez
+  }, []); 
 
   const handleAuthSuccess = (user) => {
     console.log('Usuario autenticado:', user);
     
-    // Verificar que el usuario tenga datos válidos antes de proceder
     if (!user || (!user.token && !user.username)) {
       console.error('Error: Usuario autenticado sin datos válidos', user);
       return;
     }
     
-    // Llamar al callback del componente padre si existe
     if (onUserAuthenticated) {
       onUserAuthenticated(user);
     }
     
-    // Pequeño delay para asegurar que el localStorage se actualice
     setTimeout(() => {
       console.log('🔄 Redirigiendo a /stock');
       navigate('/stock', { replace: true });
@@ -54,7 +49,6 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
     const newMode = authMode === 'login' ? 'register' : 'login';
     setAuthMode(newMode);
     
-    // También actualizar la URL
     navigate(newMode === 'login' ? '/login' : '/register', { replace: true });
   };
 

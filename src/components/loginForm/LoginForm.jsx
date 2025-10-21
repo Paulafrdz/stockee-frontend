@@ -23,7 +23,6 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
       [field]: e.target.value
     }));
     
-    // Limpiar error cuando el usuario empiece a escribir
     if (errors[field]) {
       setErrors(prev => ({
         ...prev,
@@ -56,21 +55,17 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
     if (!validateForm()) return;
     
     setIsLoading(true);
-    setErrors({}); // Limpiar errores previos
+    setErrors({});
 
     try {
       console.log('🔍 Intentando login con:', formData);
       
-      // Usar el AuthService directamente
       const user = await AuthService.login(formData);
-      console.log('🔍 AuthService devolvió:', user);
       
-      // Verificar que el usuario tenga datos válidos
       if (!user || (!user.token && !user.username)) {
         throw new Error('El servidor no devolvió datos de usuario válidos');
       }
       
-      // Llamar al callback de éxito
       if (onSuccess) {
         onSuccess(user);
       }

@@ -67,12 +67,12 @@ const StockPage = () => {
   const handleUpdateIngredient = async (ingredientData) => {
     try {
       console.log('🔍 handleUpdateIngredient - Data recibida:', ingredientData);
-      
+
       // Extraer el ID y crear objeto sin ID para el body
       const { id, ...dataToSend } = ingredientData;
       console.log('🔍 handleUpdateIngredient - ID:', id);
       console.log('🔍 handleUpdateIngredient - Data a enviar:', dataToSend);
-      
+
       const updated = await updateStockItem(id, dataToSend);
       setStockItems((prev) =>
         prev.map((item) => (item.id === updated.id ? updated : item))
@@ -96,20 +96,25 @@ const StockPage = () => {
     }
   };
 
-  // Eliminar ingrediente (DELETE)
   const handleDeleteIngredient = async (itemId) => {
-    if (window.confirm("¿Estás seguro de que quieres eliminar este ingrediente?")) {
-      try {
-        await deleteStockItem(itemId);
-        setStockItems((prev) => prev.filter((item) => item.id !== itemId));
-      } catch (error) {
-        console.error("Error al eliminar ingrediente:", error);
-      }
+    try {
+      await deleteStockItem(itemId);
+      setStockItems((prev) => prev.filter((item) => item.id !== itemId));
+    } catch (error) {
+      console.error("Error al eliminar ingrediente:", error);
     }
+
   };
 
-  // Determinar el estado del stock
   const getStockStatus = (currentStock, minimumStock) => {
+    if (typeof currentStock !== 'number' || typeof minimumStock !== 'number') {
+      return 'unknown';
+    }
+
+    if (minimumStock <= 0) {
+      return currentStock <= 0 ? 'empty' : 'ok';
+    }
+
     if (currentStock <= 0) return 'empty';
     if (currentStock <= minimumStock * 0.5) return 'critical';
     if (currentStock <= minimumStock) return 'low';

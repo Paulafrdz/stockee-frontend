@@ -21,18 +21,15 @@ export const addStockItem = async (item) => {
   return response.data;
 };
 
-// Para editar ingrediente completo (desde modal)
 export const updateStockItem = async (id, ingredientData) => {
-  console.log('🔍 updateStockItem - ID:', id);
-  console.log('🔍 updateStockItem - Data original:', ingredientData);
   
   try {
-    // Ahora tu backend acepta el objeto completo con currentStock
+    
     const response = await axios.put(
       `${API_URL}/${id}`,
       {
         name: ingredientData.name,
-        currentStock: ingredientData.currentStock, // Cambiar de newStock a currentStock
+        currentStock: ingredientData.currentStock,
         minimumStock: ingredientData.minimumStock,
         unit: ingredientData.unit
       },
@@ -50,7 +47,6 @@ export const updateStockItem = async (id, ingredientData) => {
   }
 };
 
-// Para actualización rápida solo del stock actual
 export const updateStockOnly = async (id, newStock) => {
   const response = await axios.put(`${API_URL}/${id}/stock?newStock=${newStock}`, {}, getAuthHeaders());
   return response.data;

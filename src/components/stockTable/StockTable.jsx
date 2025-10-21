@@ -13,14 +13,13 @@ const StockTable = ({
   filterStatus = 'all',
   onFilterChange 
 }) => {
-  // Función para determinar el estado del stock
+
   const getStockStatus = (currentStock, minimumStock) => {
     if (currentStock <= minimumStock * 0.5) return 'critical';
     if (currentStock <= minimumStock) return 'low';
     return 'ok';
   };
 
-  // Función para obtener el label del estado
   const getStatusLabel = (status) => {
     switch (status) {
       case 'critical': return 'Crítico';
@@ -30,21 +29,18 @@ const StockTable = ({
     }
   };
 
-  // Procesar items con estado calculado
   const processedItems = stockItems.map(item => ({
     ...item,
     status: getStockStatus(item.currentStock, item.minimumStock),
     statusLabel: getStatusLabel(getStockStatus(item.currentStock, item.minimumStock))
   }));
 
-  // Filtrar items según búsqueda y filtros
   const filteredItems = processedItems.filter(item => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterStatus === 'all' || item.status === filterStatus;
     return matchesSearch && matchesFilter;
   });
 
-  // Contar items por estado
   const statusCounts = {
     critical: processedItems.filter(item => item.status === 'critical').length,
     low: processedItems.filter(item => item.status === 'low').length,
