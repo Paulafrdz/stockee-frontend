@@ -149,7 +149,7 @@ const OrderTable = ({
               checked={showOnlyRecommended}
               onChange={(e) => setShowOnlyRecommended(e.target.checked)}
             />
-            <span>Show only low stock ingredients</span>
+            <span>Muestra solo ingredientes con bajo stock</span>
           </label>
         </div>
       </div>
@@ -157,12 +157,12 @@ const OrderTable = ({
       <div className="table-container">
         {/* Table Header */}
         <div className="order-th">
-          <div>Ingredient</div>
-          <div>Current Stock</div>
-          <div>Minimum</div>
-          <div>Weekly Usage</div>
-          <div>Recommended Quantity</div>
-          <div>Actions</div>
+          <div>Ingredientes</div>
+          <div>Actual</div>
+          <div>Minimo</div>
+          <div>Uso semana</div>
+          <div>Cantidad Recomendada</div>
+          <div></div>
         </div>
 
         {/* Table Body */}

@@ -134,6 +134,26 @@ const StockPage = () => {
 
   const needsAttention = statusCounts.empty + statusCounts.critical + statusCounts.low;
 
+  useEffect(() => {
+  const checkRefresh = () => {
+    const refreshTime = localStorage.getItem('refreshStock');
+    if (refreshTime) {
+      console.log('🔁 Refrescando stock tras pedido...');
+      getStockItems().then(setStockItems);
+      localStorage.removeItem('refreshStock');
+    }
+  };
+
+  window.addEventListener('focus', checkRefresh); 
+  const interval = setInterval(checkRefresh, 3000); 
+
+  return () => {
+    window.removeEventListener('focus', checkRefresh);
+    clearInterval(interval);
+  };
+}, []);
+
+
   if (loading) {
     return (
       <DashboardLayout>
