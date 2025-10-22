@@ -7,17 +7,51 @@ const OrderTable = ({
   recommendedOrders = [],
   onQuantityChange,
   onGlobalAdjustment,
-  onSubmitOrder,
-  onClearAll,
   isSubmitting = false
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showOnlyRecommended, setShowOnlyRecommended] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
+  // Get stock status (similar to StockTable)
+  const getStockStatus = (currentStock, minimumStock) => {
+    if (typeof currentStock !== 'number' || typeof minimumStock !== 'number') {
+      return 'ok';
+    }
+
+    if (minimumStock <= 0) {
+      return currentStock <= 0 ? 'empty' : 'ok';
+    }
+
+    if (currentStock <= 0) return 'empty';
+    if (currentStock <= minimumStock * 0.5) return 'critical';
+    if (currentStock <= minimumStock) return 'low';
+    return 'ok';
+  };
+
+  // Get status label
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'critical': return 'Crítico';
+      case 'low': return 'Low';
+      case 'empty': return 'Empty';
+      case 'ok': return 'Ok';
+      default: return 'Ok';
+    }
+  };
+
+  // Process items with status
+  const processedItems = useMemo(() => {
+    return recommendedOrders.map(item => ({
+      ...item,
+      status: getStockStatus(item.currentStock, item.minimumStock),
+      statusLabel: getStatusLabel(getStockStatus(item.currentStock, item.minimumStock))
+    }));
+  }, [recommendedOrders]);
+
   // Filter ingredients based on search and filters
   const filteredOrders = useMemo(() => {
-    let filtered = recommendedOrders.filter(item =>
+    let filtered = processedItems.filter(item =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -33,7 +67,7 @@ const OrderTable = ({
       }
       return a.name.localeCompare(b.name);
     });
-  }, [recommendedOrders, searchTerm, showOnlyRecommended]);
+  }, [processedItems, searchTerm, showOnlyRecommended]);
 
   // Calculate order totals
   const orderTotals = useMemo(() => {
@@ -44,37 +78,6 @@ const OrderTable = ({
       urgentItems: itemsToOrder.filter(item => item.priority === 'high').length
     };
   }, [filteredOrders]);
-
-  // Handle order submission with success state
-  const handleSubmitOrder = async () => {
-    const itemsToOrder = recommendedOrders
-      .filter(item => item.recommendedQuantity > 0)
-      .map(item => ({
-        id: item.id,
-        name: item.name,
-        quantity: item.recommendedQuantity,
-        unit: item.unit,
-        priority: item.priority
-      }));
-
-    if (itemsToOrder.length === 0) return;
-
-    try {
-      await onSubmitOrder({
-        items: itemsToOrder,
-        timestamp: new Date().toISOString()
-      });
-      
-      setOrderSubmitted(true);
-      
-      // Reset success state after 3 seconds
-      setTimeout(() => {
-        setOrderSubmitted(false);
-      }, 3000);
-    } catch (error) {
-      console.error('Error submitting order:', error);
-    }
-  };
 
   // Get priority color classes
   const getPriorityColor = (priority) => {
@@ -98,7 +101,7 @@ const OrderTable = ({
 
   return (
     <div className="recommended-orders-table">
-      {/* Header Controls */}
+        {/* Header Controls */}
       <div className="table-header">
         <div className="table-header__controls">
           {/* Search Bar */}
@@ -151,172 +154,111 @@ const OrderTable = ({
         </div>
       </div>
 
-      {/* Table */}
       <div className="table-container">
-        <table className="orders-table">
-          <thead>
-            <tr>
-              <th>Ingredient</th>
-              <th>Current Stock</th>
-              <th>Minimum</th>
-              <th>Weekly Usage</th>
-              <th>Recommended Quantity</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map((item) => (
-              <tr key={item.id} className="table-row">
-                <td className="ingredient-cell">
-                  <div className="ingredient-info">
-                    {getStockStatusIcon(item.currentStock, item.minimumStock)}
-                    <div className="ingredient-details">
-                      <div className="ingredient-name">{item.name}</div>
-                      <div className={`priority-badge ${getPriorityColor(item.priority)}`}>
-                        {item.priority}
-                      </div>
+        {/* Table Header */}
+        <div className="order-th">
+          <div>Ingredient</div>
+          <div>Current Stock</div>
+          <div>Minimum</div>
+          <div>Weekly Usage</div>
+          <div>Recommended Quantity</div>
+          <div>Actions</div>
+        </div>
+
+        {/* Table Body */}
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((item) => (
+            <div key={item.id} className={`order-table-row status-row-${item.status}`}>
+              {/* Ingredient */}
+              <div className="ingredient-cell">
+                <div className="ingredient-info">
+                  {getStockStatusIcon(item.currentStock, item.minimumStock)}
+                  <div className="ingredient-details">
+                    <div className="ingredient-name">{item.name}</div>
+                    <div className={`priority-badge priority-${item.priority.toLowerCase()}`}>
+                      {item.priority}
                     </div>
                   </div>
-                </td>
-                <td className="stock-cell">
-                  <div className="stock-value">
+                </div>
+              </div>
+
+              {/* Current Stock */}
+              <div className="stock-cell">
+                <div className="stock-value">
+                  <span className={`stock-badge stock-${item.status}`}>
                     {item.currentStock} {item.unit}
+                  </span>
+                </div>
+                {item.lastOrderDate && (
+                  <div className="last-order">
+                    Updated: {new Date(item.lastOrderDate).toLocaleDateString()}
                   </div>
-                  {item.lastOrderDate && (
-                    <div className="last-order">
-                      Updated: {new Date(item.lastOrderDate).toLocaleDateString()}
-                    </div>
-                  )}
-                </td>
-                <td className="minimum-cell">
-                  {item.minimumStock} {item.unit}
-                </td>
-                <td className="usage-cell">
-                  {item.weeklyUsage} {item.unit}
-                </td>
-                <td className="quantity-cell">
-                  <div className="quantity-controls">
-                    <button
-                      className="quantity-btn quantity-btn--decrease"
-                      onClick={() => onQuantityChange(item.id, item.recommendedQuantity - 1)}
-                      disabled={isSubmitting}
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <input
-                      type="number"
-                      value={item.recommendedQuantity}
-                      onChange={(e) => onQuantityChange(item.id, parseFloat(e.target.value) || 0)}
-                      className="quantity-input"
-                      min="0"
-                      step="0.1"
-                      disabled={isSubmitting}
-                    />
-                    <span className="quantity-unit">{item.unit}</span>
-                    <button
-                      className="quantity-btn quantity-btn--increase"
-                      onClick={() => onQuantityChange(item.id, item.recommendedQuantity + 1)}
-                      disabled={isSubmitting}
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                </td>
-                <td className="actions-cell">
+                )}
+              </div>
+
+              {/* Minimum */}
+              <div className="minimum-cell">
+                {item.minimumStock} {item.unit}
+              </div>
+
+              {/* Weekly Usage */}
+              <div className="usage-cell">
+                {item.weeklyUsage} {item.unit}
+              </div>
+
+              {/* Recommended Quantity */}
+              <div className="quantity-cell">
+                <div className="quantity-controls">
                   <button
-                    className="remove-btn"
-                    onClick={() => onQuantityChange(item.id, 0)}
+                    className="quantity-btn quantity-btn--decrease"
+                    onClick={() => onQuantityChange(item.id, item.recommendedQuantity - 1)}
                     disabled={isSubmitting}
                   >
-                    Remove
+                    <Minus size={16} />
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <input
+                    type="number"
+                    value={item.recommendedQuantity}
+                    onChange={(e) => onQuantityChange(item.id, parseFloat(e.target.value) || 0)}
+                    className="quantity-input"
+                    min="0"
+                    step="0.1"
+                    disabled={isSubmitting}
+                  />
+                  <span className="quantity-unit">{item.unit}</span>
+                  <button
+                    className="quantity-btn quantity-btn--increase"
+                    onClick={() => onQuantityChange(item.id, item.recommendedQuantity + 1)}
+                    disabled={isSubmitting}
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
+              </div>
 
-        {/* Empty State */}
-        {filteredOrders.length === 0 && (
+              {/* Actions */}
+              <div className="actions-cell">
+                <button
+                  className="remove-btn"
+                  onClick={() => onQuantityChange(item.id, 0)}
+                  disabled={isSubmitting}
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+          ))
+        ) : (
           <div className="empty-state">
-            <div className="empty-message">No ingredients found</div>
+            <div className="empty-message">
+              {searchTerm ? "No ingredients match your search" : "No ingredients found"}
+            </div>
             <div className="empty-description">
-              {searchTerm ? 'Try different search terms' : 'No ingredients to display'}
+              {searchTerm ? "Try different search terms" : "Add your first ingredient"}
             </div>
           </div>
         )}
       </div>
-
-      {/* Order Summary */}
-      {orderTotals.itemCount > 0 && (
-        <div className="order-summary">
-          <div className="summary-content">
-            <div className="summary-header">
-              <div className="summary-title">
-                <h3>Order Summary</h3>
-                <p>{orderTotals.itemCount} ingredient{orderTotals.itemCount !== 1 ? 's' : ''} to order</p>
-              </div>
-            </div>
-            
-            {/* Order Details */}
-            <div className="summary-details">
-              <div className="detail-row">
-                <span>Items to order:</span>
-                <span>{orderTotals.itemCount}</span>
-              </div>
-              <div className="detail-row">
-                <span>Urgent items:</span>
-                <span className="urgent-count">{orderTotals.urgentItems}</span>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="summary-actions">
-              <Button
-                variant="secondary"
-                size="medium"
-                onClick={onClearAll}
-                disabled={isSubmitting}
-              >
-                Clear All
-              </Button>
-              
-              <Button
-                variant={orderSubmitted ? 'success' : 'primary'}
-                size="medium"
-                icon={isSubmitting ? null : orderSubmitted ? CheckCircle : ShoppingCart}
-                onClick={handleSubmitOrder}
-                disabled={isSubmitting || orderTotals.itemCount === 0}
-                className="submit-order-btn"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="orders-loading-spinner"></div>
-                    Processing...
-                  </>
-                ) : orderSubmitted ? (
-                  'Order Submitted!'
-                ) : (
-                  'Submit Order'
-                )}
-              </Button>
-            </div>
-
-            {/* Success Message */}
-            {orderSubmitted && (
-              <div className="success-message">
-                <CheckCircle className="success-icon" />
-                <div className="success-content">
-                  <div className="success-title">Order processed successfully!</div>
-                  <div className="success-description">
-                    Stock has been updated and quantities have been reset.
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </div>
   );
 };

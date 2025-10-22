@@ -5,6 +5,7 @@ import PublicRoute from "./PublicRoute";
 
 import AuthPage from "../pages/AuthPage";
 import StockPage from "../pages/StockPage";
+import OrdersPage from "../pages/OrdersPage";
 
 export default function AppRouter({ onUserAuthenticated }) {
   return (
@@ -36,8 +37,16 @@ export default function AppRouter({ onUserAuthenticated }) {
           </PrivateRoute>
         }
       />
-      
 
+      <Route
+        path="/order"
+        element={
+          <PrivateRoute>
+            <OrdersPage />
+          </PrivateRoute>
+        }
+      />
+      
       {/* Redirect root to stock page for authenticated users, login for non-authenticated */}
       <Route path="/" element={<Navigate to="/stock" replace />} />
       

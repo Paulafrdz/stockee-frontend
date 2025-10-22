@@ -142,9 +142,9 @@ const OrderHistory = ({ orderHistory = [] }) => {
                     <span className="summary-value">{order.itemCount}</span>
                   </div>
                   <div className="summary-item">
-                    <span className="summary-label">Total:</span>
-                    <span className="summary-value summary-value--total">
-                      €{order.total.toFixed(2)}
+                    <span className="summary-label">Status:</span>
+                    <span className="summary-value">
+                      {order.status}
                     </span>
                   </div>
                 </div>
@@ -222,12 +222,6 @@ const OrderHistory = ({ orderHistory = [] }) => {
                       <span className="detail-label">Total Items:</span>
                       <span className="detail-value">{selectedOrder.itemCount}</span>
                     </div>
-                    <div className="detail-item">
-                      <span className="detail-label">Total Amount:</span>
-                      <span className="detail-value detail-value--total">
-                        €{selectedOrder.total.toFixed(2)}
-                      </span>
-                    </div>
                   </div>
                 </div>
 
@@ -237,15 +231,11 @@ const OrderHistory = ({ orderHistory = [] }) => {
                     <div className="items-header">
                       <span>Item</span>
                       <span>Quantity</span>
-                      <span>Unit Price</span>
-                      <span>Total</span>
                     </div>
                     {selectedOrder.items?.map((item, index) => (
                       <div key={index} className="items-row">
                         <span className="item-name">{item.name}</span>
                         <span className="item-quantity">{item.quantity} {item.unit}</span>
-                        <span className="item-price">€{item.unitPrice?.toFixed(2) || '0.00'}</span>
-                        <span className="item-total">€{item.totalPrice?.toFixed(2) || '0.00'}</span>
                       </div>
                     ))}
                   </div>

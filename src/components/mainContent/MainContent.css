@@ -5,6 +5,7 @@
   background: var(--neutral-250);
   border-radius: 10px;
   padding: 16px;
+  overflow-y: auto;
 }
 
 /* Responsive */

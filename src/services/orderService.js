@@ -25,7 +25,6 @@ export const getRecommendedOrders = async () => {
       recommendedQuantity: parseFloat(item.recommendedQuantity || 0),
       weeklyUsage: parseFloat(item.weeklyUsage),
       unit: item.unit,
-      unitPrice: parseFloat(item.unitPrice),
       priority: item.priority || 'medium', // 'high', 'medium', 'low'
       lastOrderDate: item.lastOrderDate,
       supplier: item.supplier
@@ -43,7 +42,6 @@ export const getRecommendedOrders = async () => {
         recommendedQuantity: 10,
         weeklyUsage: 3.5,
         unit: 'Kg',
-        unitPrice: 2.50,
         priority: 'high',
         lastOrderDate: null,
         supplier: 'Fresh Produce Co.'
@@ -56,7 +54,6 @@ export const getRecommendedOrders = async () => {
         recommendedQuantity: 15,
         weeklyUsage: 8,
         unit: 'Kg',
-        unitPrice: 12.50,
         priority: 'medium',
         lastOrderDate: null,
         supplier: 'Dairy Suppliers Ltd.'
@@ -69,7 +66,6 @@ export const getRecommendedOrders = async () => {
         recommendedQuantity: 8,
         weeklyUsage: 1.5,
         unit: 'L',
-        unitPrice: 8.90,
         priority: 'high',
         lastOrderDate: null,
         supplier: 'Mediterranean Imports'
@@ -82,7 +78,6 @@ export const getRecommendedOrders = async () => {
         recommendedQuantity: 20,
         weeklyUsage: 12,
         unit: 'Kg',
-        unitPrice: 1.20,
         priority: 'low',
         lastOrderDate: null,
         supplier: 'Grain Masters'
@@ -95,7 +90,6 @@ export const getRecommendedOrders = async () => {
         recommendedQuantity: 8,
         weeklyUsage: 2.5,
         unit: 'Kg',
-        unitPrice: 1.80,
         priority: 'medium',
         lastOrderDate: null,
         supplier: 'Local Farms'
@@ -111,7 +105,6 @@ export const submitOrder = async (orderData) => {
       API_URL,
       {
         items: orderData.items,
-        totals: orderData.totals,
         orderDate: orderData.timestamp || new Date().toISOString(),
         status: 'pending'
       },
@@ -123,11 +116,7 @@ export const submitOrder = async (orderData) => {
       date: response.data.orderDate,
       status: response.data.status || 'pending',
       items: orderData.items,
-      itemCount: orderData.items.length,
-      total: orderData.totals.total,
-      subtotal: orderData.totals.subtotal,
-      discount: orderData.totals.discount,
-      shippingCost: orderData.totals.shippingCost
+      itemCount: orderData.items.length
     };
   } catch (error) {
     console.error('❌ Error submitting order:', {
@@ -143,11 +132,7 @@ export const submitOrder = async (orderData) => {
       date: orderData.timestamp || new Date().toISOString(),
       status: 'pending',
       items: orderData.items,
-      itemCount: orderData.items.length,
-      total: orderData.totals.total,
-      subtotal: orderData.totals.subtotal,
-      discount: orderData.totals.discount,
-      shippingCost: orderData.totals.shippingCost
+      itemCount: orderData.items.length
     };
   }
 };
@@ -166,7 +151,6 @@ export const getOrderHistory = async (limit = 50, offset = 0) => {
       status: order.status,
       items: order.items || [],
       itemCount: order.itemCount,
-      total: parseFloat(order.total),
       deliveryDate: order.deliveryDate
     }));
   } catch (error) {
@@ -179,12 +163,11 @@ export const getOrderHistory = async (limit = 50, offset = 0) => {
         date: '2025-10-15T10:30:00Z',
         status: 'delivered',
         items: [
-          { name: 'Tomatoes', quantity: 5, unit: 'Kg', unitPrice: 2.50, totalPrice: 12.50 },
-          { name: 'Mozzarella', quantity: 3, unit: 'Kg', unitPrice: 12.50, totalPrice: 37.50 },
-          { name: 'Basil', quantity: 0.5, unit: 'Kg', unitPrice: 15.00, totalPrice: 7.50 }
+          { name: 'Tomatoes', quantity: 5, unit: 'Kg' },
+          { name: 'Mozzarella', quantity: 3, unit: 'Kg' },
+          { name: 'Basil', quantity: 0.5, unit: 'Kg' }
         ],
         itemCount: 3,
-        total: 57.50,
         deliveryDate: '2025-10-16T09:00:00Z'
       },
       {
@@ -192,11 +175,10 @@ export const getOrderHistory = async (limit = 50, offset = 0) => {
         date: '2025-10-08T14:20:00Z',
         status: 'delivered',
         items: [
-          { name: 'Flour', quantity: 20, unit: 'Kg', unitPrice: 1.20, totalPrice: 24.00 },
-          { name: 'Olive Oil', quantity: 5, unit: 'L', unitPrice: 8.90, totalPrice: 44.50 }
+          { name: 'Flour', quantity: 20, unit: 'Kg' },
+          { name: 'Olive Oil', quantity: 5, unit: 'L' }
         ],
         itemCount: 2,
-        total: 68.50,
         deliveryDate: '2025-10-09T11:30:00Z'
       },
       {
@@ -204,11 +186,10 @@ export const getOrderHistory = async (limit = 50, offset = 0) => {
         date: '2025-10-01T09:15:00Z',
         status: 'processing',
         items: [
-          { name: 'Onions', quantity: 10, unit: 'Kg', unitPrice: 1.80, totalPrice: 18.00 },
-          { name: 'Garlic', quantity: 2, unit: 'Kg', unitPrice: 6.50, totalPrice: 13.00 }
+          { name: 'Onions', quantity: 10, unit: 'Kg' },
+          { name: 'Garlic', quantity: 2, unit: 'Kg' }
         ],
         itemCount: 2,
-        total: 31.00,
         deliveryDate: null
       }
     ];
@@ -223,7 +204,6 @@ export const getOrderStats = async () => {
     return {
       pendingOrders: response.data.pendingOrders || 0,
       nextOrderDate: response.data.nextOrderDate,
-      monthlySavings: parseFloat(response.data.monthlySavings || 0),
       urgentIngredients: response.data.urgentIngredients || 0
     };
   } catch (error) {
@@ -233,7 +213,6 @@ export const getOrderStats = async () => {
     return {
       pendingOrders: 2,
       nextOrderDate: '2025-10-25T10:00:00Z',
-      monthlySavings: 145.30,
       urgentIngredients: 3
     };
   }
