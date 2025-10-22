@@ -36,6 +36,7 @@ export default function AppRouter({ onUserAuthenticated }) {
           </PrivateRoute>
         }
       />
+      
 
       {/* Redirect root to stock page for authenticated users, login for non-authenticated */}
       <Route path="/" element={<Navigate to="/stock" replace />} />

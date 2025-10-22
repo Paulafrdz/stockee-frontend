@@ -13,7 +13,8 @@ const Sidebar = ({ user }) => {
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
         { id: 'sales', label: 'Ventas', icon: ShoppingCart, path: '/sales' },
         { id: 'dishes', label: 'Platos', icon: ChefHat, path: '/dishes' },
-        { id: 'stock', label: 'Stock', icon: Package, path: '/stock' }
+        { id: 'stock', label: 'Stock', icon: Package, path: '/stock' },
+        { id: 'order', label: 'Pedido', icon: Package, path: '/order' }
     ];
 
     const handleLogout = async () => {
