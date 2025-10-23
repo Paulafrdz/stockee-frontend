@@ -1,0 +1,434 @@
+/* Base Modal Styles - Add Ingredient To Order Modal */
+.add-order-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: addOrderModalFadeIn 0.2s ease-out;
+}
+
+@keyframes addOrderModalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.add-order-modal-container {
+  background: var(--white);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: addOrderModalSlideUp 0.3s ease-out;
+}
+
+@keyframes addOrderModalSlideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Header */
+.add-order-modal-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--neutral-300);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.add-order-modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--neutral-900);
+  margin: 0;
+}
+
+.add-order-modal-close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--neutral-600);
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-order-modal-close-button:hover {
+  background: var(--neutral-200);
+  color: var(--neutral-900);
+}
+
+.add-order-modal-close-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Form */
+.add-order-modal-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Search Container */
+.add-order-modal-search-container {
+  margin-bottom: 8px;
+}
+
+.add-order-modal-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.add-order-modal-search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--neutral-500);
+  pointer-events: none;
+}
+
+.add-order-modal-search-input {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  border: 2px solid var(--neutral-300);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: var(--font-primary);
+  color: var(--neutral-900);
+  transition: all 0.2s ease;
+}
+
+.add-order-modal-search-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.add-order-modal-search-input:disabled {
+  background: var(--neutral-100);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.add-order-modal-search-input::placeholder {
+  color: var(--neutral-500);
+}
+
+/* Form Field */
+.add-order-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-order-modal-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--neutral-750);
+  margin-bottom: 4px;
+}
+
+.add-order-modal-label.required::after {
+  content: ' *';
+  color: var(--terciary-500);
+}
+
+/* Ingredient List */
+.add-order-modal-ingredient-list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 2px solid var(--neutral-300);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.add-order-modal-ingredient-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.add-order-modal-ingredient-list::-webkit-scrollbar-track {
+  background: var(--neutral-200);
+  border-radius: 10px;
+}
+
+.add-order-modal-ingredient-list::-webkit-scrollbar-thumb {
+  background: var(--neutral-400);
+  border-radius: 10px;
+}
+
+.add-order-modal-ingredient-list::-webkit-scrollbar-thumb:hover {
+  background: var(--neutral-500);
+}
+
+/* Ingredient Card */
+.add-order-modal-ingredient-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 2px solid var(--neutral-300);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: var(--white);
+}
+
+.add-order-modal-ingredient-card:hover {
+  border-color: var(--primary-400);
+  background: var(--primary-50);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+}
+
+.add-order-modal-ingredient-card.selected {
+  border-color: var(--primary-500);
+  background: var(--primary-100);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.add-order-modal-ingredient-card.low-stock {
+  border-color: var(--secondary-400);
+  background: var(--secondary-50);
+}
+
+.add-order-modal-ingredient-card.low-stock:hover {
+  border-color: var(--secondary-500);
+  background: var(--secondary-100);
+}
+
+.add-order-modal-ingredient-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-order-modal-ingredient-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--neutral-900);
+  margin: 0;
+}
+
+.add-order-modal-ingredient-details {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.add-order-modal-stock-info {
+  font-size: 14px;
+  color: var(--neutral-700);
+}
+
+.add-order-modal-stock-info strong {
+  color: var(--neutral-900);
+  font-weight: 600;
+}
+
+.add-order-modal-stock-warning {
+  font-size: 12px;
+  color: var(--secondary-700);
+  background: var(--secondary-100);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.add-order-modal-select-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.add-order-modal-checkmark {
+  width: 28px;
+  height: 28px;
+  background: var(--primary-500);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  animation: addOrderModalCheckmarkAppear 0.3s ease;
+}
+
+@keyframes addOrderModalCheckmarkAppear {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Empty State */
+.add-order-modal-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--neutral-500);
+  text-align: center;
+  gap: 12px;
+}
+
+.add-order-modal-empty-state p {
+  margin: 0;
+  font-size: 15px;
+}
+
+/* Quantity Field */
+.add-order-modal-quantity-field {
+  animation: addOrderModalSlideDown 0.3s ease;
+}
+
+@keyframes addOrderModalSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-order-modal-quantity-hint {
+  font-size: 13px;
+  color: var(--neutral-600);
+  margin-top: 4px;
+  padding-left: 4px;
+}
+
+/* Input Error */
+.add-order-modal-input-error {
+  font-size: 13px;
+  color: var(--terciary-600);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Form Error */
+.add-order-modal-form-error {
+  background: var(--terciary-50);
+  border: 1px solid var(--terciary-300);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: var(--terciary-700);
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Modal Actions */
+.add-order-modal-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+
+.add-order-modal-actions button {
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .add-order-modal-container {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .add-order-modal-header {
+    padding: 20px;
+  }
+
+  .add-order-modal-title {
+    font-size: 20px;
+  }
+
+  .add-order-modal-form {
+    padding: 20px;
+    gap: 16px;
+  }
+
+  .add-order-modal-ingredient-list {
+    max-height: 240px;
+  }
+
+  .add-order-modal-ingredient-card {
+    padding: 12px;
+  }
+
+  .add-order-modal-ingredient-name {
+    font-size: 15px;
+  }
+
+  .add-order-modal-ingredient-details {
+    gap: 8px;
+  }
+
+  .add-order-modal-stock-info {
+    font-size: 13px;
+  }
+
+  .add-order-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .add-order-modal-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-order-modal-container {
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .add-order-modal-ingredient-list {
+    max-height: 200px;
+  }
+}
