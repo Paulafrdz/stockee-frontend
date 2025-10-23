@@ -8,19 +8,14 @@ import './OrdersPage.css';
 
 import {
     getRecommendedOrders,
-    submitOrder, 
-    getOrderHistory 
+    submitOrder,
+    getOrderHistory
 } from '../services/orderService';
 
 const OrdersPage = () => {
     const [activeTab, setActiveTab] = useState('recommendations');
     const [recommendedOrders, setRecommendedOrders] = useState([]);
     const [orderHistory, setOrderHistory] = useState([]);
-    const [orderStats, setOrderStats] = useState({
-        pendingOrders: 0,
-        nextOrderDate: null,
-        urgentIngredients: 0
-    });
     const [loading, setLoading] = useState(true);
     const [submittingOrder, setSubmittingOrder] = useState(false);
 
@@ -29,13 +24,18 @@ const OrdersPage = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const [recommendedData, historyData, statsData] = await Promise.all([
+
+                const [recommendedData, historyData] = await Promise.all([
                     getRecommendedOrders(),
-                    getOrderHistory(),
+                    getOrderHistory(), 
                 ]);
-                setRecommendedOrders(recommendedData);
+
+                // ✅ FILTER OUT ITEMS THAT DON'T NEED ORDERING
+                const itemsToOrder = recommendedData.filter(item => item.recommendedQuantity > 0);
+                
+                setRecommendedOrders(itemsToOrder);
                 setOrderHistory(historyData);
-                setOrderStats(statsData);
+
             } catch (error) {
                 console.error("Error fetching orders data:", error);
             } finally {
@@ -52,31 +52,13 @@ const OrdersPage = () => {
         try {
             const submittedOrder = await submitOrder(orderData);
 
-            const updatedRecommendations = recommendedOrders.map(item => {
-                const orderedItem = orderData.items.find(o => o.id === item.id);
-                if (orderedItem) {
-                    return {
-                        ...item,
-                        currentStock: item.currentStock + orderedItem.recommendedQuantity,
-                        recommendedQuantity: 0,
-                        lastOrderDate: new Date().toISOString()
-                    };
-                }
-                return item;
-            });
+            // ✅ UPDATE LOCAL STATE - Remove ordered items from recommendations
+            const updatedRecommendations = recommendedOrders.filter(item => 
+                !orderData.items.find(o => o.id === item.id)
+            );
 
             setRecommendedOrders(updatedRecommendations);
             setOrderHistory(prev => [submittedOrder, ...prev]);
-
-            setOrderStats(prev => ({
-                ...prev,
-                pendingOrders: prev.pendingOrders + 1,
-                urgentIngredients: Math.max(
-                    0,
-                    prev.urgentIngredients -
-                    orderData.items.filter(i => i.priority === 'high').length
-                )
-            }));
 
             return submittedOrder;
         } catch (error) {
@@ -88,49 +70,44 @@ const OrdersPage = () => {
     };
 
     const handleCompleteOrder = async () => {
-        if (recommendedOrders.length === 0) return;
+        // ✅ Check if there are actually items to order
+        const itemsToOrder = recommendedOrders.filter(item => item.recommendedQuantity > 0);
+        
+        if (itemsToOrder.length === 0) {
+            console.log("No items to order");
+            return;
+        }
 
         try {
             setSubmittingOrder(true);
 
-            // 🧾 Crear el pedido con los ingredientes recomendados
+            // 🧾 Create order with recommended ingredients
             const orderData = {
-                items: recommendedOrders
-                    .filter(item => item.recommendedQuantity > 0)
-                    .map(item => ({
-                        id: item.id,
-                        name: item.name,
-                        recommendedQuantity: item.recommendedQuantity,
-                        unit: item.unit,
-                    })),
+                items: itemsToOrder.map(item => ({
+                    id: item.id,
+                    recommendedQuantity: item.recommendedQuantity,
+                    unit: item.unit,
+                })),
             };
 
             const submittedOrder = await submitOrder(orderData);
+            console.log("✅ Order submitted:", submittedOrder);
 
-            console.log("✅ Pedido realizado:", submittedOrder);
+            setRecommendedOrders(prev => 
+            prev.filter(item => item.recommendedQuantity === 0)
+        );
 
-            // 🧹 Vaciar tabla de pedidos recomendados
-            setRecommendedOrders(prev =>
-                prev.map(item => ({ ...item, recommendedQuantity: 0 }))
-            );
-
-            // ♻️ Actualizar historial y estadísticas
-            const [updatedHistory, updatedStats] = await Promise.all([
-                getOrderHistory(),
-            ]);
+            const updatedHistory = await getOrderHistory();
             setOrderHistory(updatedHistory);
-            setOrderStats(updatedStats);
 
-            // 🔄 Notificar a la tabla de stock que se actualice (opcional)
             localStorage.setItem('refreshStock', Date.now());
 
         } catch (error) {
-            console.error("Error al realizar pedido:", error);
+            console.error("Error submitting order:", error);
         } finally {
             setSubmittingOrder(false);
         }
     };
-
 
     const handleQuantityAdjustment = (itemId, newQuantity) => {
         setRecommendedOrders(prev =>
@@ -155,9 +132,11 @@ const OrdersPage = () => {
     };
 
     const handleClearAll = () => {
-        setRecommendedOrders(prev =>
-            prev.map(item => ({ ...item, recommendedQuantity: 0 }))
-        );
+        setRecommendedOrders([]);
+    };
+
+    const handleDeleteItem = (itemId) => {
+        setRecommendedOrders(prev => prev.filter(item => item.id !== itemId));
     };
 
     const renderTabContent = () => {
@@ -170,6 +149,7 @@ const OrdersPage = () => {
                         onGlobalAdjustment={handleGlobalQuantityAdjustment}
                         onSubmitOrder={handleSubmitOrder}
                         onClearAll={handleClearAll}
+                        onDeleteItem={handleDeleteItem} // ✅ Add delete handler
                         isSubmitting={submittingOrder}
                     />
                 );
@@ -203,15 +183,17 @@ const OrdersPage = () => {
                 <div className="orders-header">
                     <div className="orders-header-info">
                         <h2 className="orders-title">Gestión de pedidos</h2>
-
+                        <p className="orders-subtitle">
+                            {recommendedOrders.length} ingredientes para ordenar
+                        </p>
                     </div>
                     <div className="orders-header-actions">
                         <Button
-                            label="Realizar pedido"
                             icon="shopping-cart"
                             onClick={handleCompleteOrder}
                             disabled={submittingOrder || recommendedOrders.length === 0}
-                        > Realizar pedido
+                        >
+                            Realizar pedido ({recommendedOrders.length})
                         </Button>
                     </div>
                 </div>
@@ -221,8 +203,6 @@ const OrdersPage = () => {
 
                 {/* Contenido de pestañas */}
                 <div className="orders-content">{renderTabContent()}</div>
-                
-            
             </div>
         </DashboardLayout>
     );

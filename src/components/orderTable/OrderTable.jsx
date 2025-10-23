@@ -7,6 +7,7 @@ const OrderTable = ({
   recommendedOrders = [],
   onQuantityChange,
   onGlobalAdjustment,
+  onDeleteItem,
   isSubmitting = false
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -240,7 +241,7 @@ const OrderTable = ({
               <div className="actions-cell">
                 <button
                   className="remove-btn"
-                  onClick={() => onQuantityChange(item.id, 0)}
+                   onClick={() => onDeleteItem(item.id)}
                   disabled={isSubmitting}
                 >
                   Remove
