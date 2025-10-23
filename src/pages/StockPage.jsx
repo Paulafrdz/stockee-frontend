@@ -3,7 +3,7 @@ import { Plus } from 'lucide-react';
 import DashboardLayout from '../components/dashboardLayout/DashboardLayout';
 import StockTable from '../components/stockTable/StockTable';
 import AddIngredientModal from '../components/addIngredientModal/AddIngredientModal';
-import Button from '../components/button/Button';
+import FloatingButton from '../components/floatingButton/FloatingButton';
 import './StockPage.css';
 import {
   getStockItems,
@@ -173,14 +173,14 @@ const StockPage = () => {
           </div>
         </div>
 
-        <Button
+        <FloatingButton
           variant="primary"
           size="medium"
           icon={Plus}
           onClick={() => handleOpenModal()}
         >
-          Añadir ingrediente
-        </Button>
+         
+        </FloatingButton>
 
         <div className="stock-content">
           <StockTable

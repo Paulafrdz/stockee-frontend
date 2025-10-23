@@ -11,10 +11,10 @@ const getAuthHeaders = () => {
   };
 };
 
-// Get recommended orders based on current stock and usage patterns
+// Get recommended orders based on current stock
 export const getRecommendedOrders = async () => {
   try {
-    const response = await axios.get(`${API_URL}/recommendations`, getAuthHeaders());
+    const response = await axios.get(API_URL, getAuthHeaders());
     
     // Transform data to match frontend format
     return response.data.map(item => ({
@@ -25,76 +25,12 @@ export const getRecommendedOrders = async () => {
       recommendedQuantity: parseFloat(item.recommendedQuantity || 0),
       weeklyUsage: parseFloat(item.weeklyUsage),
       unit: item.unit,
-      priority: item.priority || 'medium', // 'high', 'medium', 'low'
+      priority: item.priority || 'medium',
       lastOrderDate: item.lastOrderDate,
-      supplier: item.supplier
     }));
   } catch (error) {
     console.error('Error fetching recommended orders:', error);
-    
-    // Return mock data for development/fallback
-    return [
-      {
-        id: 1,
-        name: 'Tomatoes',
-        currentStock: 2.5,
-        minimumStock: 5,
-        recommendedQuantity: 10,
-        weeklyUsage: 3.5,
-        unit: 'Kg',
-        priority: 'high',
-        lastOrderDate: null,
-        supplier: 'Fresh Produce Co.'
-      },
-      {
-        id: 2,
-        name: 'Mozzarella',
-        currentStock: 4,
-        minimumStock: 3,
-        recommendedQuantity: 15,
-        weeklyUsage: 8,
-        unit: 'Kg',
-        priority: 'medium',
-        lastOrderDate: null,
-        supplier: 'Dairy Suppliers Ltd.'
-      },
-      {
-        id: 3,
-        name: 'Olive Oil',
-        currentStock: 1.2,
-        minimumStock: 2,
-        recommendedQuantity: 8,
-        weeklyUsage: 1.5,
-        unit: 'L',
-        priority: 'high',
-        lastOrderDate: null,
-        supplier: 'Mediterranean Imports'
-      },
-      {
-        id: 4,
-        name: 'Flour',
-        currentStock: 8,
-        minimumStock: 5,
-        recommendedQuantity: 20,
-        weeklyUsage: 12,
-        unit: 'Kg',
-        priority: 'low',
-        lastOrderDate: null,
-        supplier: 'Grain Masters'
-      },
-      {
-        id: 5,
-        name: 'Onions',
-        currentStock: 3,
-        minimumStock: 4,
-        recommendedQuantity: 8,
-        weeklyUsage: 2.5,
-        unit: 'Kg',
-        priority: 'medium',
-        lastOrderDate: null,
-        supplier: 'Local Farms'
-      }
-    ];
+    return []; // Return empty array on error
   }
 };
 
@@ -104,239 +40,39 @@ export const submitOrder = async (orderData) => {
     const response = await axios.post(
       API_URL,
       {
-        items: orderData.items,
-        orderDate: orderData.timestamp || new Date().toISOString(),
-        status: 'pending'
+        items: orderData.items, // Only what backend expects
       },
       getAuthHeaders()
     );
     
     return {
-      id: response.data.id,
-      date: response.data.orderDate,
-      status: response.data.status || 'pending',
+      success: true,
+      orderId: response.data?.id || `order_${Date.now()}`,
       items: orderData.items,
       itemCount: orderData.items.length
     };
   } catch (error) {
-    console.error('❌ Error submitting order:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    });
-    
-    // Return mock success response for development
-    return {
-      id: `order_${Date.now()}`,
-      date: orderData.timestamp || new Date().toISOString(),
-      status: 'pending',
-      items: orderData.items,
-      itemCount: orderData.items.length
-    };
+    console.error('❌ Error submitting order:', error);
+    throw error; // Let frontend handle the error
   }
 };
 
 // Get order history
-export const getOrderHistory = async (limit = 50, offset = 0) => {
+export const getOrderHistory = async (limit = 50) => {
   try {
     const response = await axios.get(
-      `${API_URL}/history?limit=${limit}&offset=${offset}`,
+      `${API_URL}/history?limit=${limit}`,
       getAuthHeaders()
     );
     
     return response.data.map(order => ({
       id: order.id,
       date: order.orderDate,
-      status: order.status,
       items: order.items || [],
       itemCount: order.itemCount,
-      deliveryDate: order.deliveryDate
     }));
   } catch (error) {
     console.error('Error fetching order history:', error);
-    
-    // Return mock data for development
-    return [
-      {
-        id: 'ORD-2025-001',
-        date: '2025-10-15T10:30:00Z',
-        status: 'delivered',
-        items: [
-          { name: 'Tomatoes', quantity: 5, unit: 'Kg' },
-          { name: 'Mozzarella', quantity: 3, unit: 'Kg' },
-          { name: 'Basil', quantity: 0.5, unit: 'Kg' }
-        ],
-        itemCount: 3,
-        deliveryDate: '2025-10-16T09:00:00Z'
-      },
-      {
-        id: 'ORD-2025-002',
-        date: '2025-10-08T14:20:00Z',
-        status: 'delivered',
-        items: [
-          { name: 'Flour', quantity: 20, unit: 'Kg' },
-          { name: 'Olive Oil', quantity: 5, unit: 'L' }
-        ],
-        itemCount: 2,
-        deliveryDate: '2025-10-09T11:30:00Z'
-      },
-      {
-        id: 'ORD-2025-003',
-        date: '2025-10-01T09:15:00Z',
-        status: 'processing',
-        items: [
-          { name: 'Onions', quantity: 10, unit: 'Kg' },
-          { name: 'Garlic', quantity: 2, unit: 'Kg' }
-        ],
-        itemCount: 2,
-        deliveryDate: null
-      }
-    ];
-  }
-};
-
-// Get order statistics
-export const getOrderStats = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/stats`, getAuthHeaders());
-    
-    return {
-      pendingOrders: response.data.pendingOrders || 0,
-      nextOrderDate: response.data.nextOrderDate,
-      urgentIngredients: response.data.urgentIngredients || 0
-    };
-  } catch (error) {
-    console.error('Error fetching order stats:', error);
-    
-    // Return mock data for development
-    return {
-      pendingOrders: 2,
-      nextOrderDate: '2025-10-25T10:00:00Z',
-      urgentIngredients: 3
-    };
-  }
-};
-
-// Get scheduled orders
-export const getScheduledOrders = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/scheduled`, getAuthHeaders());
-    
-    return response.data.map(schedule => ({
-      id: schedule.id,
-      name: schedule.name,
-      frequency: schedule.frequency,
-      nextDelivery: schedule.nextDelivery,
-      isActive: schedule.isActive,
-      items: schedule.items || [],
-      totalAmount: parseFloat(schedule.totalAmount),
-      createdAt: schedule.createdAt
-    }));
-  } catch (error) {
-    console.error('Error fetching scheduled orders:', error);
     return [];
-  }
-};
-
-// Create a new scheduled order
-export const createScheduledOrder = async (scheduleData) => {
-  try {
-    const response = await axios.post(`${API_URL}/scheduled`, scheduleData, getAuthHeaders());
-    return response.data;
-  } catch (error) {
-    console.error('❌ Error creating scheduled order:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    });
-    throw error;
-  }
-};
-
-// Update a scheduled order
-export const updateScheduledOrder = async (scheduleId, scheduleData) => {
-  try {
-    const response = await axios.put(
-      `${API_URL}/scheduled/${scheduleId}`,
-      scheduleData,
-      getAuthHeaders()
-    );
-    return response.data;
-  } catch (error) {
-    console.error('❌ Error updating scheduled order:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    });
-    throw error;
-  }
-};
-
-// Delete a scheduled order
-export const deleteScheduledOrder = async (scheduleId) => {
-  try {
-    const response = await axios.delete(`${API_URL}/scheduled/${scheduleId}`, getAuthHeaders());
-    return response.data;
-  } catch (error) {
-    console.error('❌ Error deleting scheduled order:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    });
-    throw error;
-  }
-};
-
-// Cancel an order
-export const cancelOrder = async (orderId) => {
-  try {
-    const response = await axios.patch(`${API_URL}/${orderId}/cancel`, {}, getAuthHeaders());
-    return response.data;
-  } catch (error) {
-    console.error('❌ Error cancelling order:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    });
-    throw error;
-  }
-};
-
-// Download order receipt
-export const downloadOrderReceipt = async (orderId) => {
-  try {
-    const response = await axios.get(
-      `${API_URL}/${orderId}/receipt`,
-      {
-        ...getAuthHeaders(),
-        responseType: 'blob',
-      }
-    );
-    
-    // Handle PDF download
-    const blob = new Blob([response.data], { type: 'application/pdf' });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `receipt-${orderId}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    
-    return true;
-  } catch (error) {
-    console.error('❌ Error downloading receipt:', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      headers: error.response?.headers
-    });
-    throw error;
   }
 };

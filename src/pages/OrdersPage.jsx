@@ -5,12 +5,11 @@ import RecommendedOrdersTable from '../components/orderTable/OrderTable';
 import OrderHistory from '../components/orderHistory/OrderHistory';
 import Button from '../components/button/Button';
 import './OrdersPage.css';
+
 import {
     getRecommendedOrders,
-    submitOrder,
-    getOrderHistory,
-
-    getOrderStats
+    submitOrder, 
+    getOrderHistory 
 } from '../services/orderService';
 
 const OrdersPage = () => {
@@ -33,7 +32,6 @@ const OrdersPage = () => {
                 const [recommendedData, historyData, statsData] = await Promise.all([
                     getRecommendedOrders(),
                     getOrderHistory(),
-                    getOrderStats()
                 ]);
                 setRecommendedOrders(recommendedData);
                 setOrderHistory(historyData);
@@ -119,7 +117,6 @@ const OrdersPage = () => {
             // ♻️ Actualizar historial y estadísticas
             const [updatedHistory, updatedStats] = await Promise.all([
                 getOrderHistory(),
-                getOrderStats(),
             ]);
             setOrderHistory(updatedHistory);
             setOrderStats(updatedStats);
@@ -224,6 +221,8 @@ const OrdersPage = () => {
 
                 {/* Contenido de pestañas */}
                 <div className="orders-content">{renderTabContent()}</div>
+                
+            
             </div>
         </DashboardLayout>
     );
