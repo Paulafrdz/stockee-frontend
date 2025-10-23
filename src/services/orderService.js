@@ -37,6 +37,8 @@ export const getRecommendedOrders = async () => {
 // Submit a new order
 export const submitOrder = async (orderData) => {
   try {
+        console.log('📤 orderService: Submitting order to backend:', orderData);
+
     const response = await axios.post(
       API_URL,
       {
@@ -44,7 +46,8 @@ export const submitOrder = async (orderData) => {
       },
       getAuthHeaders()
     );
-    
+        console.log('✅ orderService: Order submitted successfully:', response.data);
+
     return {
       success: true,
       orderId: response.data?.id || `order_${Date.now()}`,

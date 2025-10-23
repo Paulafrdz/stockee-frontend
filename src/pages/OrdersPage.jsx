@@ -5,47 +5,57 @@ import RecommendedOrdersTable from '../components/orderTable/OrderTable';
 import OrderHistory from '../components/orderHistory/OrderHistory';
 import Button from '../components/button/Button';
 import './OrdersPage.css';
-import { getStockItems } from '../services/stockService'; 
+import { getStockItems } from '../services/stockService';
 import {
     getRecommendedOrders,
     submitOrder,
-
     getOrderHistory
 } from '../services/orderService';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import { Plus } from 'lucide-react';
 import AddOrderModal from '../components/addOrderModal/AddOrderModal';
 
-
-
 const OrdersPage = () => {
     const [activeTab, setActiveTab] = useState('recommendations');
-    const [recommendedOrders, setRecommendedOrders] = useState([]);
+    const [autoRecommendedOrders, setAutoRecommendedOrders] = useState([]);
+    const [manualOrders, setManualOrders] = useState([]);
     const [orderHistory, setOrderHistory] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submittingOrder, setSubmittingOrder] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [stockIngredients, setStockIngredients] = useState([]);
-    const [orderItems, setOrderItems] = useState([]);
 
+    // ✅ COMBINED ORDERS FOR DISPLAY
+    const recommendedOrders = [...autoRecommendedOrders, ...manualOrders];
 
-
-
-    // Fetch data
+    // ✅ SIMPLER FIX: Load manual items FIRST, then fetch backend data (runs only once)
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
+                console.log('🔄 Starting data fetch...');
 
+                // ✅ Load manual items FIRST from localStorage
+                const savedManualOrders = localStorage.getItem('manualOrders');
+                if (savedManualOrders) {
+                    const manualItems = JSON.parse(savedManualOrders);
+                    console.log('📂 Initial load of manual items:', manualItems);
+                    setManualOrders(manualItems);
+                }
+
+                // ✅ Then fetch backend data
                 const [recommendedData, historyData] = await Promise.all([
                     getRecommendedOrders(),
                     getOrderHistory(),
                 ]);
 
-                // ✅ FILTER OUT ITEMS THAT DON'T NEED ORDERING
-                const itemsToOrder = recommendedData.filter(item => item.recommendedQuantity > 0);
+                console.log('📥 Received auto-recommended data:', recommendedData);
+                
+                // ✅ ONLY set auto-recommended, NEVER touch manual orders
+                const autoRecommended = recommendedData.filter(item => item.recommendedQuantity > 0);
+                console.log('✅ Setting autoRecommendedOrders:', autoRecommended);
+                setAutoRecommendedOrders(autoRecommended);
 
-                setRecommendedOrders(itemsToOrder);
                 setOrderHistory(historyData);
 
             } catch (error) {
@@ -54,21 +64,34 @@ const OrdersPage = () => {
                 setLoading(false);
             }
         };
+        
         fetchData();
+    }, []); // Empty dependency array - runs only once
+
+    // ✅ FETCH STOCK INGREDIENTS
+    useEffect(() => {
+        const fetchStockIngredients = async () => {
+            try {
+                const stockData = await getStockItems();
+                console.log('Stock data from DB:', stockData);
+                setStockIngredients(stockData);
+            } catch (error) {
+                console.error('Error fetching stock ingredients:', error);
+            }
+        };
+        fetchStockIngredients();
     }, []);
 
+    // ✅ SAVE MANUAL ITEMS TO LOCALSTORAGE (when they change)
     useEffect(() => {
-    const fetchStockIngredients = async () => {
-        try {
-            // You'll need to import your stock service
-            const stockData = await getStockItems(); // Make sure this function exists
-            setStockIngredients(stockData);
-        } catch (error) {
-            console.error('Error fetching stock ingredients:', error);
+        if (manualOrders.length > 0) {
+            localStorage.setItem('manualOrders', JSON.stringify(manualOrders));
+            console.log('💾 Saved MANUAL items to localStorage:', manualOrders);
+        } else {
+            localStorage.removeItem('manualOrders');
+            console.log('🗑️ Cleared manual items from localStorage');
         }
-    };
-    fetchStockIngredients();
-}, []);
+    }, [manualOrders]);
 
     const handleTabChange = (tabId) => setActiveTab(tabId);
 
@@ -77,14 +100,15 @@ const OrdersPage = () => {
         try {
             const submittedOrder = await submitOrder(orderData);
 
-            // ✅ UPDATE LOCAL STATE - Remove ordered items from recommendations
-            const updatedRecommendations = recommendedOrders.filter(item =>
-                !orderData.items.find(o => o.id === item.id)
+            // ✅ Remove ordered items from BOTH auto and manual
+            setAutoRecommendedOrders(prev => 
+                prev.filter(item => !orderData.items.find(o => o.id === item.id))
+            );
+            setManualOrders(prev => 
+                prev.filter(item => !orderData.items.find(o => o.id === item.id))
             );
 
-            setRecommendedOrders(updatedRecommendations);
             setOrderHistory(prev => [submittedOrder, ...prev]);
-
             return submittedOrder;
         } catch (error) {
             console.error("Error submitting order:", error);
@@ -95,7 +119,7 @@ const OrdersPage = () => {
     };
 
     const handleCompleteOrder = async () => {
-        // ✅ Check if there are actually items to order
+        // ✅ Include BOTH auto and manual items in the order
         const itemsToOrder = recommendedOrders.filter(item => item.recommendedQuantity > 0);
 
         if (itemsToOrder.length === 0) {
@@ -106,7 +130,6 @@ const OrdersPage = () => {
         try {
             setSubmittingOrder(true);
 
-            // 🧾 Create order with recommended ingredients
             const orderData = {
                 items: itemsToOrder.map(item => ({
                     id: item.id,
@@ -118,10 +141,10 @@ const OrdersPage = () => {
             const submittedOrder = await submitOrder(orderData);
             console.log("✅ Order submitted:", submittedOrder);
 
-            setRecommendedOrders(prev =>
-                prev.filter(item => item.recommendedQuantity === 0)
-            );
-
+            // ✅ Only clear auto-recommended items, KEEP manual items
+            setAutoRecommendedOrders([]);
+            // Manual items stay in the table until YOU remove them!
+            
             const updatedHistory = await getOrderHistory();
             setOrderHistory(updatedHistory);
 
@@ -135,17 +158,39 @@ const OrdersPage = () => {
     };
 
     const handleQuantityAdjustment = (itemId, newQuantity) => {
-        setRecommendedOrders(prev =>
-            prev.map(item =>
-                item.id === itemId
-                    ? { ...item, recommendedQuantity: Math.max(0, newQuantity) }
-                    : item
-            )
-        );
+        // Check if it's a manual item
+        const isManualItem = manualOrders.some(item => item.id === itemId);
+        
+        if (isManualItem) {
+            setManualOrders(prev =>
+                prev.map(item =>
+                    item.id === itemId
+                        ? { ...item, recommendedQuantity: Math.max(0, newQuantity) }
+                        : item
+                )
+            );
+        } else {
+            setAutoRecommendedOrders(prev =>
+                prev.map(item =>
+                    item.id === itemId
+                        ? { ...item, recommendedQuantity: Math.max(0, newQuantity) }
+                        : item
+                )
+            );
+        }
     };
 
     const handleGlobalQuantityAdjustment = (factor) => {
-        setRecommendedOrders(prev =>
+        setAutoRecommendedOrders(prev =>
+            prev.map(item => ({
+                ...item,
+                recommendedQuantity: Math.max(
+                    0,
+                    Math.round(item.recommendedQuantity * factor * 10) / 10
+                )
+            }))
+        );
+        setManualOrders(prev =>
             prev.map(item => ({
                 ...item,
                 recommendedQuantity: Math.max(
@@ -157,11 +202,20 @@ const OrdersPage = () => {
     };
 
     const handleClearAll = () => {
-        setRecommendedOrders([]);
+        setAutoRecommendedOrders([]);
     };
 
     const handleDeleteItem = (itemId) => {
-        setRecommendedOrders(prev => prev.filter(item => item.id !== itemId));
+        // ✅ Check if it's a manual item or auto-recommended
+        const isManualItem = manualOrders.some(item => item.id === itemId);
+
+        if (isManualItem) {
+            // Remove from manual orders (persistent)
+            setManualOrders(prev => prev.filter(item => item.id !== itemId));
+        } else {
+            // Remove from auto-recommended (temporary)
+            setAutoRecommendedOrders(prev => prev.filter(item => item.id !== itemId));
+        }
     };
 
     const renderTabContent = () => {
@@ -174,7 +228,7 @@ const OrdersPage = () => {
                         onGlobalAdjustment={handleGlobalQuantityAdjustment}
                         onSubmitOrder={handleSubmitOrder}
                         onClearAll={handleClearAll}
-                        onDeleteItem={handleDeleteItem} // ✅ Add delete handler
+                        onDeleteItem={handleDeleteItem}
                         isSubmitting={submittingOrder}
                     />
                 );
@@ -186,29 +240,32 @@ const OrdersPage = () => {
     };
 
     const handleAddIngredient = async (ingredientData) => {
-    try {
-        console.log('📦 Adding ingredient to order:', ingredientData);
-        
-        // ✅ FIXED: Add to recommendedOrders, not orderItems
-        const newOrderItem = {
-            id: ingredientData.ingredientId, // Use the actual ID, not Date.now()
-            name: ingredientData.ingredientName,
-            currentStock: ingredientData.currentStock,
-            recommendedQuantity: ingredientData.quantity,
-            unit: ingredientData.unit,
-            priority: 'manual', // Mark as manually added
-            isManual: true
-        };
-        
-        // Add to recommendedOrders (your main order list)
-        setRecommendedOrders(prev => [...prev, newOrderItem]);
-        
-        console.log('✅ Ingredient added successfully');
-    } catch (error) {
-        console.error('❌ Error:', error);
-        throw error;
-    }
-};
+        try {
+            console.log('📦 Adding ingredient to order:', ingredientData);
+
+            const newManualItem = {
+                id: ingredientData.ingredientId,
+                name: ingredientData.ingredientName,
+                currentStock: ingredientData.currentStock,
+                minimumStock: 0,
+                recommendedQuantity: ingredientData.quantity,
+                unit: ingredientData.unit,
+                weeklyUsage: 0,
+                priority: 'manual',
+                isManual: true,
+                lastOrderDate: null
+            }
+
+            // ✅ Add to manual orders (separate from auto-recommended)
+            setManualOrders(prev => [...prev, newManualItem]);
+
+            console.log('✅ Manual ingredient added successfully');
+
+        } catch (error) {
+            console.error('❌ Error:', error);
+            throw error;
+        }
+    };
 
     if (loading) {
         return (
@@ -224,12 +281,8 @@ const OrdersPage = () => {
     }
 
     return (
-        <DashboardLayout
-            activeTab="orders"
-            title="Pedidos"
-        >
+        <DashboardLayout activeTab="orders" title="Pedidos">
             <div className="orders-page">
-                {/* Header superior similar a StockPage */}
                 <div className="orders-header">
                     <div className="orders-header-info">
                         <h2 className="orders-title">Gestión de pedidos</h2>
@@ -248,27 +301,27 @@ const OrdersPage = () => {
                     </div>
                 </div>
 
-                {/* Tabs de navegación */}
                 <OrderTabs activeTab={activeTab} onTabChange={handleTabChange} />
-
-                {/* Contenido de pestañas */}
                 <div className="orders-content">{renderTabContent()}</div>
-                <FloatingButton icon={Plus}
+                
+                <FloatingButton 
+                    icon={Plus}
                     variant="primary"
                     size="large"
                     position="bottom-right"
                     tooltip="Añadir ingrediente a la orden"
-                    onClick={() => setIsModalOpen(true)} />
+                    onClick={() => setIsModalOpen(true)} 
+                />
             </div>
+            
             <AddOrderModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleAddIngredient}
                 availableIngredients={stockIngredients}
-                existingOrderItems={orderItems}
+                existingOrderItems={recommendedOrders}
             />
         </DashboardLayout>
-
     );
 };
 
