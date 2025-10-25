@@ -15,6 +15,7 @@ import FloatingButton from '../components/floatingButton/FloatingButton';
 import { Plus } from 'lucide-react';
 import AddOrderModal from '../components/addOrderModal/AddOrderModal';
 
+
 const OrdersPage = () => {
     const [activeTab, setActiveTab] = useState('recommendations');
     const [autoRecommendedOrders, setAutoRecommendedOrders] = useState([]);
@@ -25,7 +26,8 @@ const OrdersPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [stockIngredients, setStockIngredients] = useState([]);
 
-    // ✅ COMBINED ORDERS FOR DISPLAY
+
+
     const recommendedOrders = [...autoRecommendedOrders, ...manualOrders];
 
     // ✅ SIMPLER FIX: Load manual items FIRST, then fetch backend data (runs only once)
@@ -50,7 +52,7 @@ const OrdersPage = () => {
                 ]);
 
                 console.log('📥 Received auto-recommended data:', recommendedData);
-                
+
                 // ✅ ONLY set auto-recommended, NEVER touch manual orders
                 const autoRecommended = recommendedData.filter(item => item.recommendedQuantity > 0);
                 console.log('✅ Setting autoRecommendedOrders:', autoRecommended);
@@ -64,7 +66,7 @@ const OrdersPage = () => {
                 setLoading(false);
             }
         };
-        
+
         fetchData();
     }, []); // Empty dependency array - runs only once
 
@@ -101,10 +103,10 @@ const OrdersPage = () => {
             const submittedOrder = await submitOrder(orderData);
 
             // ✅ Remove ordered items from BOTH auto and manual
-            setAutoRecommendedOrders(prev => 
+            setAutoRecommendedOrders(prev =>
                 prev.filter(item => !orderData.items.find(o => o.id === item.id))
             );
-            setManualOrders(prev => 
+            setManualOrders(prev =>
                 prev.filter(item => !orderData.items.find(o => o.id === item.id))
             );
 
@@ -144,7 +146,7 @@ const OrdersPage = () => {
             // ✅ Only clear auto-recommended items, KEEP manual items
             setAutoRecommendedOrders([]);
             // Manual items stay in the table until YOU remove them!
-            
+
             const updatedHistory = await getOrderHistory();
             setOrderHistory(updatedHistory);
 
@@ -160,7 +162,7 @@ const OrdersPage = () => {
     const handleQuantityAdjustment = (itemId, newQuantity) => {
         // Check if it's a manual item
         const isManualItem = manualOrders.some(item => item.id === itemId);
-        
+
         if (isManualItem) {
             setManualOrders(prev =>
                 prev.map(item =>
@@ -303,17 +305,17 @@ const OrdersPage = () => {
 
                 <OrderTabs activeTab={activeTab} onTabChange={handleTabChange} />
                 <div className="orders-content">{renderTabContent()}</div>
-                
-                <FloatingButton 
+
+                <FloatingButton
                     icon={Plus}
                     variant="primary"
                     size="large"
                     position="bottom-right"
                     tooltip="Añadir ingrediente a la orden"
-                    onClick={() => setIsModalOpen(true)} 
+                    onClick={() => setIsModalOpen(true)}
                 />
             </div>
-            
+
             <AddOrderModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
@@ -321,6 +323,7 @@ const OrdersPage = () => {
                 availableIngredients={stockIngredients}
                 existingOrderItems={recommendedOrders}
             />
+           
         </DashboardLayout>
     );
 };
