@@ -1,0 +1,65 @@
+.waste-trend-container {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-margin);
+}
+
+/* Header */
+.waste-trend-header {
+  margin-bottom: var(--space-body);
+}
+
+.waste-trend-title {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+  margin: 0 0 var(--space-s) 0;
+}
+
+.waste-trend-subtitle {
+  font-size: 14px;
+  color: var(--neutral-750);
+  margin: 0;
+}
+
+/* Empty State */
+.waste-trend-empty {
+  padding: var(--space-section);
+  text-align: center;
+  color: var(--neutral-750);
+}
+
+.waste-trend-empty p {
+  margin: 0;
+  font-size: var(--body-size);
+}
+
+/* Chart Wrapper */
+.waste-trend-chart-wrapper {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding: var(--space-s) 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .waste-trend-container {
+    padding: var(--space-body);
+  }
+
+  .waste-trend-chart-wrapper {
+    overflow-x: scroll;
+  }
+}
+
+@media (max-width: 480px) {
+  .waste-trend-title {
+    font-size: var(--body-size);
+  }
+
+  .waste-trend-subtitle {
+    font-size: 12px;
+  }
+}

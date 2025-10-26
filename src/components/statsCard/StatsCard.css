@@ -1,0 +1,135 @@
+.stats-card-container {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-body);
+  border: 1px solid var(--neutral-500);
+  transition: all 0.3s ease;
+}
+
+.stats-card-container:hover {
+  border-color: var(--terciary-500);
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.1);
+}
+
+/* Header */
+.stats-card-header {
+  margin-bottom: var(--space-button);
+}
+
+.stats-card-title-section {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.stats-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.stats-card-icon-default {
+  background-color: var(--neutral-250);
+  color: var(--neutral-750);
+}
+
+.stats-card-icon-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.stats-card-icon-warning {
+  background-color: var(--secondary-200);
+  color: var(--secondary-600);
+}
+
+.stats-card-icon-danger {
+  background-color: var(--background-red);
+  color: var(--border-red);
+}
+
+.stats-card-icon-info {
+  background-color: var(--primary-200);
+  color: var(--primary-800);
+}
+
+.stats-card-title {
+  font-size: 14px;
+  font-weight: var(--h3-weight);
+  color: var(--neutral-750);
+  margin: 0;
+}
+
+/* Content */
+.stats-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+}
+
+.stats-card-value {
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  color: var(--font-color);
+  line-height: 1;
+}
+
+/* Subtitle & Trend */
+.stats-card-subtitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.stats-card-subtitle-text {
+  font-size: 14px;
+  color: var(--neutral-750);
+}
+
+.stats-card-trend {
+  font-size: 12px;
+  font-weight: var(--h3-weight);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.stats-card-trend-positive {
+  color: #16a34a;
+}
+
+.stats-card-trend-negative {
+  color: var(--border-red);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-card-container {
+    padding: var(--space-button);
+  }
+
+  .stats-card-value {
+    font-size: var(--h2-size);
+  }
+
+  .stats-card-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 16px;
+  }
+
+  .stats-card-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-card-value {
+    font-size: var(--h3-size);
+  }
+}

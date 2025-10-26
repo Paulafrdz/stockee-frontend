@@ -1,0 +1,153 @@
+/* WasteTypesPieChart.css */
+
+.waste-pie-container {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-margin);
+}
+
+/* Header */
+.waste-pie-header {
+  margin-bottom: var(--space-body);
+}
+
+.waste-pie-title {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+  margin: 0 0 var(--space-s) 0;
+}
+
+.waste-pie-subtitle {
+  font-size: 14px;
+  color: var(--neutral-750);
+  margin: 0;
+}
+
+/* Empty State */
+.waste-pie-empty {
+  padding: var(--space-section);
+  text-align: center;
+  color: var(--neutral-750);
+}
+
+.waste-pie-empty p {
+  margin: 0;
+  font-size: var(--body-size);
+}
+
+/* Content */
+.waste-pie-content {
+  display: flex;
+  gap: var(--space-section);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chart Wrapper */
+.waste-pie-chart-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Total Overlay in the center of donut */
+.waste-pie-total-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.waste-pie-total-amount {
+  font-size: var(--h1-size);
+  font-weight: var(--h1-weight);
+  color: var(--font-color);
+  line-height: 1;
+  margin-bottom: var(--space-s);
+}
+
+.waste-pie-total-label {
+  font-size: 14px;
+  color: var(--neutral-750);
+  font-weight: var(--body-weight);
+}
+
+/* Legend */
+.waste-pie-legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-button);
+}
+
+.waste-pie-legend-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.waste-pie-legend-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-button);
+}
+
+.waste-pie-legend-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+.waste-pie-legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.waste-pie-legend-label {
+  font-size: var(--body-size);
+  color: var(--font-color);
+  font-weight: var(--body-weight);
+}
+
+.waste-pie-legend-percentage {
+  font-size: var(--body-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+}
+
+.waste-pie-legend-amount {
+  font-size: 14px;
+  color: var(--neutral-750);
+  margin-left: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .waste-pie-content {
+    flex-direction: column;
+    gap: var(--space-margin);
+  }
+
+  .waste-pie-total-amount {
+    font-size: var(--h2-size);
+  }
+
+  .waste-pie-legend {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .waste-pie-container {
+    padding: var(--space-body);
+  }
+
+  .waste-pie-chart-wrapper {
+    transform: scale(0.9);
+  }
+}
