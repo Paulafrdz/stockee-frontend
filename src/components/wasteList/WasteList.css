@@ -1,0 +1,387 @@
+/* WasteList.css */
+
+.waste-list-container {
+  width: 100%;
+}
+
+/* Header */
+.waste-list-header {
+  margin-bottom: var(--space-body);
+}
+
+.waste-list-title {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+  margin: 0 0 var(--space-s) 0;
+}
+
+.waste-list-subtitle {
+  font-size: var(--body-size);
+  color: var(--neutral-750);
+  margin: 0;
+}
+
+/* Loading State */
+.waste-list-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-section);
+  gap: var(--space-button);
+}
+
+.waste-list-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--neutral-250);
+  border-top-color: var(--terciary-500);
+  border-radius: 50%;
+  animation: waste-spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes waste-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.waste-list-loading p {
+  color: var(--neutral-750);
+  font-size: var(--body-size);
+  margin: 0;
+}
+
+/* Error State */
+.waste-list-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-button);
+  padding: var(--space-section);
+  text-align: center;
+}
+
+.waste-list-error p {
+  color: var(--border-red);
+  font-size: var(--body-size);
+  margin: 0;
+}
+
+.waste-list-retry-btn {
+  padding: var(--space-button) var(--space-margin);
+  background-color: var(--terciary-500);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--button-size);
+  font-weight: var(--button-weight);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.waste-list-retry-btn:hover {
+  background-color: var(--terciary-700);
+}
+
+/* Empty State */
+.waste-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-section);
+  text-align: center;
+  gap: var(--space-button);
+}
+
+.waste-list-empty-icon {
+  font-size: 64px;
+  opacity: 0.3;
+}
+
+.waste-list-empty h3 {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+  margin: 0;
+}
+
+.waste-list-empty p {
+  font-size: var(--body-size);
+  color: var(--neutral-750);
+  margin: 0;
+}
+
+/* Items List */
+.waste-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-button);
+}
+
+/* Waste Card */
+.waste-list-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-button);
+  padding: var(--space-body);
+  background-color: var(--white);
+  border: 1px solid var(--neutral-500);
+  border-radius: var(--border-radius);
+  transition: all 0.3s ease;
+}
+
+.waste-list-card:hover {
+  border-color: var(--terciary-500);
+  box-shadow: 0 2px 8px rgba(236, 72, 153, 0.1);
+}
+
+/* Icon Badge */
+.waste-card-icon {
+  flex-shrink: 0;
+}
+
+.waste-icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--border-radius);
+  font-size: 24px;
+  background-color: var(--neutral-250);
+}
+
+.waste-icon-badge.reason-caducidad {
+  background-color: var(--terciary-200);
+  color: var(--terciary-700);
+}
+
+.waste-icon-badge.reason-error {
+  background-color: var(--background-red);
+  color: var(--border-red);
+}
+
+.waste-icon-badge.reason-rotura {
+  background-color: var(--secondary-200);
+  color: var(--secondary-600);
+}
+
+.waste-icon-badge.reason-merma {
+  background-color: var(--primary-200);
+  color: var(--primary-800);
+}
+
+.waste-icon-badge.reason-otro {
+  background-color: var(--neutral-250);
+  color: var(--neutral-750);
+}
+
+/* Card Content */
+.waste-card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.waste-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-button);
+  margin-bottom: var(--space-s);
+}
+
+.waste-card-ingredient {
+  font-size: var(--body-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+  margin: 0;
+  flex: 1;
+}
+
+.waste-card-time {
+  font-size: 14px;
+  color: var(--neutral-750);
+  white-space: nowrap;
+}
+
+.waste-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+}
+
+.waste-card-reason {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px var(--space-button);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: var(--h3-weight);
+  width: fit-content;
+}
+
+.waste-card-reason.reason-caducidad {
+  background-color: var(--terciary-200);
+  color: var(--terciary-700);
+}
+
+.waste-card-reason.reason-error {
+  background-color: var(--background-red);
+  color: var(--border-red);
+}
+
+.waste-card-reason.reason-rotura {
+  background-color: var(--secondary-200);
+  color: var(--secondary-600);
+}
+
+.waste-card-reason.reason-merma {
+  background-color: var(--primary-200);
+  color: var(--primary-800);
+}
+
+.waste-card-reason.reason-otro {
+  background-color: var(--neutral-250);
+  color: var(--neutral-750);
+}
+
+.waste-card-description {
+  font-size: 14px;
+  color: var(--neutral-750);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Card Actions */
+.waste-card-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-s);
+  flex-shrink: 0;
+}
+
+.waste-card-cost {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  color: var(--border-red);
+}
+
+.waste-card-delete-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--neutral-750);
+  cursor: pointer;
+  padding: var(--space-s);
+  line-height: 1;
+  transition: color 0.3s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.waste-card-delete-btn:hover {
+  color: var(--border-red);
+}
+
+/* Footer */
+.waste-list-footer {
+  margin-top: var(--space-margin);
+  padding-top: var(--space-body);
+  border-top: 1px solid var(--neutral-500);
+}
+
+.waste-list-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--h3-size);
+  color: var(--font-color);
+}
+
+.waste-list-total span {
+  font-weight: var(--body-weight);
+}
+
+.waste-list-total strong {
+  font-weight: var(--h2-weight);
+  color: var(--border-red);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .waste-list-card {
+    flex-direction: column;
+  }
+
+  .waste-card-header {
+    flex-direction: column;
+    gap: var(--space-s);
+  }
+
+  .waste-card-time {
+    align-self: flex-start;
+  }
+
+  .waste-card-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .waste-card-delete-btn {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .waste-list-card {
+    padding: var(--space-button);
+  }
+
+  .waste-icon-badge {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+
+  .waste-card-ingredient {
+    font-size: 14px;
+  }
+
+  .waste-card-cost {
+    font-size: var(--body-size);
+  }
+}
+
+.waste-list-filters {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.waste-filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+}
+
+.waste-list-title-section {
+  flex: 1;
+}
+
+.waste-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
