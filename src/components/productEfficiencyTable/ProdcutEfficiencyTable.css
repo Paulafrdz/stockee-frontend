@@ -1,0 +1,256 @@
+/* ProductEfficiencyTable.css */
+
+.product-eff-container {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: var(--space-margin);
+}
+
+/* Header */
+.product-eff-header {
+  margin-bottom: var(--space-body);
+}
+
+.product-eff-title {
+  font-size: var(--h3-size);
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+  margin: 0 0 var(--space-s) 0;
+}
+
+.product-eff-subtitle {
+  font-size: 14px;
+  color: var(--neutral-750);
+  margin: 0;
+}
+
+/* Empty State */
+.product-eff-empty {
+  padding: var(--space-section);
+  text-align: center;
+  color: var(--neutral-750);
+}
+
+.product-eff-empty p {
+  margin: 0;
+  font-size: var(--body-size);
+}
+
+/* Table Wrapper */
+.product-eff-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--neutral-500);
+}
+
+/* Table */
+.product-eff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family);
+}
+
+/* Table Head */
+.product-eff-thead {
+  background-color: var(--neutral-250);
+}
+
+.product-eff-thead-row {
+  border-bottom: 1px solid var(--neutral-500);
+}
+
+.product-eff-th {
+  padding: var(--space-button);
+  text-align: left;
+  font-size: 14px;
+  font-weight: var(--h3-weight);
+  color: var(--neutral-750);
+  white-space: nowrap;
+}
+
+.product-eff-th-clickable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.product-eff-th-clickable:hover {
+  color: var(--font-color);
+}
+
+.product-eff-th-right {
+  text-align: right;
+}
+
+.product-eff-sort-icon {
+  margin-left: var(--space-s);
+  color: var(--terciary-500);
+  font-size: 12px;
+}
+
+/* Table Body */
+.product-eff-tbody {
+  background-color: var(--white);
+}
+
+.product-eff-row {
+  border-bottom: 1px solid var(--neutral-500);
+  transition: background-color 0.3s ease;
+}
+
+.product-eff-row:last-child {
+  border-bottom: none;
+}
+
+.product-eff-row:hover {
+  background-color: var(--neutral-250);
+}
+
+.product-eff-td {
+  padding: var(--space-button);
+  font-size: var(--body-size);
+  color: var(--font-color);
+}
+
+.product-eff-td-right {
+  text-align: right;
+}
+
+/* Product Name */
+.product-eff-product-name {
+  font-weight: var(--h3-weight);
+}
+
+/* Efficiency Cell */
+.product-eff-efficiency-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-button);
+}
+
+.product-eff-progress-bar {
+  flex: 1;
+  height: 8px;
+  background-color: var(--neutral-250);
+  border-radius: 4px;
+  overflow: hidden;
+  min-width: 100px;
+}
+
+.product-eff-progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.product-eff-efficiency-text {
+  display: flex;
+  gap: var(--space-s);
+  align-items: center;
+  white-space: nowrap;
+}
+
+.product-eff-percentage-main {
+  font-weight: var(--h3-weight);
+  color: var(--font-color);
+}
+
+.product-eff-percentage-secondary {
+  font-size: 14px;
+  color: var(--neutral-750);
+}
+
+/* Waste Cell */
+.product-eff-waste-cell {
+  text-align: center;
+}
+
+.product-eff-waste-percentage {
+  font-weight: var(--h3-weight);
+  color: var(--neutral-750);
+}
+
+/* Badge Styles */
+.product-eff-badge {
+  display: inline-block;
+  padding: 4px var(--space-button);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  font-weight: var(--h3-weight);
+  white-space: nowrap;
+}
+
+.product-eff-badge-caducidad {
+  background-color: var(--terciary-200);
+  color: var(--terciary-700);
+}
+
+.product-eff-badge-error {
+  background-color: var(--background-red);
+  color: var(--border-red);
+}
+
+.product-eff-badge-ninguna {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.product-eff-badge-default {
+  background-color: var(--neutral-250);
+  color: var(--neutral-750);
+}
+
+/* Loss */
+.product-eff-loss {
+  font-weight: var(--h3-weight);
+  color: var(--border-red);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .product-eff-table-wrapper {
+    overflow-x: scroll;
+  }
+
+  .product-eff-table {
+    min-width: 700px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-eff-container {
+    padding: var(--space-body);
+  }
+
+  .product-eff-th,
+  .product-eff-td {
+    padding: var(--space-button) var(--space-s);
+    font-size: 14px;
+  }
+
+  .product-eff-efficiency-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-s);
+  }
+
+  .product-eff-progress-bar {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-eff-title {
+    font-size: var(--body-size);
+  }
+
+  .product-eff-subtitle {
+    font-size: 12px;
+  }
+
+  .product-eff-table {
+    min-width: 600px;
+  }
+}
