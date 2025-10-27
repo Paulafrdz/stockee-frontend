@@ -13,6 +13,7 @@ import WasteRegistrationModal from '../components/wasteRegistrationModal/WasteRe
 import { getStockItems } from '../services/stockService';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import './AnalyticsPage.css';
+import { areaElementClasses } from '@mui/x-charts';
 
 const AnalyticsPage = ({ user }) => {
   const [stockIngredients, setStockIngredients] = useState([]);
@@ -58,6 +59,7 @@ const AnalyticsPage = ({ user }) => {
     setRefreshKey(prev => prev + 1);
   };
 
+  
   return (
     <DashboardLayout
       user={user}
@@ -65,40 +67,44 @@ const AnalyticsPage = ({ user }) => {
       title="Analytics"
       subtitle="Visualiza y analiza el rendimiento de tu inventario"
     >
-      <div className="analytics-page-container">
-        
-        {/* Botón para registrar desperdicio */}
-        <div className="analytics-actions">
-          <FloatingButton
-                    icon={Plus}
-                    variant="primary"
-                    size="large"
-                    position="bottom-right"
-                    tooltip="Añadir ingrediente a la orden"
-                    onClick={() => setIsModalOpen(true)}
-                />
+      <div className='analytics-page'>
+      <div className="analytics-page-header">
+          <div className="anatylics-page-title-section">
+            <h1 className="analytics-page-title">Eficiencia</h1>
+          </div>
         </div>
 
-        {/* Stats Cards con DATOS REALES */}
-        <div className="analytics-stats-grid">
+      {/* Contenedor principal con Grid */}
+      <div className="analytics-page-container">
+        
+        {/* 4 Stats Cards */}
+        <div className="analytics-efficiency">
           <EfficiencyCardWrapper key={`efficiency-${refreshKey}`} />
+          </div>
+          <div className="analytics-totalWaste" >
           <TotalWasteCardWrapper key={`total-${refreshKey}`} />
+          </div>
+          <div className="analtytics-cookingError" >
           <CookingErrorsCardWrapper key={`errors-${refreshKey}`} />
+          </div>
+          <div className="analytics-expiredWaste" >
           <ExpiredWasteCardWrapper key={`expired-${refreshKey}`} />
         </div>
 
-        {/* Charts Grid con DATOS REALES */}
-        <div className="analytics-charts-grid">
+        {/* 2 Charts en paralelo */}
+        <div className="analytics-charts-pie" >
           <WasteTypesPieChartWrapper key={`pie-${refreshKey}`} />
+          </div>
+          <div className="analytics-charts-trend" >
           <WasteTrendChartWrapper key={`trend-${refreshKey}`} />
         </div>
 
-        {/* Product Efficiency Table con DATOS REALES */}
-        <div className="analytics-table-section">
+        {/* Tabla */}
+        <div className="analytics-table-section" >
           <ProductEfficiencyWrapper key={`table-${refreshKey}`} />
         </div>
 
-        {/* Waste List con DATOS REALES */}
+        {/* Lista */}
         <div className="analytics-list-section">
           <WasteList 
             key={`waste-list-${refreshKey}`}
@@ -108,16 +114,27 @@ const AnalyticsPage = ({ user }) => {
 
       </div>
 
-      {/* Modal de Registro de Desperdicio */}
+      {/* Floating Button */}
+      <div className="analytics-actions">
+        <FloatingButton
+          icon={Plus}
+          variant="primary"
+          size="small"
+          tooltip="Registrar desperdicio"
+          onClick={() => setIsModalOpen(true)}
+        />
+      </div>
+    </div>
+      {/* Modal */}
       <WasteRegistrationModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={() => setIsModalOpen(false)}
         ingredients={stockIngredients}
         onWasteRegistered={handleWasteRegistered}
-        
       />
     </DashboardLayout>
   );
 };
+
 
 export default AnalyticsPage;

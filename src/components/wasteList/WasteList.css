@@ -155,30 +155,65 @@
   background-color: var(--neutral-250);
 }
 
-.waste-icon-badge.reason-caducidad {
+.waste-icon-badge.reason-expired {
   background-color: var(--terciary-200);
-  color: var(--terciary-700);
+  color: var(--terciary-500);
+}
+.waste-card-reason.reason-expired{
+  background-color: var(--terciary-200);
+  color: var(--terciary-500);
 }
 
 .waste-icon-badge.reason-error {
-  background-color: var(--background-red);
-  color: var(--border-red);
-}
-
-.waste-icon-badge.reason-rotura {
   background-color: var(--secondary-200);
-  color: var(--secondary-600);
+  color: var(--secondary-500);
 }
 
-.waste-icon-badge.reason-merma {
+.waste-card-reason.reason-error {
+  background-color: var(--secondary-200);
+  color: var(--secondary-500);
+}
+
+.waste-card-actions.reason-over-preparation{
+  background-color: var(--secondary-200);
+  color: var(--secondary-500);
+}
+
+.waste-icon-badge.reason-over-preparation{
+  background-color: var(--secondary-200);
+  color: var(--secondary-500);
+}
+
+.waste-icon-badge.reason-break {
   background-color: var(--primary-200);
-  color: var(--primary-800);
+  color: var(--primary-600);
 }
 
-.waste-icon-badge.reason-otro {
-  background-color: var(--neutral-250);
-  color: var(--neutral-750);
+.waste-icon-badge.reason-break {
+   background-color: var(--primary-200);
+  color: var(--primary-500);
 }
+
+.waste-icon-badge.reason-other {
+  background-color: var(--primary-200);
+  color: var(--primary-500);
+}
+
+.waste-icon-badge.reason-other {
+  background-color: var(--primary-200);
+  color: var(--primary-500);
+}
+
+.waste-icon-badge.reason-natural-waste {
+  background-color: var(--primary-200);
+  color: var(--primary-500);
+}
+
+.waste-card-reason.reason-natural-waste {
+  background-color: var(--primary-200);
+  color: var(--primary-500);
+}
+
 
 /* Card Content */
 .waste-card-content {
@@ -224,30 +259,6 @@
   width: fit-content;
 }
 
-.waste-card-reason.reason-caducidad {
-  background-color: var(--terciary-200);
-  color: var(--terciary-700);
-}
-
-.waste-card-reason.reason-error {
-  background-color: var(--background-red);
-  color: var(--border-red);
-}
-
-.waste-card-reason.reason-rotura {
-  background-color: var(--secondary-200);
-  color: var(--secondary-600);
-}
-
-.waste-card-reason.reason-merma {
-  background-color: var(--primary-200);
-  color: var(--primary-800);
-}
-
-.waste-card-reason.reason-otro {
-  background-color: var(--neutral-250);
-  color: var(--neutral-750);
-}
 
 .waste-card-description {
   font-size: 14px;
@@ -312,7 +323,7 @@
 
 .waste-list-total strong {
   font-weight: var(--h2-weight);
-  color: var(--border-red);
+  color: var(--font-family);
 }
 
 /* Responsive */

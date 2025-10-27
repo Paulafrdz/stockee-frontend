@@ -107,6 +107,8 @@ const WasteList = ({ onWasteDeleted }) => {
   };
 
   const getReasonColor = (reason) => {
+      console.log('🎨 getReasonColor called with reason:', reason); // ← Agregar esto
+
     const colorMap = {
       'expired': 'reason-expired',
       'burned': 'reason-error',
@@ -116,7 +118,9 @@ const WasteList = ({ onWasteDeleted }) => {
       'over-preparation': 'reason-over-preparation',
       'other': 'reason-other'
     };
-    return colorMap[reason] || 'reason-default';
+    const result = colorMap[reason] || 'reason-default';
+  console.log('🎨 Returning class:', result); // ← Y esto
+  return result;
   };
 
   const formatDate = (timestamp) => {
@@ -259,6 +263,7 @@ const WasteList = ({ onWasteDeleted }) => {
             </div>
           </div>
         ))}
+        
       </div>
 
       <div className="waste-list-footer">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './ProductEfficiencyTable';
+import './ProductEfficiencyTable.css';
 
 const ProductEfficiencyTable = ({ products = [] }) => {
   const [sortConfig, setSortConfig] = useState({
@@ -37,12 +37,22 @@ const ProductEfficiencyTable = ({ products = [] }) => {
   }, [products, sortConfig]);
 
   const getCausaBadgeClass = (causa) => {
-    const causaLower = causa.toLowerCase();
-    if (causaLower.includes('caducidad')) return 'product-eff-badge-caducidad';
-    if (causaLower.includes('error')) return 'product-eff-badge-error';
-    if (causaLower === 'ninguna') return 'product-eff-badge-ninguna';
-    return 'product-eff-badge-default';
+  const causaLower = causa?.toLowerCase() || '';
+  
+
+  const badgeMap = {
+    'expired': 'product-eff-badge-caducidad',
+    'burned': 'product-eff-badge-error',
+    'wrong-ingredient': 'product-eff-badge-error',
+    'over-preparation': 'product-eff-badge-error',
+    'natural-waste': 'product-eff-badge-other',
+    'breakage': 'product-eff-badge-other',
+    'other': 'product-eff-badge-other',
+    'none': 'product-eff-badge-ninguna'
   };
+  
+  return badgeMap[causaLower] || 'product-eff-badge-ninguna';
+};
 
   const getMainCauseLabel = (mainCause) => {
     // Si el backend devuelve valores en inglés, los convertimos a español
@@ -57,10 +67,6 @@ const ProductEfficiencyTable = ({ products = [] }) => {
       'none': 'Ninguna'
     };
     return labelMap[mainCause] || mainCause;
-  };
-
-  const formatCurrency = (amount) => {
-    return `€${amount}`;
   };
 
   if (products.length === 0) {
@@ -122,17 +128,6 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                 )}
               </th>
               <th className="product-eff-th">Causa Principal</th>
-              <th 
-                className="product-eff-th product-eff-th-clickable product-eff-th-right"
-                onClick={() => handleSort('loss')}
-              >
-                Pérdida €
-                {sortConfig.key === 'loss' && (
-                  <span className="product-eff-sort-icon">
-                    {sortConfig.direction === 'asc' ? '↑' : '↓'}
-                  </span>
-                )}
-              </th>
             </tr>
           </thead>
           <tbody className="product-eff-tbody">
@@ -169,9 +164,6 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                   <span className={`product-eff-badge ${getCausaBadgeClass(product.mainCause)}`}>
                     {getMainCauseLabel(product.mainCause)}
                   </span>
-                </td>
-                <td className="product-eff-td product-eff-td-right">
-                  <span className="product-eff-loss">{formatCurrency(product.loss)}</span>
                 </td>
               </tr>
             ))}

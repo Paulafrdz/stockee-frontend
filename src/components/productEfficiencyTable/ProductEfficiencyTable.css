@@ -157,18 +157,17 @@
 }
 
 .product-eff-percentage-secondary {
-  font-size: 14px;
-  color: var(--neutral-750);
+  display: none;
 }
 
 /* Waste Cell */
 .product-eff-waste-cell {
-  text-align: center;
+  text-align: left;
 }
 
 .product-eff-waste-percentage {
   font-weight: var(--h3-weight);
-  color: var(--neutral-750);
+  color: var(--font-color);
 }
 
 /* Badge Styles */
@@ -183,14 +182,18 @@
 
 .product-eff-badge-caducidad {
   background-color: var(--terciary-200);
-  color: var(--terciary-700);
+  color: var(--terciary-500);
 }
 
 .product-eff-badge-error {
-  background-color: var(--background-red);
-  color: var(--border-red);
+  background-color: var(--secondary-200);
+  color: var(--secondary-500);
 }
 
+.product-eff-badge-other{
+  background-color: var(--primary-200);
+  color: var(--primary-500);
+}
 .product-eff-badge-ninguna {
   background-color: #d1fae5;
   color: #065f46;

@@ -39,11 +39,11 @@ const WasteTrendChart = ({ data = [] }) => {
         </div>
         <div className="waste-trend-stats">
           <div className="waste-trend-stat">
-            <span className="waste-trend-stat-label">Total</span>
+            <span className="waste-trend-stat-label">Total </span>
             <span className="waste-trend-stat-value">{totalWaste.toFixed(1)}</span>
           </div>
           <div className="waste-trend-stat">
-            <span className="waste-trend-stat-label">Promedio/mes</span>
+            <span className="waste-trend-stat-label">Promedio/mes </span>
             <span className="waste-trend-stat-value">{averageWaste.toFixed(1)}</span>
           </div>
         </div>
@@ -74,7 +74,7 @@ const WasteTrendChart = ({ data = [] }) => {
           series={[
             {
               data: values,
-              color: '#ec4899',
+              color: '#6366f1',
               area: true,
               showMark: true,
               curve: 'natural',
@@ -82,7 +82,7 @@ const WasteTrendChart = ({ data = [] }) => {
             },
           ]}
           width={600}
-          height={300}
+          height={250}
           margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
           grid={{ horizontal: true }}
           slotProps={{
@@ -97,7 +97,7 @@ const WasteTrendChart = ({ data = [] }) => {
               strokeWidth: 3,
             },
             '& .MuiMarkElement-root': {
-              fill: '#ec4899',
+              fill: 'var(--primary-500)',
               stroke: '#ffffff',
               strokeWidth: 2,
               r: 5,
@@ -106,8 +106,8 @@ const WasteTrendChart = ({ data = [] }) => {
         >
           <defs>
             <linearGradient id="gradient" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="#ec4899" stopOpacity={0.4} />
-              <stop offset="100%" stopColor="#ec4899" stopOpacity={0.05} />
+              <stop offset="0%" stopColor="var(--primary-200)" stopOpacity={0.4} />
+              <stop offset="100%" stopColor="#var(--primary-200)" stopOpacity={0.05} />
             </linearGradient>
           </defs>
         </LineChart>
@@ -116,10 +116,7 @@ const WasteTrendChart = ({ data = [] }) => {
       {/* Leyenda de información adicional */}
       <div className="waste-trend-footer">
         <div className="waste-trend-legend">
-          <div className="waste-trend-legend-item">
-            <div className="waste-trend-legend-color" style={{ backgroundColor: '#ec4899' }}></div>
-            <span>Cantidad total desperdiciada (unidades)</span>
-          </div>
+          
         </div>
       </div>
     </div>

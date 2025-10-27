@@ -120,6 +120,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
         { value: 'expired', label: 'Caducado', emoji: '📅' },
         { value: 'burned', label: 'Quemado', emoji: '🔥' },
         { value: 'wrong-ingredient', label: 'Ingrediente incorrecto', emoji: '❌' },
+         { value: 'over-preparation', label: 'Preparación excesiva', emoji: '🍽️' },
         { value: 'breakage', label: 'Roto', emoji: '💥' },
         { value: 'natural-waste', label: 'Merma', emoji: '💧' },
         { value: 'other', label: 'Otro', emoji: '💠' }
@@ -137,7 +138,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
         <div className="waste-modal-overlay" onClick={handleOverlayClick}>
             <div className="waste-modal-container">
                 <div className="waste-modal-header">
-                    <h2 className="waste-modal-title">Register Waste</h2>
+                    <h2 className="waste-modal-title">Registrar desperdicio</h2>
                     <button
                         className="waste-modal-close-btn"
                         onClick={handleClose}
@@ -154,7 +155,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                         {/* Product/Ingredient */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                Product / Ingredient <span className="waste-form-required">*</span>
+                                Producto / Ingrediente <span className="waste-form-required">*</span>
                             </label>
                             <select
                                 className="waste-form-control waste-form-select"
@@ -167,7 +168,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                                 <option value="">
                                     {ingredients.length === 0
                                         ? 'No ingredients available'
-                                        : 'Select a product...'}
+                                        : 'Selecciona un producto..'}
                                 </option>
                                 {ingredients.map(ingredient => (
                                     <option
@@ -183,7 +184,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                             </select>
                             {ingredients.length === 0 && (
                                 <div className="waste-form-error">
-                                    No ingredients in stock. Add ingredients first.
+                                   No hay ingredientes en stock. Añadelos primero.
                                 </div>
                             )}
                         </div>
@@ -191,7 +192,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                         {/* Quantity and Unit */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                Quantity <span className="waste-form-required">*</span>
+                                Cantidad <span className="waste-form-required">*</span>
                             </label>
                             <div className="waste-input-group">
                                 <input
@@ -226,7 +227,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                         {/* Waste Reason */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                What happened to the product? <span className="waste-form-required">*</span>
+                                Que le pasó al producto? <span className="waste-form-required">*</span>
                             </label>
                             <div className="waste-chip-group">
                                 {reasons.map(reason => (
@@ -247,14 +248,14 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                         {/* Additional Details */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                Additional details (optional)
+                                Detalles adicionales (opcional)
                             </label>
                             <textarea
                                 className="waste-form-control waste-form-textarea"
                                 name="details"
                                 value={formData.details}
                                 onChange={handleInputChange}
-                                placeholder="Example: Burned during lunch service, temperature too high"
+                                placeholder="Ejemplo: Se quemo durante el servicio de comidas, la temperatura estaba muy alta"
                                 disabled={isSubmitting}
                                 rows="3"
                             />
@@ -269,7 +270,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                         onClick={handleClose}
                         disabled={isSubmitting}
                     >
-                        Cancel
+                        Cancelar
                     </button>
                     <button
                         type="submit"
@@ -285,7 +286,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                         ) : (
                             <>
                                 <span className="waste-btn-icon">✓</span>
-                                Register Waste
+                                Añadir despercidio
                             </>
                         )}
                     </button>

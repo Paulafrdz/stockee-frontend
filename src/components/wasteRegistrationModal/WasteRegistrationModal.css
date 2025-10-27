@@ -219,9 +219,6 @@
   color: var(--white);
 }
 
-.waste-btn-primary:hover:not(:disabled) {
-  background-color: var(--terciary-700);
-}
 
 .waste-btn-secondary {
   background-color: transparent;

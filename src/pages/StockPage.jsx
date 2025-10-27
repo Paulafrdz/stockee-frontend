@@ -169,13 +169,13 @@ const StockPage = () => {
       <div className="stock-page">
         <div className="stock-page-header">
           <div className="page-title-section">
-            <h1 className="page-title">Stock inventory</h1>
+            <h1 className="page-title">Inventario</h1>
           </div>
         </div>
 
         <FloatingButton
           variant="primary"
-          size="medium"
+          size="small"
           icon={Plus}
           onClick={() => handleOpenModal()}
         >

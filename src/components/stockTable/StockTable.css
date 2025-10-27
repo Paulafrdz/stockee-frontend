@@ -177,7 +177,7 @@
 .actions {
     display: flex;
     gap: 8px;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .action-btn {

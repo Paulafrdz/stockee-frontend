@@ -1,11 +1,15 @@
 /* WasteTypesPieChart.css */
 
 .waste-pie-container {
-  width: 100%;
+  height: 100%;
   background: var(--white);
   border-radius: var(--border-radius);
   padding: var(--space-margin);
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
 }
+
 
 /* Header */
 .waste-pie-header {
@@ -49,6 +53,11 @@
 .waste-pie-chart-wrapper {
   position: relative;
   flex-shrink: 0;
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+ 
 }
 
 /* Total Overlay in the center of donut */
@@ -59,6 +68,10 @@
   transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .waste-pie-total-amount {
@@ -66,13 +79,14 @@
   font-weight: var(--h1-weight);
   color: var(--font-color);
   line-height: 1;
-  margin-bottom: var(--space-s);
+  margin: 0;
 }
 
 .waste-pie-total-label {
   font-size: 14px;
   color: var(--neutral-750);
   font-weight: var(--body-weight);
+  margin-top: 4px;
 }
 
 /* Legend */
@@ -84,14 +98,8 @@
 
 .waste-pie-legend-item {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.waste-pie-legend-row {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-button);
 }
 
@@ -99,6 +107,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-s);
+  flex: 1;
 }
 
 .waste-pie-legend-dot {
@@ -123,7 +132,12 @@
 .waste-pie-legend-amount {
   font-size: 14px;
   color: var(--neutral-750);
-  margin-left: 20px;
+  margin-left: var(--space-button);
+  display: none;
+}
+.MuiChartsLegend-item{
+    display: none;
+
 }
 
 /* Responsive */

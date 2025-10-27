@@ -309,7 +309,7 @@ const OrdersPage = () => {
                 <FloatingButton
                     icon={Plus}
                     variant="primary"
-                    size="large"
+                    size="small"
                     position="bottom-right"
                     tooltip="Añadir ingrediente a la orden"
                     onClick={() => setIsModalOpen(true)}

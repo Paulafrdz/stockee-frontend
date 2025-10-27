@@ -4,65 +4,82 @@ import './WasteTypesPieChart.css';
 
 const WasteTypesPieChart = ({ data = [] }) => {
 
-  const reasonToCategory = (reason) => {
+
+  const reasonToCategory = (type) => {
     const map = {
       'expired': 'Caducidad',
       'burned': 'Errores Elaboración',
-      'wrong-ingredient': 'Errores Elaboración', 
+      'cooking errors': 'Errores Elaboración',
+      'wrong-ingredient': 'Errores Elaboración',
       'over-preparation': 'Errores Elaboración',
       'natural-waste': 'Otros (Merma, Roturas)',
       'breakage': 'Otros (Merma, Roturas)',
       'other': 'Otros (Merma, Roturas)'
     };
-    return map[reason] || 'Otros (Merma, Roturas)';
+
+    // Convertir a minúsculas para comparación insensible a mayúsculas
+    const lowerType = type?.toLowerCase() || '';
+    return map[lowerType] || 'Otros (Merma, Roturas)';
   };
 
-  // Procesar datos aquí también por seguridad
+
+  console.log('📊 Data types:', data.map(item => ({
+    reason: item.reason,
+    quantity: item.quantity,
+    type: typeof item.quantity
+  })));
+
   const processData = (rawData) => {
     const categories = {};
-    
+
     rawData.forEach(item => {
-      const category = reasonToCategory(item.reason);
+
+      const category = reasonToCategory(item.type);
+      const quantity = parseFloat(item.amount);
+      const validQuantity = isNaN(quantity) ? 0 : quantity;
+
+
       if (!categories[category]) {
         categories[category] = 0;
       }
-      categories[category] += item.quantity;
+      categories[category] += validQuantity;
     });
 
-    return Object.entries(categories).map(([type, amount]) => ({
-      type,
-      amount: Math.round(amount * 100) / 100
-    }));
+    return Object.entries(categories)
+      .map(([type, amount]) => ({
+        type,
+        amount: Math.round(amount * 100) / 100
+      }))
+      .filter(item => item.amount > 0);
   };
 
-  // Usar datos procesados
   const chartData = processData(data);
-  
+
   // Colores específicos para cada tipo de desperdicio
   const colorMap = {
     'Caducidad': '#ec4899',
-    'Errores Elaboración': '#fb923c', 
+    'Errores Elaboración': '#fb923c',
     'Otros (Merma, Roturas)': '#6366f1'
   };
 
-  // Preparar datos para el gráfico
-  const pieChartData = chartData.map((item, index) => ({
-    id: index,
-    value: item.amount,
-    label: item.type,
-    color: colorMap[item.type] || '#D7D7D7'
-  }));
+  // Preparar datos para el gráfico CON VALIDACIÓN
+  const pieChartData = chartData
+    .map((item, index) => ({
+      id: index,
+      value: item.amount,
+      label: item.type,
+      color: colorMap[item.type] || '#D7D7D7'
+    }))
+    .filter(item => !isNaN(item.value) && item.value > 0);
 
-  // Calcular total
-  const total = chartData.reduce((sum, item) => sum + item.amount, 0);
+  const total = pieChartData.reduce((sum, item) => sum + item.value, 0);
 
-  // Calcular porcentajes
   const dataWithPercentages = chartData.map(item => ({
     ...item,
     percentage: total > 0 ? Math.round((item.amount / total) * 100) : 0
   }));
 
-  if (chartData.length === 0) {
+  if (chartData.length === 0 || pieChartData.length === 0) {
     return (
       <div className="waste-pie-container">
         <div className="waste-pie-header">
@@ -104,8 +121,8 @@ const WasteTypesPieChart = ({ data = [] }) => {
             }}
           />
           <div className="waste-pie-total-overlay">
-            <div className="waste-pie-total-amount">{total}</div>
-            <div className="waste-pie-total-label">Total {chartData[0]?.amount?.toString().includes('.') ? 'kg' : 'un'}</div>
+            <div className="waste-pie-total-amount">{total.toFixed(1)}</div>
+            <div className="waste-pie-total-label">Total kg</div>
           </div>
         </div>
 
@@ -114,15 +131,15 @@ const WasteTypesPieChart = ({ data = [] }) => {
             <div key={index} className="waste-pie-legend-item">
               <div className="waste-pie-legend-row">
                 <div className="waste-pie-legend-info">
-                  <span 
-                    className="waste-pie-legend-dot" 
+                  <span
+                    className="waste-pie-legend-dot"
                     style={{ backgroundColor: colorMap[item.type] }}
                   />
                   <span className="waste-pie-legend-label">{item.type}</span>
                 </div>
                 <span className="waste-pie-legend-percentage">{item.percentage}%</span>
               </div>
-              <div className="waste-pie-legend-amount">{item.amount} un</div>
+              <div className="waste-pie-legend-amount">{item.amount.toFixed(1)} kg</div>
             </div>
           ))}
         </div>
