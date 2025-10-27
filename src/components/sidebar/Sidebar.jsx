@@ -14,7 +14,8 @@ const Sidebar = ({ user }) => {
         { id: 'sales', label: 'Ventas', icon: ShoppingCart, path: '/sales' },
         { id: 'dishes', label: 'Platos', icon: ChefHat, path: '/dishes' },
         { id: 'stock', label: 'Stock', icon: Package, path: '/stock' },
-        { id: 'order', label: 'Pedido', icon: Package, path: '/order' }
+        { id: 'order', label: 'Pedido', icon: Package, path: '/order' },
+        { id: 'analytics', label: 'Eficiencia', icon: Package, path: '/analytics' },
     ];
 
     const handleLogout = async () => {

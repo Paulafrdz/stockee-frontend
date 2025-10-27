@@ -6,6 +6,7 @@ import PublicRoute from "./PublicRoute";
 import AuthPage from "../pages/AuthPage";
 import StockPage from "../pages/StockPage";
 import OrdersPage from "../pages/OrdersPage";
+import AnalyticsPage from "../pages/AnalyticsPage";
 
 export default function AppRouter({ onUserAuthenticated }) {
   return (
@@ -43,6 +44,14 @@ export default function AppRouter({ onUserAuthenticated }) {
         element={
           <PrivateRoute>
             <OrdersPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/analytics"
+        element={
+          <PrivateRoute>
+            <AnalyticsPage />
           </PrivateRoute>
         }
       />

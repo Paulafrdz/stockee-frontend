@@ -1,78 +1,101 @@
-// ProductEfficiencyWrapper.jsx
 import React, { useState, useEffect } from 'react';
 import { getAllWaste } from '../../services/wasteService';
-import ProductEfficiencyTable from './ProductEfficiencyTable';
+import { getStockItems } from '../../services/stockService';
+import ProductEfficiencyTable from '../productEfficiencyTable/ProductEfficiencyTable';
 
 const ProductEfficiencyWrapper = () => {
-  const [wasteData, setWasteData] = useState([]);
-  const [processedProducts, setProcessedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchWasteData();
+    fetchData();
   }, []);
 
-  const fetchWasteData = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getAllWaste();
-      setWasteData(data);
-      processWasteData(data);
+      setIsLoading(true);
+      setError(null);
+      
+      const [wasteData, stockData] = await Promise.all([
+        getAllWaste(),
+        getStockItems()
+      ]);
+
+      console.log('📊 Processing efficiency data:', {
+        wasteItems: wasteData.length,
+        stockItems: stockData.length
+      });
+
+      const processedProducts = processEfficiencyData(wasteData, stockData);
+      setProducts(processedProducts);
+      
     } catch (error) {
-      console.error('Error fetching waste data:', error);
+      console.error('❌ Error fetching efficiency data:', error);
+      setError('Error al cargar datos de eficiencia');
+      setProducts([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const processWasteData = (wasteItems) => {
-    // Agrupar desperdicios por ingrediente
+  const processEfficiencyData = (wasteItems, stockItems) => {
+    // Crear mapa de productos con sus desperdicios
     const productsMap = {};
     
+    // 1. Agrupar desperdicios por ingrediente
     wasteItems.forEach(waste => {
-      if (!productsMap[waste.ingredientId]) {
-        productsMap[waste.ingredientId] = {
-          id: waste.ingredientId,
+      const ingredientId = waste.ingredientId;
+      
+      if (!productsMap[ingredientId]) {
+        productsMap[ingredientId] = {
+          id: ingredientId,
           name: waste.ingredientName,
           totalWaste: 0,
           wasteByReason: {},
-          totalUsage: 100 // Esto deberías obtenerlo de otro servicio
+          totalUsage: 0
         };
       }
       
-      // Sumar cantidad desperdiciada
-      productsMap[waste.ingredientId].totalWaste += waste.quantity;
+      productsMap[ingredientId].totalWaste += waste.quantity;
       
-      // Contar por razón
-      if (!productsMap[waste.ingredientId].wasteByReason[waste.reason]) {
-        productsMap[waste.ingredientId].wasteByReason[waste.reason] = 0;
+      if (!productsMap[ingredientId].wasteByReason[waste.reason]) {
+        productsMap[ingredientId].wasteByReason[waste.reason] = 0;
       }
-      productsMap[waste.ingredientId].wasteByReason[waste.reason]++;
+      productsMap[ingredientId].wasteByReason[waste.reason]++;
     });
 
-    // Convertir a formato que necesita la tabla
-    const processed = Object.values(productsMap).map(product => {
-      const wastePercentage = Math.min((product.totalWaste / product.totalUsage) * 100, 100);
-      const efficiency = 100 - wastePercentage;
-      
-      // Encontrar causa principal
-      const mainCause = Object.entries(product.wasteByReason)
-        .sort(([,a], [,b]) => b - a)[0]?.[0] || 'Ninguna';
-      
-      // Calcular pérdida (necesitarías precios de los ingredientes)
-      const averagePrice = 5; // Esto debería venir de tu base de datos
-      const loss = product.totalWaste * averagePrice;
-
-      return {
-        id: product.id,
-        name: product.name,
-        efficiency: Math.round(efficiency),
-        wastePercentage: Math.round(wastePercentage),
-        mainCause: getCausaLabel(mainCause),
-        loss: Math.round(loss * 100) / 100
-      };
+    // 2. Combinar con datos de stock
+    stockItems.forEach(stockItem => {
+      if (productsMap[stockItem.id]) {
+        productsMap[stockItem.id].totalUsage = stockItem.currentStock + productsMap[stockItem.id].totalWaste;
+      }
     });
 
-    setProcessedProducts(processed);
+    // 3. Convertir al formato de la tabla
+    const processedProducts = Object.values(productsMap)
+      .filter(product => product.totalUsage > 0)
+      .map(product => {
+        const wastePercentage = (product.totalWaste / product.totalUsage) * 100;
+        const efficiency = Math.max(0, 100 - wastePercentage);
+        
+        const mainCauseEntry = Object.entries(product.wasteByReason)
+          .sort(([,a], [,b]) => b - a)[0];
+        
+        const mainCause = mainCauseEntry ? mainCauseEntry[0] : 'ninguna';
+        const loss = product.totalWaste * 2.5; // Precio promedio estimado
+
+        return {
+          id: product.id,
+          name: product.name,
+          efficiency: Math.round(efficiency),
+          wastePercentage: Math.round(wastePercentage),
+          mainCause: getCausaLabel(mainCause),
+          loss: Math.round(loss * 100) / 100
+        };
+      });
+
+    return processedProducts;
   };
 
   const getCausaLabel = (reason) => {
@@ -83,16 +106,33 @@ const ProductEfficiencyWrapper = () => {
       'rotura': 'Rotura/Caída',
       'merma': 'Merma Natural',
       'preparacion-excesiva': 'Preparación Excesiva',
+      'ninguna': 'Ninguna',
       'otro': 'Otra Causa'
     };
     return labelMap[reason] || reason;
   };
 
   if (isLoading) {
-    return <div>Cargando datos de eficiencia...</div>;
+    return (
+      <div className="table-loading">
+        <div className="loading-spinner"></div>
+        <p>Cargando análisis de eficiencia...</p>
+      </div>
+    );
   }
 
-  return <ProductEfficiencyTable products={processedProducts} />;
+  if (error) {
+    return (
+      <div className="table-error">
+        <p>⚠️ {error}</p>
+        <button onClick={fetchData} className="retry-btn">
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+
+  return <ProductEfficiencyTable products={products} />;
 };
 
 export default ProductEfficiencyWrapper;

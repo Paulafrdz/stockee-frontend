@@ -289,7 +289,7 @@ const OrdersPage = () => {
                     <div className="orders-header-info">
                         <h2 className="orders-title">Gestión de pedidos</h2>
                         <p className="orders-subtitle">
-                            {recommendedOrders.length} ingredientes para ordenar
+                            {recommendedOrders.length} ingredientes para el pedido
                         </p>
                     </div>
                     <div className="orders-header-actions">

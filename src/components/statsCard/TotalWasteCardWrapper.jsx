@@ -1,70 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import { getAllWaste } from '../../services/wasteService';
-import StatsCard from './StatsCard';
+import { getAnalyticsStats } from '../../services/analyticsService';
+import StatsCard from '../statsCard/StatsCard';
 
 const TotalWasteCardWrapper = () => {
-  const [wasteData, setWasteData] = useState([]);
-  const [totalWaste, setTotalWaste] = useState(0);
-  const [trend, setTrend] = useState(null);
+  const [data, setData] = useState({ value: 0, trend: null });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchWasteData();
+    fetchData();
   }, []);
 
-  const fetchWasteData = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getAllWaste();
-      setWasteData(data);
-      calculateWasteMetrics(data);
-    } catch (error) {
-      console.error('Error fetching waste data for card:', error);
-    }
-  };
-
-  const calculateWasteMetrics = (wasteItems) => {
-    // Calcular desperdicio del mes actual
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    
-    const currentMonthWaste = wasteItems
-      .filter(item => {
-        const itemDate = new Date(item.timestamp);
-        return itemDate.getMonth() === currentMonth && 
-               itemDate.getFullYear() === currentYear;
-      })
-      .reduce((sum, item) => sum + item.quantity, 0);
-
-    // Calcular desperdicio del mes anterior
-    const lastMonthWaste = wasteItems
-      .filter(item => {
-        const itemDate = new Date(item.timestamp);
-        const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        const year = currentMonth === 0 ? currentYear - 1 : currentYear;
-        return itemDate.getMonth() === lastMonth && 
-               itemDate.getFullYear() === year;
-      })
-      .reduce((sum, item) => sum + item.quantity, 0);
-
-    setTotalWaste(currentMonthWaste);
-
-    // Calcular tendencia
-    if (lastMonthWaste > 0) {
-      const change = ((currentMonthWaste - lastMonthWaste) / lastMonthWaste) * 100;
-      setTrend({
-        isPositive: change < 0, // Menos desperdicio = positivo
-        text: `${Math.abs(Math.round(change))}% vs mes pasado`
+      setIsLoading(true);
+      const stats = await getAnalyticsStats();
+      
+      setData({
+        value: stats.totalWaste || 0,
+        trend: {
+          isPositive: false, // Siempre negativo porque es desperdicio
+          text: `${stats.totalWaste || 0} kg este mes`
+        }
       });
+    } catch (error) {
+      console.error('Error fetching total waste stats:', error);
+      setData({
+        value: 0,
+        trend: { isPositive: false, text: 'Error cargando datos' }
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <StatsCard
+        title="Desperdicio Total"
+        value="Cargando..."
+        subtitle="Este mes"
+        icon="🗑️"
+        variant="default"
+      />
+    );
+  }
 
   return (
     <StatsCard
       title="Desperdicio Total"
-      value={`${totalWaste.toFixed(1)} kg`}
+      value={`${data.value} kg`}
       subtitle="Este mes"
       icon="🗑️"
-      trend={trend}
-      variant={trend?.isPositive ? 'success' : 'danger'}
+      trend={data.trend}
+      variant="danger"
     />
   );
 };

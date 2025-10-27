@@ -6,7 +6,7 @@ const WasteList = ({ onWasteDeleted }) => {
   const [wasteItems, setWasteItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [timeFilter, setTimeFilter] = useState('24h'); // '24h', 'week', 'all'
+  const [timeFilter, setTimeFilter] = useState('24h'); // '24h', 'week', 'month', 'all'
 
   useEffect(() => {
     fetchWasteItems();
@@ -25,7 +25,7 @@ const WasteList = ({ onWasteDeleted }) => {
         ingredientName: item.ingredientName || 'Ingrediente desconocido',
         quantity: item.quantity || 0,
         unit: item.unit || 'unidades',
-        reason: item.reason || 'otro',
+        reason: item.reason || 'other',
         details: item.details || '',
         timestamp: item.timestamp
       }));
@@ -57,7 +57,7 @@ const WasteList = ({ onWasteDeleted }) => {
         default:
           return true; 
       }
-    }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Más recientes primero
+    }).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   };
 
   const handleDelete = async (wasteId) => {
@@ -82,39 +82,39 @@ const WasteList = ({ onWasteDeleted }) => {
 
   const getReasonEmoji = (reason) => {
     const emojiMap = {
-      'caducidad': '📅',
-      'quemado': '🔥',
-      'ingrediente-incorrecto': '❌',
-      'rotura': '💥',
-      'merma': '💧',
-      'preparacion-excesiva': '🍽️',
-      'otro': '💠'
+      'expired': '📅',
+      'burned': '🔥',
+      'wrong-ingredient': '❌',
+      'breakage': '💥',
+      'natural-waste': '💧',
+      'over-preparation': '🍽️',
+      'other': '💠'
     };
     return emojiMap[reason] || '📦';
   };
 
   const getReasonLabel = (reason) => {
     const labelMap = {
-      'caducidad': 'Caducidad',
-      'quemado': 'Error - Quemado',
-      'ingrediente-incorrecto': 'Error - Ingrediente incorrecto',
-      'rotura': 'Rotura/Caída',
-      'merma': 'Merma Natural',
-      'preparacion-excesiva': 'Preparación Excesiva',
-      'otro': 'Otro'
+      'expired': 'Caducidad',
+      'burned': 'Error - Quemado',
+      'wrong-ingredient': 'Error - Ingrediente incorrecto',
+      'breakage': 'Rotura/Caída',
+      'natural-waste': 'Merma Natural',
+      'over-preparation': 'Preparación Excesiva',
+      'other': 'Otro'
     };
     return labelMap[reason] || reason;
   };
 
   const getReasonColor = (reason) => {
     const colorMap = {
-      'caducidad': 'reason-caducidad',
-      'quemado': 'reason-error',
-      'ingrediente-incorrecto': 'reason-error',
-      'rotura': 'reason-rotura',
-      'merma': 'reason-merma',
-      'preparacion-excesiva': 'reason-preparacion',
-      'otro': 'reason-otro'
+      'expired': 'reason-expired',
+      'burned': 'reason-error',
+      'wrong-ingredient': 'reason-error',
+      'breakage': 'reason-breakage',
+      'natural-waste': 'reason-natural-waste',
+      'over-preparation': 'reason-over-preparation',
+      'other': 'reason-other'
     };
     return colorMap[reason] || 'reason-default';
   };
@@ -261,7 +261,6 @@ const WasteList = ({ onWasteDeleted }) => {
         ))}
       </div>
 
-      {/* ✅ Mostrar total de cantidad desperdiciada */}
       <div className="waste-list-footer">
         <div className="waste-list-total">
           <span>Total desperdiciado:</span>

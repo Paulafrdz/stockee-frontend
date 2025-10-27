@@ -124,7 +124,7 @@ const AddOrderModal = ({
         {/* Header */}
         <div className="add-order-modal-header">
           <h2 className="add-order-modal-title">
-            Añadir Ingrediente a la Orden
+            Añadir Ingrediente al Pedido
           </h2>
           <button 
             className="add-order-modal-close-button"

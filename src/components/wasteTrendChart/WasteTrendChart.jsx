@@ -1,4 +1,3 @@
-// WasteTrendChart.jsx MEJORADO
 import React from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import './WasteTrendChart.css';
@@ -10,8 +9,8 @@ const WasteTrendChart = ({ data = [] }) => {
   const months = validData.map(item => item.month || '');
   const values = validData.map(item => typeof item.value === 'number' ? item.value : 0);
 
-  // Calcular estadísticas útiles
-  const totalWaste = values.reduce((sum, value) => sum + value, );
+  // Calcular estadísticas útiles - FIXED: added initial value 0
+  const totalWaste = values.reduce((sum, value) => sum + value, 0);
   const averageWaste = validData.length > 0 ? totalWaste / validData.length : 0;
   const maxWaste = Math.max(...values, 0);
 

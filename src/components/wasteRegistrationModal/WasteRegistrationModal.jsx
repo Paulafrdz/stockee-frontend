@@ -2,39 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { registerWaste } from '../../services/wasteService';
 import './WasteRegistrationModal.css';
 
-const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
+const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredients = [] }) => {
     const [formData, setFormData] = useState({
-        producto: '',
-        cantidad: '',
-        unidad: 'kg',
-        razon: '',
-        detalles: ''
+        product: '',        
+        quantity: '',       
+        unit: 'kg',
+        reason: '',         
+        details: ''        
     });
 
     const [selectedReason, setSelectedReason] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
-        const handleEscape = (event) => {
-            if (event.key === 'Escape' && isOpen) {
-                onClose();
-            }
-        };
-
-        document.addEventListener('keydown', handleEscape);
-        return () => document.removeEventListener('keydown', handleEscape);
-    }, [isOpen, onClose]);
-
-    useEffect(() => {
-        if (isOpen) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = '';
+        if (isOpen && ingredients.length > 0) {
+            console.log('🔍 INGREDIENTS RECEIVED:', ingredients);
         }
-
-        return () => {
-            document.body.style.overflow = '';
-        };
-    }, [isOpen]);
+    }, [isOpen, ingredients]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -48,49 +32,48 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
         setSelectedReason(reason);
         setFormData(prev => ({
             ...prev,
-            razon: reason
+            reason: reason
         }));
     };
 
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!selectedReason) {
-            alert('Por favor, selecciona una razón del desperdicio');
+            alert('Please select a waste reason');
             return;
         }
 
-        if (!formData.producto || !formData.cantidad) {
-            alert('Por favor, completa todos los campos requeridos');
+        if (!formData.product || !formData.quantity) {
+            alert('Please complete all required fields');
             return;
         }
 
         try {
             setIsSubmitting(true);
 
-            const selectedIngredient = availableIngredients.find(
-                ing => ing.id.toString() === formData.producto
+            const selectedIngredient = ingredients.find(
+                ing => ing.id === parseInt(formData.product)
             );
 
             if (!selectedIngredient) {
-                alert('Error: Producto no encontrado');
+                alert('Error: Product not found');
                 return;
             }
 
             const wasteData = {
                 ingredientId: selectedIngredient.id,
-                quantity: parseFloat(formData.cantidad),
-                unit: formData.unidad,
-                reason: formData.razon,
-                details: formData.detalles
+                quantity: parseFloat(formData.quantity),
+                unit: formData.unit,
+                reason: formData.reason,
+                details: formData.details
             };
 
-            console.log('📤 Enviando registro de desperdicio:', wasteData);
+            console.log('📤 Sending waste registration:', wasteData);
 
             const result = await registerWaste(wasteData);
 
-            console.log('✅ Desperdicio registrado:', result);
+            console.log('✅ Waste registered:', result);
 
             if (onWasteRegistered) {
                 onWasteRegistered({
@@ -101,28 +84,27 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
                 });
             }
 
-            alert('✅ Desperdicio registrado correctamente. El stock ha sido actualizado.');
-
+            alert('✅ Waste registered successfully. Stock has been updated.');
             handleClose();
 
         } catch (error) {
-            console.error('❌ Error registrando desperdicio:', error);
-            alert('Error al registrar el desperdicio. Por favor, intenta nuevamente.');
+            console.error('❌ Error registering waste:', error);
+            alert('Error registering waste. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const handleClose = () => {
-        // Reset form
         setFormData({
-            producto: '',
-            cantidad: '',
-            unidad: 'kg',
-            razon: '',
-            detalles: ''
+            product: '',
+            quantity: '',
+            unit: 'kg',
+            reason: '',
+            details: ''
         });
         setSelectedReason(null);
+        setIsSubmitting(false);
         onClose();
     };
 
@@ -135,12 +117,12 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
     if (!isOpen) return null;
 
     const reasons = [
-        { value: 'caducidad', label: 'Caducidad', emoji: '🔥' },
-        { value: 'quemado', label: 'Error - Quemado', emoji: '🔥' },
-        { value: 'ingrediente-incorrecto', label: 'Error - Ingrediente incorrecto', emoji: '❌' },
-        { value: 'rotura', label: 'Rotura/Caída', emoji: '🔧' },
-        { value: 'merma', label: 'Merma Natural', emoji: '💧' },
-        { value: 'otro', label: 'Otro', emoji: '💠' }
+        { value: 'expired', label: 'Caducado', emoji: '📅' },
+        { value: 'burned', label: 'Quemado', emoji: '🔥' },
+        { value: 'wrong-ingredient', label: 'Ingrediente incorrecto', emoji: '❌' },
+        { value: 'breakage', label: 'Roto', emoji: '💥' },
+        { value: 'natural-waste', label: 'Merma', emoji: '💧' },
+        { value: 'other', label: 'Otro', emoji: '💠' }
     ];
 
     const units = [
@@ -148,85 +130,89 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
         { value: 'g', label: 'g' },
         { value: 'l', label: 'l' },
         { value: 'ml', label: 'ml' },
-        { value: 'unidades', label: 'unidades' }
+        { value: 'units', label: 'units' }
     ];
 
     return (
-        <div
-            className="waste-modal-overlay"
-            onClick={handleOverlayClick}
-        >
+        <div className="waste-modal-overlay" onClick={handleOverlayClick}>
             <div className="waste-modal-container">
-                {/* Header */}
                 <div className="waste-modal-header">
-                    <h2 className="waste-modal-title">
-                        Registrar Desperdicio
-                    </h2>
+                    <h2 className="waste-modal-title">Register Waste</h2>
                     <button
                         className="waste-modal-close-btn"
                         onClick={handleClose}
-                        aria-label="Cerrar"
+                        aria-label="Close"
                         type="button"
+                        disabled={isSubmitting}
                     >
                         ×
                     </button>
                 </div>
 
-                {/* Body */}
                 <div className="waste-modal-body">
                     <form id="wasteForm" onSubmit={handleSubmit}>
-                        {/* Producto/Ingrediente */}
+                        {/* Product/Ingredient */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                Producto / Ingrediente <span className="waste-form-required">*</span>
+                                Product / Ingredient <span className="waste-form-required">*</span>
                             </label>
                             <select
                                 className="waste-form-control waste-form-select"
-                                name="producto"
-                                value={formData.producto}
+                                name="product"
+                                value={formData.product}
                                 onChange={handleInputChange}
                                 required
-                                disabled={ingredients.length === 0}
+                                disabled={ingredients.length === 0 || isSubmitting}
                             >
                                 <option value="">
                                     {ingredients.length === 0
-                                        ? 'No hay ingredientes disponibles'
-                                        : 'Selecciona un producto...'}
+                                        ? 'No ingredients available'
+                                        : 'Select a product...'}
                                 </option>
                                 {ingredients.map(ingredient => (
                                     <option
-                                        key={ingredient.id || ingredient.value}
-                                        value={ingredient.id || ingredient.value}
+                                        key={ingredient.id}
+                                        value={ingredient.id}
                                     >
-                                        {ingredient.nombre || ingredient.label || ingredient.name}
+                                        {ingredient.name}
+                                        {ingredient.currentStock !== undefined && 
+                                            ` (Stock: ${ingredient.currentStock} ${ingredient.unit})`
+                                        }
                                     </option>
                                 ))}
                             </select>
+                            {ingredients.length === 0 && (
+                                <div className="waste-form-error">
+                                    No ingredients in stock. Add ingredients first.
+                                </div>
+                            )}
                         </div>
 
-                        {/* Cantidad y Unidad */}
+                        {/* Quantity and Unit */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                Cantidad <span className="waste-form-required">*</span>
+                                Quantity <span className="waste-form-required">*</span>
                             </label>
                             <div className="waste-input-group">
                                 <input
                                     type="number"
                                     className="waste-form-control waste-form-input"
-                                    name="cantidad"
-                                    value={formData.cantidad}
+                                    name="quantity"
+                                    value={formData.quantity}
                                     onChange={handleInputChange}
                                     placeholder="2.5"
                                     step="0.01"
                                     min="0"
                                     required
+                                    disabled={isSubmitting}
                                 />
                                 <select
                                     className="waste-form-control waste-form-select waste-unit-select"
-                                    name="unidad"
-                                    value={formData.unidad}
+                                    name="unit"
+                                    value={formData.unit}
                                     onChange={handleInputChange}
                                     required
+                                    disabled={isSubmitting}
                                 >
                                     {units.map(unit => (
                                         <option key={unit.value} value={unit.value}>
@@ -237,10 +223,10 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
                             </div>
                         </div>
 
-                        {/* Razón del Desperdicio */}
+                        {/* Waste Reason */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                ¿Qué pasó con el producto? <span className="waste-form-required">*</span>
+                                What happened to the product? <span className="waste-form-required">*</span>
                             </label>
                             <div className="waste-chip-group">
                                 {reasons.map(reason => (
@@ -249,6 +235,7 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
                                         type="button"
                                         className={`waste-chip ${selectedReason === reason.value ? 'waste-chip-active' : ''}`}
                                         onClick={() => handleReasonSelect(reason.value)}
+                                        disabled={isSubmitting}
                                     >
                                         <span className="waste-chip-emoji">{reason.emoji}</span>
                                         {reason.label}
@@ -257,41 +244,50 @@ const WasteRegistrationModal = ({ isOpen, onClose, ingredients = [] }) => {
                             </div>
                         </div>
 
-                        {/* Detalles adicionales (opcional) */}
+                        {/* Additional Details */}
                         <div className="waste-form-group">
                             <label className="waste-form-label">
-                                Detalles adicionales (opcional)
+                                Additional details (optional)
                             </label>
                             <textarea
                                 className="waste-form-control waste-form-textarea"
-                                name="detalles"
-                                value={formData.detalles}
+                                name="details"
+                                value={formData.details}
                                 onChange={handleInputChange}
-                                placeholder="Ej: Se quemó durante el servicio del mediodía, temperatura demasiado alta"
+                                placeholder="Example: Burned during lunch service, temperature too high"
+                                disabled={isSubmitting}
+                                rows="3"
                             />
-                            <div className="waste-form-hint">
-                                Cuantos más detalles proporciones, mejores recomendaciones podremos darte
-                            </div>
                         </div>
                     </form>
                 </div>
 
-                {/* Footer */}
                 <div className="waste-modal-footer">
                     <button
                         type="button"
                         className="waste-btn waste-btn-secondary"
                         onClick={handleClose}
+                        disabled={isSubmitting}
                     >
-                        Cancelar
+                        Cancel
                     </button>
                     <button
                         type="submit"
+                        form="wasteForm"
                         className="waste-btn waste-btn-primary"
-                        onClick={handleSubmit}
+                        disabled={isSubmitting || ingredients.length === 0 || !selectedReason}
                     >
-                        <span className="waste-btn-icon">✓</span>
-                        Registrar Desperdicio
+                        {isSubmitting ? (
+                            <>
+                                <span className="waste-btn-loading">⏳</span>
+                                Registering...
+                            </>
+                        ) : (
+                            <>
+                                <span className="waste-btn-icon">✓</span>
+                                Register Waste
+                            </>
+                        )}
                     </button>
                 </div>
             </div>

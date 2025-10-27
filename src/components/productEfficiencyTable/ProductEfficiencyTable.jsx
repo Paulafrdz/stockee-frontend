@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './ProductEfficiencyTable.css';
+import './ProductEfficiencyTable';
 
 const ProductEfficiencyTable = ({ products = [] }) => {
   const [sortConfig, setSortConfig] = useState({
@@ -42,6 +42,21 @@ const ProductEfficiencyTable = ({ products = [] }) => {
     if (causaLower.includes('error')) return 'product-eff-badge-error';
     if (causaLower === 'ninguna') return 'product-eff-badge-ninguna';
     return 'product-eff-badge-default';
+  };
+
+  const getMainCauseLabel = (mainCause) => {
+    // Si el backend devuelve valores en inglés, los convertimos a español
+    const labelMap = {
+      'expired': 'Caducidad',
+      'burned': 'Error - Quemado',
+      'wrong-ingredient': 'Error - Ingrediente incorrecto',
+      'breakage': 'Rotura/Caída',
+      'natural-waste': 'Merma Natural',
+      'over-preparation': 'Preparación Excesiva',
+      'other': 'Otro',
+      'none': 'Ninguna'
+    };
+    return labelMap[mainCause] || mainCause;
   };
 
   const formatCurrency = (amount) => {
@@ -152,7 +167,7 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                 </td>
                 <td className="product-eff-td">
                   <span className={`product-eff-badge ${getCausaBadgeClass(product.mainCause)}`}>
-                    {product.mainCause}
+                    {getMainCauseLabel(product.mainCause)}
                   </span>
                 </td>
                 <td className="product-eff-td product-eff-td-right">

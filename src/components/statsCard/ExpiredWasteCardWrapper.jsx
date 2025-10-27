@@ -1,79 +1,51 @@
 import React, { useState, useEffect } from 'react';
-import { getAllWaste } from '../../services/wasteService';
-import StatsCard from './StatsCard';
+import { getAnalyticsStats } from '../../services/analyticsService';
+import StatsCard from '../statsCard/StatsCard';
 
 const ExpiredWasteCardWrapper = () => {
-  const [expiredData, setExpiredData] = useState({ count: 0, quantity: 0 });
-  const [trend, setTrend] = useState(null);
+  const [data, setData] = useState({ count: 0, quantity: 0 });
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchWasteData();
+    fetchData();
   }, []);
 
-  const fetchWasteData = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getAllWaste();
-      calculateExpiredMetrics(data);
+      setIsLoading(true);
+      const stats = await getAnalyticsStats();
+      
+      setData({
+        count: stats.expiredCount || 0,
+        quantity: stats.expiredWaste || 0
+      });
     } catch (error) {
-      console.error('Error fetching waste data for expired card:', error);
+      console.error('Error fetching expired waste stats:', error);
+      setData({ count: 0, quantity: 0 });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const calculateExpiredMetrics = (wasteItems) => {
-    // Filtrar solo desperdicios por caducidad
-    const expiredWastes = wasteItems.filter(item => 
-      item.reason === 'caducidad'
+  if (isLoading) {
+    return (
+      <StatsCard
+        title="Productos Caducados"
+        value="Cargando..."
+        subtitle="kg este mes"
+        icon="📅"
+        variant="default"
+      />
     );
-
-    // Calcular métricas del mes actual
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    
-    const currentMonthExpired = expiredWastes
-      .filter(item => {
-        const itemDate = new Date(item.timestamp);
-        return itemDate.getMonth() === currentMonth && 
-               itemDate.getFullYear() === currentYear;
-      });
-
-    const currentQuantity = currentMonthExpired.reduce((sum, item) => sum + item.quantity, 0);
-    const currentCount = currentMonthExpired.length;
-
-    // Calcular métricas del mes anterior para la tendencia
-    const lastMonthExpired = expiredWastes
-      .filter(item => {
-        const itemDate = new Date(item.timestamp);
-        const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-        const year = currentMonth === 0 ? currentYear - 1 : currentYear;
-        return itemDate.getMonth() === lastMonth && 
-               itemDate.getFullYear() === year;
-      });
-
-    const lastMonthQuantity = lastMonthExpired.reduce((sum, item) => sum + item.quantity, 0);
-
-    setExpiredData({
-      count: currentCount,
-      quantity: currentQuantity
-    });
-
-    // Calcular tendencia
-    if (lastMonthQuantity > 0) {
-      const change = ((currentQuantity - lastMonthQuantity) / lastMonthQuantity) * 100;
-      setTrend({
-        isPositive: change < 0, // Menos caducados = positivo
-        text: `${Math.abs(Math.round(change))}% vs mes pasado`
-      });
-    }
-  };
+  }
 
   return (
     <StatsCard
       title="Productos Caducados"
-      value={expiredData.count}
-      subtitle={`${expiredData.quantity.toFixed(1)} kg este mes`}
+      value={data.count}
+      subtitle={`${data.quantity} kg este mes`}
       icon="📅"
-      trend={trend}
-      variant={trend?.isPositive ? 'success' : 'danger'}
+      variant="info"
     />
   );
 };

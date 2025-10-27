@@ -1,96 +1,52 @@
-// WasteTrendChartWrapper.jsx
 import React, { useState, useEffect } from 'react';
-import { getAllWaste } from '../../services/wasteService';
-import WasteTrendChart from './WasteTrendChart';
+import { getWasteTrendData } from '../../services/analyticsService';
+import WasteTrendChart from '../wasteTrendChart/WasteTrendChart';
 
 const WasteTrendChartWrapper = () => {
-  const [wasteData, setWasteData] = useState([]);
-  const [processedData, setProcessedData] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchWasteData();
+    fetchData();
   }, []);
 
-  const fetchWasteData = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getAllWaste();
-      setWasteData(data);
-      processTrendData(data);
+      setIsLoading(true);
+      setError(null);
+      const data = await getWasteTrendData();
+      setChartData(data);
     } catch (error) {
-      console.error('Error fetching waste data for trend chart:', error);
+      console.error('Error fetching waste trend data:', error);
+      setError('Error al cargar datos de tendencias');
+      setChartData([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const processTrendData = (wasteItems) => {
-    // Crear mapa para los últimos 6 meses
-    const last6Months = getLast6Months();
-    const monthlyData = {};
-    
-    // Inicializar todos los meses con 0
-    last6Months.forEach(month => {
-      monthlyData[month.key] = { month: month.label, value: 0 };
-    });
-
-    // Agrupar desperdicios por mes
-    wasteItems.forEach(waste => {
-      const wasteDate = new Date(waste.timestamp);
-      const monthKey = `${wasteDate.getFullYear()}-${wasteDate.getMonth() + 1}`;
-      const monthLabel = getMonthLabel(wasteDate);
-      
-      // Solo considerar los últimos 6 meses
-      if (last6Months.find(m => m.key === monthKey)) {
-        if (!monthlyData[monthKey]) {
-          monthlyData[monthKey] = { month: monthLabel, value: 0 };
-        }
-        monthlyData[monthKey].value += waste.quantity;
-      }
-    });
-
-    // Convertir a array y ordenar por fecha
-    const trendData = Object.values(monthlyData)
-      .sort((a, b) => {
-        const monthOrder = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
-                           'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-        return monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month);
-      });
-
-    setProcessedData(trendData);
-  };
-
-  const getLast6Months = () => {
-    const months = [];
-    const today = new Date();
-    
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const monthKey = `${date.getFullYear()}-${date.getMonth() + 1}`;
-      const monthLabel = getMonthLabel(date);
-      months.push({ key: monthKey, label: monthLabel });
-    }
-    
-    return months;
-  };
-
-  const getMonthLabel = (date) => {
-    const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
-                   'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-    return months[date.getMonth()];
-  };
-
   if (isLoading) {
     return (
-      <div className="waste-trend-container">
-        <div className="waste-trend-loading">
-          Cargando tendencias de desperdicio...
-        </div>
+      <div className="chart-loading">
+        <div className="loading-spinner"></div>
+        <p>Cargando tendencias...</p>
       </div>
     );
   }
 
-  return <WasteTrendChart data={processedData} />;
+  if (error) {
+    return (
+      <div className="chart-error">
+        <p>⚠️ {error}</p>
+        <button onClick={fetchData} className="retry-btn">
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+
+  return <WasteTrendChart data={chartData} />;
 };
 
 export default WasteTrendChartWrapper;

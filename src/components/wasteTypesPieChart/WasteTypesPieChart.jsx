@@ -3,16 +3,16 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import './WasteTypesPieChart.css';
 
 const WasteTypesPieChart = ({ data = [] }) => {
-    
+
   const reasonToCategory = (reason) => {
     const map = {
-      'caducidad': 'Caducidad',
-      'quemado': 'Errores Elaboración',
-      'ingrediente-incorrecto': 'Errores Elaboración', 
-      'preparacion-excesiva': 'Errores Elaboración',
-      'merma': 'Otros (Merma, Roturas)',
-      'rotura': 'Otros (Merma, Roturas)',
-      'otro': 'Otros (Merma, Roturas)'
+      'expired': 'Caducidad',
+      'burned': 'Errores Elaboración',
+      'wrong-ingredient': 'Errores Elaboración', 
+      'over-preparation': 'Errores Elaboración',
+      'natural-waste': 'Otros (Merma, Roturas)',
+      'breakage': 'Otros (Merma, Roturas)',
+      'other': 'Otros (Merma, Roturas)'
     };
     return map[reason] || 'Otros (Merma, Roturas)';
   };

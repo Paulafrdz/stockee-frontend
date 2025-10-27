@@ -1,80 +1,52 @@
-// WasteTypesPieChartWrapper.jsx
 import React, { useState, useEffect } from 'react';
-import { getAllWaste } from '../../services/wasteService';
-import WasteTypesPieChart from './WasteTypesPieChart';
+import { getWasteTypesData } from '../../services/analyticsService';
+import WasteTypesPieChart from '../wasteTypesPieChart/WasteTypesPieChart';
 
 const WasteTypesPieChartWrapper = () => {
-  const [wasteData, setWasteData] = useState([]);
-  const [processedData, setProcessedData] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchWasteData();
+    fetchData();
   }, []);
 
-  const fetchWasteData = async () => {
+  const fetchData = async () => {
     try {
-      const data = await getAllWaste();
-      setWasteData(data);
-      processWasteData(data);
+      setIsLoading(true);
+      setError(null);
+      const data = await getWasteTypesData();
+      setChartData(data);
     } catch (error) {
-      console.error('Error fetching waste data for pie chart:', error);
+      console.error('Error fetching waste types data:', error);
+      setError('Error al cargar datos del gráfico');
+      setChartData([]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const processWasteData = (wasteItems) => {
-    // Agrupar por categorías de desperdicio
-    const categories = {
-      'Caducidad': 0,
-      'Errores Elaboración': 0, 
-      'Otros (Merma, Roturas)': 0
-    };
-
-    wasteItems.forEach(waste => {
-      // Mapear razones específicas a categorías generales
-      switch (waste.reason) {
-        case 'caducidad':
-          categories['Caducidad'] += waste.quantity;
-          break;
-        
-        case 'quemado':
-        case 'ingrediente-incorrecto':
-        case 'preparacion-excesiva':
-          categories['Errores Elaboración'] += waste.quantity;
-          break;
-        
-        case 'merma':
-        case 'rotura':
-        default:
-          categories['Otros (Merma, Roturas)'] += waste.quantity;
-          break;
-      }
-    });
-
-    // Convertir a formato que espera el gráfico
-    const pieData = Object.entries(categories)
-      .filter(([_, amount]) => amount > 0) // Solo categorías con datos
-      .map(([type, amount]) => ({
-        type,
-        amount: Math.round(amount * 100) / 100 // Redondear a 2 decimales
-      }));
-
-    setProcessedData(pieData);
-  };
-
   if (isLoading) {
     return (
-      <div className="waste-pie-container">
-        <div className="waste-pie-loading">
-          Cargando datos de desperdicios...
-        </div>
+      <div className="chart-loading">
+        <div className="loading-spinner"></div>
+        <p>Cargando tipos de desperdicio...</p>
       </div>
     );
   }
 
-  return <WasteTypesPieChart data={processedData} />;
+  if (error) {
+    return (
+      <div className="chart-error">
+        <p>⚠️ {error}</p>
+        <button onClick={fetchData} className="retry-btn">
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+
+  return <WasteTypesPieChart data={chartData} />;
 };
 
 export default WasteTypesPieChartWrapper;

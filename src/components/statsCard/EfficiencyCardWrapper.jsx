@@ -1,53 +1,63 @@
 import React, { useState, useEffect } from 'react';
-import { getAllWaste } from '../../services/wasteService';
-import { getStockItems } from '../../services/stockService';
-import StatsCard from './StatsCard';
+import { getAnalyticsStats } from '../../services/analyticsService';
+import StatsCard from '../statsCard/StatsCard';
 
 const EfficiencyCardWrapper = () => {
   const [efficiency, setEfficiency] = useState(0);
-  const [trend, setTrend] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    calculateEfficiency();
+    fetchData();
   }, []);
 
-  const calculateEfficiency = async () => {
+  const fetchData = async () => {
     try {
-      const [wasteData, stockData] = await Promise.all([
-        getAllWaste(),
-        getStockItems()
-      ]);
-
-      // Calcular uso total (stock actual + desperdicios)
-      const totalUsage = stockData.reduce((sum, item) => sum + item.currentStock, 0) +
-                        wasteData.reduce((sum, item) => sum + item.quantity, 0);
-
-      // Calcular eficiencia
-      const wastePercentage = totalUsage > 0 ? 
-        (wasteData.reduce((sum, item) => sum + item.quantity, 0) / totalUsage) * 100 : 0;
+      setIsLoading(true);
+      const stats = await getAnalyticsStats();
       
-      const currentEfficiency = Math.max(0, 100 - wastePercentage);
-      setEfficiency(currentEfficiency);
-
-      // Aquí podrías calcular tendencia comparando con periodo anterior
-      setTrend({
-        isPositive: currentEfficiency >= 80,
-        text: currentEfficiency >= 80 ? "Buen nivel" : "Necesita mejora"
-      });
-
+      setEfficiency(stats.efficiency || 0);
     } catch (error) {
-      console.error('Error calculating efficiency:', error);
+      console.error('Error fetching efficiency stats:', error);
+      setEfficiency(0);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const getVariant = (eff) => {
+    if (eff >= 90) return 'success';
+    if (eff >= 80) return 'warning';
+    return 'danger';
+  };
+
+  const getTrend = (eff) => {
+    if (eff >= 90) return { isPositive: true, text: "Excelente" };
+    if (eff >= 80) return { isPositive: true, text: "Bueno" };
+    return { isPositive: false, text: "Necesita mejora" };
+  };
+
+  if (isLoading) {
+    return (
+      <StatsCard
+        title="Eficiencia General"
+        value="Cargando..."
+        subtitle="Uso vs Desperdicio"
+        icon="📊"
+        variant="default"
+      />
+    );
+  }
 
   return (
     <StatsCard
       title="Eficiencia General"
-      value={`${Math.round(efficiency)}%`}
+      value={`${efficiency}%`}
       subtitle="Uso vs Desperdicio"
       icon="📊"
-      trend={trend}
-      variant={efficiency >= 80 ? 'success' : efficiency >= 60 ? 'warning' : 'danger'}
+      trend={getTrend(efficiency)}
+      variant={getVariant(efficiency)}
     />
   );
 };
+
+export default EfficiencyCardWrapper;
