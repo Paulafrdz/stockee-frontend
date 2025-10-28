@@ -40,8 +40,8 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
     }
     
     setTimeout(() => {
-      console.log('🔄 Redirigiendo a /stock');
-      navigate('/stock', { replace: true });
+      console.log('🔄 Redirigiendo a /dashboard');
+      navigate('/dashboad', { replace: true });
     }, 100);
   };
 
