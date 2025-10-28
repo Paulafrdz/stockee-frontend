@@ -6,6 +6,7 @@ import TopIngredientsChartWrapper from '../components/topIngredientsChart/TopIng
 import EfficiencyCardWrapper from '../components/statsCard/EfficiencyCardWrapper';
 import EfficiencyGaugeWrapper from '../components/efficiencyGauge/EfficiencyGaugeWrapper';
 import WasteGaugeWrapper from '../components/wasteGauge/WasteGaugeWrapper';
+import ConsumptionTrendChartWrapper from '../components/consumptionTrendChart/ConsumptionTrendChartWrapper';
 
 
 const DashboardPage = () => {
@@ -13,6 +14,7 @@ const DashboardPage = () => {
 
     return(
         <DashboardLayout>
+            <ConsumptionTrendChartWrapper></ConsumptionTrendChartWrapper>
             <LowStockChartWrapper></LowStockChartWrapper>
             <TopIngredientsChartWrapper></TopIngredientsChartWrapper>
             <EfficiencyGaugeWrapper></EfficiencyGaugeWrapper>
