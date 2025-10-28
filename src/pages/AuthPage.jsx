@@ -23,7 +23,7 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
   useEffect(() => {
     const currentUser = AuthService.getCurrentUser();
     if (currentUser && (currentUser.token || currentUser.username)) {
-      navigate('/stock', { replace: true });
+      navigate('/dashboard', { replace: true });
     }
   }, []); 
 

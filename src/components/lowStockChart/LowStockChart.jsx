@@ -79,6 +79,7 @@ const LowStockChart = ({ data = [] }) => {
                             tickLabelStyle: {
                                 fontSize: 12,
                                 fill: '#404040',
+                                
                             },
                         },
                     ]}
@@ -94,6 +95,7 @@ const LowStockChart = ({ data = [] }) => {
                     margin={{ top: 10, right: 30, bottom: 30, left: 30 }}
                     grid={{ horizontal: true }}
                     borderRadius={10}
+                    barGapRatio={0.5}
                     slotProps={{
                         legend: {
                             position: { vertical: 'top', horizontal: 'middle' }, // 🔹 coloca la leyenda arriba
