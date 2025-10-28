@@ -1,29 +1,30 @@
 import React from 'react';
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-import './EfficiencyGauge.css';
+import './WasteGauge.css';
 
-const EfficiencyGauge = ({ value = 0, title = "Eficiencia Total" }) => {
+const WasteGauge = ({ value = 0, title = "Desperdicio Total" }) => {
   const getColor = () => {
-    if (value >= 90) return 'var(--primary-500)'; // Verde
-    if (value >= 70) return 'var(--secondary-500)'; // Naranja
-    return 'var(--terciary-500)'; // Rosa
+    if (value <= 5) return 'var(--primary-500)'; 
+    if (value <= 15) return 'var(--secondary-500)'; 
+    return 'var(--terciary-500)'; 
   };
 
   return (
-    <div className="efficiency-gauge-container">
-      <div className="efficiency-gauge-header">
-        <h3 className="efficiency-gauge-title">{title}</h3>
+    <div className="waste-gauge-container">
+      <div className="waste-gauge-header">
+        <h3 className="waste-gauge-title">{title}</h3>
       </div>
 
-      <div className="efficiency-gauge-wrapper">
+      <div className="waste-gauge-wrapper">
         <Gauge
           value={value}
-          startAngle={0}
-          endAngle={360}
+          startAngle={0}      
+          endAngle={360}      
           width={200}
           height={200}
-          innerRadius="80%"
+          innerRadius="80%"   
           outerRadius="100%"
+          cornerRadius="50%"
           sx={{
             [`& .${gaugeClasses.valueText}`]: {
               fontSize: 32,
@@ -44,4 +45,4 @@ const EfficiencyGauge = ({ value = 0, title = "Eficiencia Total" }) => {
   );
 };
 
-export default EfficiencyGauge;
+export default WasteGauge;
