@@ -16,9 +16,7 @@ const TopIngredientsChart = ({ data = [] }) => {
         return (
             <div className="top-ingredients-container">
                 <div className="top-ingredients-header">
-                    <h3 className="top-ingredients-title">Ingredientes Más Consumidos</h3>
-                    <p className="top-ingredients-subtitle">Top 3 ingredientes</p>
-                </div>
+                    <h3 className="top-ingredients-title">Ingredientes Más Consumidos</h3>                </div>
                 <div className="top-ingredients-empty">
                     <p>No hay datos de consumo disponibles</p>
                 </div>
@@ -31,7 +29,6 @@ const TopIngredientsChart = ({ data = [] }) => {
             <div className="top-ingredients-container">
                 <div className="top-ingredients-header">
                     <h3 className="top-ingredients-title">Ingredientes Más Consumidos</h3>
-                    <p className="top-ingredients-subtitle">Top 3 ingredientes</p>
                 </div>
                 <div className="top-ingredients-empty">
                     <p>No se encontraron ingredientes consumidos</p>
@@ -44,11 +41,6 @@ const TopIngredientsChart = ({ data = [] }) => {
         <div className="top-ingredients-container">
             <div className="top-ingredients-header">
                 <h3 className="top-ingredients-title">Ingredientes más consumidos</h3>
-                <p className="top-ingredients-subtitle">
-                    <span className="top-ingredients-total">
-                        Total registros: {data.length}
-                    </span>
-                </p>
             </div>
 
             <div className="top-ingredients-content">
@@ -61,9 +53,7 @@ const TopIngredientsChart = ({ data = [] }) => {
                                 color: '#6366f1',
                             },
                         ]}
-                        width={400}
-                        height={300}
-                        margin={{ top: 20, right: 20, bottom: 60, left: 60 }}
+                        margin={{ left: -10, bottom: -5 }}
                         borderRadius={100}
                         groupPadding={0}
                         slotProps={{

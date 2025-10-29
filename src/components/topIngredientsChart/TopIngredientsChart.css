@@ -1,13 +1,28 @@
 .top-ingredients-container {
-  width: 100%;
   background: var(--white);
   border-radius: var(--border-radius);
-  padding: var(--space-margin);
+  padding: var(--space-body);
+  display: flex;
+  flex-direction: column;
+}
+.top-ingredients-content {
+  width: 100%;
+  background: var(--white);
+  min-height: 0;
+  flex-grow: 1;
 }
 
 .top-ingredients-header {
-  margin-bottom: var(--space-body);
+  margin-bottom: var(--space-button);
 }
+
+.top-ingredients-chart-wrapper {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
 
 .top-ingredients-title {
   font-size: var(--h3-size);
@@ -33,12 +48,7 @@
   font-size: var(--body-size);
 }
 
-.top-ingredients-chart-wrapper {
-  display: flex;
-  justify-content: center;
-  overflow-x: auto;
-  margin-bottom: var(--space-body);
-}
+
 
 .top-ingredients-legend {
   display: flex;

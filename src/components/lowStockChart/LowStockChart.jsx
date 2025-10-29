@@ -50,14 +50,6 @@ const LowStockChart = ({ data = [] }) => {
         <div className="low-stock-container">
             <div className="low-stock-header">
                 <h3 className="low-stock-title">Productos Bajos en Stock</h3>
-                <p className="low-stock-subtitle">
-                    Productos con menor inventario
-                    {criticalStockItems.length > 0 && (
-                        <span className="low-stock-warning">
-                            ⚠️ {criticalStockItems.length} en stock crítico
-                        </span>
-                    )}
-                </p>
             </div>
 
             <div className="low-stock-chart-wrapper">
@@ -90,9 +82,7 @@ const LowStockChart = ({ data = [] }) => {
                         barSize: 10,
                     }))}
                     layout="horizontal"
-                    width={400}
-                    height={250}
-                    margin={{ top: 10, right: 30, bottom: 30, left: 30 }}
+                    margin={{ left: -5, bottom: -5 }}
                     grid={{ horizontal: true }}
                     borderRadius={10}
                     barGapRatio={0.5}

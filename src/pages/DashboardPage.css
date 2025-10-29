@@ -1,0 +1,140 @@
+.dashboard-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-body);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-body);
+  height: 100%;
+
+}
+
+.dashboard-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-button);
+  margin-bottom: 0;
+}
+
+.dashboard-page-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  flex: 1;
+}
+
+.dashboard-page-title {
+  font-size: var(--h1-size);
+  font-weight: var(--h2-weight);
+  color: var(--font-color);
+  font-family: var(--font-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.dashboard-page-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas: 
+    "consumption consumption ingredients-chart"
+    "low-chart waste-gauge efficiency-gauge";
+  gap: var(--space-body);
+  flex: 1;
+  min-height: 500px;
+}
+
+.consumption-chart {
+  grid-area: consumption;
+  min-height: 0;
+  display: flex;
+}
+
+.consumption-chart > * {
+  flex: 1;
+  min-height: 0;
+  width:100%;
+
+}
+
+.ingredients-chart-item {
+  grid-area: ingredients-chart;
+  min-height: 0;
+  display: flex;
+}
+
+.ingredients-chart-item > * {
+  flex: 1;
+  min-height: 0;
+}
+
+.low-chart-item {
+  grid-area: low-chart;
+  min-height: 0;
+  display: flex;
+}
+
+.low-chart-item > * {
+  flex: 1;
+  min-height: 0;
+}
+
+.efficiency-gauge-item {
+  grid-area: efficiency-gauge;
+  min-height: 0;
+  display: flex;
+
+}
+
+.efficiency-gauge-item > * {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+.waste-gauge-item {
+  grid-area: waste-gauge;
+  min-height: 0;
+  display: flex;
+}
+
+.waste-gauge-item > * {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+
+/* Forzar que todos los componentes respeten el tamaño del grid */
+.dashboard-page-container > * {
+  min-width: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-page {
+    height: auto;
+  }
+
+  .dashboard-page-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas: 
+      "consumption consumption"
+      "ingredients-chart low-chart"
+      "waste-gauge efficiency-gauge";
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: 
+      "consumption"
+      "ingredients-chart"
+      "low-chart"
+      "waste-gauge"
+      "efficiency-gauge";
+  }
+}

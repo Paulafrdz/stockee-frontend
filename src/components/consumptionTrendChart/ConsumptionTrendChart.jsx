@@ -34,7 +34,7 @@ const ConsumptionTrendChart = ({ data = [] }) => {
       </div>
 
       <div className="ingredients-consumption-chart-wrapper">
-        <LineChart
+        <LineChart 
           xAxis={[
             {
               scaleType: 'point',
@@ -64,9 +64,7 @@ const ConsumptionTrendChart = ({ data = [] }) => {
               area: true,
             },
           ]}
-          width={700}
-          height={350}
-          margin={{ top: 40, right: 30, bottom: 40, left: 60 }}
+          margin={{ left: 10}}
           grid={{ horizontal: true }}
           slotProps={{
             legend: {
@@ -79,28 +77,6 @@ const ConsumptionTrendChart = ({ data = [] }) => {
             },
           }}
         />
-      </div>
-
-      {/* Estadísticas mensuales */}
-      <div className="ingredients-consumption-stats">
-        <div className="consumption-stat">
-          <span className="stat-label">Consumo promedio:</span>
-          <span className="stat-value">
-            {Math.round(consumptionValues.reduce((a, b) => a + b, 0) / consumptionValues.length)} kg/mes
-          </span>
-        </div>
-        <div className="consumption-stat">
-          <span className="stat-label">Máximo consumo:</span>
-          <span className="stat-value">
-            {Math.max(...consumptionValues)} kg
-          </span>
-        </div>
-        <div className="consumption-stat">
-          <span className="stat-label">Período analizado:</span>
-          <span className="stat-value">
-            {data.length} meses
-          </span>
-        </div>
       </div>
     </div>
   );
