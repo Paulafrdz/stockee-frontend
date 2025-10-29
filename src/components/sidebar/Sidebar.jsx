@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BarChart3, ShoppingCart, ChefHat, Package, Settings, LogOut } from 'lucide-react';
+import { BarChart3, ShoppingCart, ChefHat, Package, Settings, LogOut, NotebookPen, Gauge } from 'lucide-react';
 import { AuthService } from '../../services/AuthService';
 import './Sidebar.css';
 import Logo from "../../assets/logoPositive.svg";
@@ -14,8 +14,8 @@ const Sidebar = ({ user }) => {
         { id: 'sales', label: 'Ventas', icon: ShoppingCart, path: '/sales' },
         { id: 'dishes', label: 'Platos', icon: ChefHat, path: '/dishes' },
         { id: 'stock', label: 'Stock', icon: Package, path: '/stock' },
-        { id: 'order', label: 'Pedido', icon: Package, path: '/order' },
-        { id: 'analytics', label: 'Eficiencia', icon: Package, path: '/analytics' },
+        { id: 'order', label: 'Pedido', icon: NotebookPen, path: '/order' },
+        { id: 'analytics', label: 'Eficiencia', icon: Gauge, path: '/analytics' },
     ];
 
     const handleLogout = async () => {
