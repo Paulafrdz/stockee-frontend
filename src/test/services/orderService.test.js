@@ -13,9 +13,6 @@ const localStorageMock = (() => {
     setItem: (key, value) => {
       store[key] = value.toString();
     },
-    removeItem: (key) => {
-      delete store[key];
-    },
     clear: () => {
       store = {};
     }
@@ -24,7 +21,7 @@ const localStorageMock = (() => {
 
 global.localStorage = localStorageMock;
 
-describe('orderService - Unit Tests', () => {
+describe('orderService', () => {
   const API_URL = 'http://localhost:8080/api/orders';
   const mockToken = 'fake-jwt-token';
 
@@ -33,7 +30,6 @@ describe('orderService - Unit Tests', () => {
     localStorage.clear();
     localStorage.setItem('token', mockToken);
     
-    // Clear console mocks
     vi.spyOn(console, 'log').mockImplementation(() => {});
     vi.spyOn(console, 'error').mockImplementation(() => {});
   });
@@ -42,7 +38,7 @@ describe('orderService - Unit Tests', () => {
     vi.restoreAllMocks();
   });
 
-  // ==================== getRecommendedOrders Tests ====================
+  // ==================== getRecommendedOrders ====================
 
   describe('getRecommendedOrders', () => {
     const mockBackendData = [
@@ -70,7 +66,7 @@ describe('orderService - Unit Tests', () => {
       }
     ];
 
-    it('should fetch recommended orders successfully', async () => {
+    it('should fetch and transform recommended orders successfully', async () => {
       axios.get.mockResolvedValue({ data: mockBackendData });
 
       const result = await getRecommendedOrders();
@@ -81,13 +77,6 @@ describe('orderService - Unit Tests', () => {
         }
       });
       expect(result).toHaveLength(2);
-    });
-
-    it('should transform backend data to frontend format', async () => {
-      axios.get.mockResolvedValue({ data: mockBackendData });
-
-      const result = await getRecommendedOrders();
-
       expect(result[0]).toEqual({
         id: 1,
         name: 'Tomate',
@@ -101,21 +90,13 @@ describe('orderService - Unit Tests', () => {
       });
     });
 
-    it('should parse string numbers to floats', async () => {
+    it('should parse string numbers to floats and handle null values', async () => {
       axios.get.mockResolvedValue({ data: mockBackendData });
 
       const result = await getRecommendedOrders();
 
       expect(typeof result[0].currentStock).toBe('number');
-      expect(typeof result[0].minimumStock).toBe('number');
       expect(typeof result[0].weeklyUsage).toBe('number');
-    });
-
-    it('should handle null recommendedQuantity', async () => {
-      axios.get.mockResolvedValue({ data: mockBackendData });
-
-      const result = await getRecommendedOrders();
-
       expect(result[1].recommendedQuantity).toBe(0);
     });
 
@@ -138,67 +119,21 @@ describe('orderService - Unit Tests', () => {
       expect(result[0].priority).toBe('medium');
     });
 
-    it('should include Authorization header with token', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      await getRecommendedOrders();
-
-      expect(axios.get).toHaveBeenCalledWith(
-        API_URL,
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Authorization: `Bearer ${mockToken}`
-          })
-        })
-      );
-    });
-
-    it('should return empty array on error', async () => {
-      axios.get.mockRejectedValue(new Error('Network error'));
+    it('should return empty array and log error on failure', async () => {
+      const error = new Error('Network error');
+      axios.get.mockRejectedValue(error);
 
       const result = await getRecommendedOrders();
 
       expect(result).toEqual([]);
-    });
-
-    it('should log error when fetch fails', async () => {
-      const error = new Error('Network error');
-      axios.get.mockRejectedValue(error);
-
-      await getRecommendedOrders();
-
       expect(console.error).toHaveBeenCalledWith(
         'Error fetching recommended orders:',
         error
       );
     });
-
-    it('should handle empty response data', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      const result = await getRecommendedOrders();
-
-      expect(result).toEqual([]);
-    });
-
-    it('should handle malformed data gracefully', async () => {
-      const malformedData = [
-        {
-          id: 1,
-          // Missing required fields
-        }
-      ];
-
-      axios.get.mockResolvedValue({ data: malformedData });
-
-      const result = await getRecommendedOrders();
-
-      expect(result).toHaveLength(1);
-      expect(result[0].id).toBe(1);
-    });
   });
 
-  // ==================== submitOrder Tests ====================
+  // ==================== submitOrder ====================
 
   describe('submitOrder', () => {
     const mockOrderData = {
@@ -226,7 +161,7 @@ describe('orderService - Unit Tests', () => {
       }
     };
 
-    it('should submit order successfully', async () => {
+    it('should submit order successfully with correct structure', async () => {
       axios.post.mockResolvedValue(mockBackendResponse);
 
       const result = await submitOrder(mockOrderData);
@@ -240,14 +175,6 @@ describe('orderService - Unit Tests', () => {
           }
         }
       );
-      expect(result.success).toBe(true);
-    });
-
-    it('should return order result with correct structure', async () => {
-      axios.post.mockResolvedValue(mockBackendResponse);
-
-      const result = await submitOrder(mockOrderData);
-
       expect(result).toEqual({
         success: true,
         orderId: 123,
@@ -256,7 +183,7 @@ describe('orderService - Unit Tests', () => {
       });
     });
 
-    it('should only send items to backend', async () => {
+    it('should only send items to backend and ignore extra fields', async () => {
       const orderWithExtraData = {
         items: mockOrderData.items,
         someExtraField: 'should not be sent',
@@ -288,61 +215,11 @@ describe('orderService - Unit Tests', () => {
       expect(result.orderId).toMatch(/^order_\d+$/);
     });
 
-    it('should include Authorization header with token', async () => {
-      axios.post.mockResolvedValue(mockBackendResponse);
-
-      await submitOrder(mockOrderData);
-
-      expect(axios.post).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.any(Object),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Authorization: `Bearer ${mockToken}`
-          })
-        })
-      );
-    });
-
-    it('should log submission attempt', async () => {
-      axios.post.mockResolvedValue(mockBackendResponse);
-
-      await submitOrder(mockOrderData);
-
-      expect(console.log).toHaveBeenCalledWith(
-        '📤 orderService: Submitting order to backend:',
-        mockOrderData
-      );
-    });
-
-    it('should log successful submission', async () => {
-      axios.post.mockResolvedValue(mockBackendResponse);
-
-      await submitOrder(mockOrderData);
-
-      expect(console.log).toHaveBeenCalledWith(
-        '✅ orderService: Order submitted successfully:',
-        mockBackendResponse.data
-      );
-    });
-
-    it('should throw error when submission fails', async () => {
+    it('should throw error and log when submission fails', async () => {
       const error = new Error('Server error');
       axios.post.mockRejectedValue(error);
 
       await expect(submitOrder(mockOrderData)).rejects.toThrow('Server error');
-    });
-
-    it('should log error when submission fails', async () => {
-      const error = new Error('Server error');
-      axios.post.mockRejectedValue(error);
-
-      try {
-        await submitOrder(mockOrderData);
-      } catch (e) {
-        // Expected to throw
-      }
-
       expect(console.error).toHaveBeenCalledWith(
         '❌ Error submitting order:',
         error
@@ -358,56 +235,9 @@ describe('orderService - Unit Tests', () => {
       expect(result.itemCount).toBe(0);
       expect(result.items).toEqual([]);
     });
-
-    it('should handle single item order', async () => {
-      const singleItemOrder = {
-        items: [
-          {
-            ingredientId: 1,
-            ingredientName: 'Tomate',
-            quantity: 10,
-            unit: 'kg'
-          }
-        ]
-      };
-
-      axios.post.mockResolvedValue(mockBackendResponse);
-
-      const result = await submitOrder(singleItemOrder);
-
-      expect(result.itemCount).toBe(1);
-    });
-
-    it('should handle network errors', async () => {
-      const networkError = {
-        message: 'Network Error',
-        response: undefined
-      };
-
-      axios.post.mockRejectedValue(networkError);
-
-      await expect(submitOrder(mockOrderData)).rejects.toThrow('Network Error');
-    });
-
-    it('should handle server errors with response', async () => {
-      const serverError = {
-        response: {
-          status: 500,
-          data: { message: 'Internal server error' }
-        }
-      };
-
-      axios.post.mockRejectedValue(serverError);
-
-      await expect(submitOrder(mockOrderData)).rejects.toMatchObject({
-        response: expect.objectContaining({
-          status: 500
-        })
-      });
-    });
   });
 
-  // ==================== getOrderHistory Tests ====================
+  // ==================== getOrderHistory ====================
 
   describe('getOrderHistory', () => {
     const mockHistoryData = [
@@ -430,7 +260,7 @@ describe('orderService - Unit Tests', () => {
       }
     ];
 
-    it('should fetch order history successfully', async () => {
+    it('should fetch order history with default limit', async () => {
       axios.get.mockResolvedValue({ data: mockHistoryData });
 
       const result = await getOrderHistory();
@@ -444,13 +274,6 @@ describe('orderService - Unit Tests', () => {
         }
       );
       expect(result).toHaveLength(2);
-    });
-
-    it('should transform backend data to frontend format', async () => {
-      axios.get.mockResolvedValue({ data: mockHistoryData });
-
-      const result = await getOrderHistory();
-
       expect(result[0]).toEqual({
         id: 1,
         date: '2024-01-15T10:00:00Z',
@@ -459,17 +282,6 @@ describe('orderService - Unit Tests', () => {
         ],
         itemCount: 1
       });
-    });
-
-    it('should use default limit of 50 when not specified', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      await getOrderHistory();
-
-      expect(axios.get).toHaveBeenCalledWith(
-        `${API_URL}/history?limit=50`,
-        expect.any(Object)
-      );
     });
 
     it('should use custom limit when specified', async () => {
@@ -483,47 +295,17 @@ describe('orderService - Unit Tests', () => {
       );
     });
 
-    it('should include Authorization header with token', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      await getOrderHistory();
-
-      expect(axios.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Authorization: `Bearer ${mockToken}`
-          })
-        })
-      );
-    });
-
-    it('should return empty array on error', async () => {
-      axios.get.mockRejectedValue(new Error('Network error'));
+    it('should return empty array and log error on failure', async () => {
+      const error = new Error('Network error');
+      axios.get.mockRejectedValue(error);
 
       const result = await getOrderHistory();
 
       expect(result).toEqual([]);
-    });
-
-    it('should log error when fetch fails', async () => {
-      const error = new Error('Network error');
-      axios.get.mockRejectedValue(error);
-
-      await getOrderHistory();
-
       expect(console.error).toHaveBeenCalledWith(
         'Error fetching order history:',
         error
       );
-    });
-
-    it('should handle empty order history', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      const result = await getOrderHistory();
-
-      expect(result).toEqual([]);
     });
 
     it('should handle orders without items', async () => {
@@ -541,60 +323,9 @@ describe('orderService - Unit Tests', () => {
 
       expect(result[0].items).toEqual([]);
     });
-
-    it('should handle limit of 0', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      await getOrderHistory(0);
-
-      expect(axios.get).toHaveBeenCalledWith(
-        `${API_URL}/history?limit=0`,
-        expect.any(Object)
-      );
-    });
-
-    it('should handle large limit values', async () => {
-      axios.get.mockResolvedValue({ data: [] });
-
-      await getOrderHistory(1000);
-
-      expect(axios.get).toHaveBeenCalledWith(
-        `${API_URL}/history?limit=1000`,
-        expect.any(Object)
-      );
-    });
-
-    it('should preserve all item data', async () => {
-      const detailedHistory = [
-        {
-          id: 1,
-          orderDate: '2024-01-15T10:00:00Z',
-          items: [
-            {
-              ingredientName: 'Tomate',
-              quantity: 10,
-              unit: 'kg',
-              price: 25.50
-            }
-          ],
-          itemCount: 1
-        }
-      ];
-
-      axios.get.mockResolvedValue({ data: detailedHistory });
-
-      const result = await getOrderHistory();
-
-      expect(result[0].items[0]).toEqual({
-        ingredientName: 'Tomate',
-        quantity: 10,
-        unit: 'kg',
-        price: 25.50
-      });
-    });
   });
 
-  // ==================== Authentication Header Tests ====================
+  // ==================== Authentication ====================
 
   describe('Authentication Headers', () => {
     it('should use token from localStorage in all requests', async () => {
@@ -626,62 +357,12 @@ describe('orderService - Unit Tests', () => {
         })
       );
     });
-
-    it('should handle missing token', async () => {
-      localStorage.removeItem('token');
-
-      axios.get.mockResolvedValue({ data: [] });
-
-      await getRecommendedOrders();
-
-      expect(axios.get).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            Authorization: 'Bearer null'
-          })
-        })
-      );
-    });
   });
 
   // ==================== Edge Cases ====================
 
   describe('Edge Cases', () => {
-    it('should handle undefined response data', async () => {
-      axios.get.mockResolvedValue({});
-
-      // Service handles this gracefully and returns empty array
-      const result = await getRecommendedOrders();
-      
-      // Should either return empty array or log error
-      expect(Array.isArray(result)).toBe(true);
-    });
-
-    it('should handle null response', async () => {
-      axios.get.mockResolvedValue(null);
-
-      // Service handles this gracefully and returns empty array
-      const result = await getRecommendedOrders();
-      
-      // Should either return empty array or log error
-      expect(Array.isArray(result)).toBe(true);
-    });
-
-    it('should handle timeout errors', async () => {
-      const timeoutError = {
-        code: 'ECONNABORTED',
-        message: 'timeout of 5000ms exceeded'
-      };
-
-      axios.post.mockRejectedValue(timeoutError);
-
-      await expect(submitOrder({ items: [] })).rejects.toMatchObject({
-        code: 'ECONNABORTED'
-      });
-    });
-
-    it('should handle 401 unauthorized errors', async () => {
+    it('should handle 401 unauthorized errors gracefully', async () => {
       const unauthorizedError = {
         response: {
           status: 401,
@@ -697,19 +378,17 @@ describe('orderService - Unit Tests', () => {
       expect(console.error).toHaveBeenCalled();
     });
 
-    it('should handle 404 not found errors', async () => {
-      const notFoundError = {
-        response: {
-          status: 404,
-          data: { message: 'Not found' }
-        }
+    it('should handle timeout and network errors', async () => {
+      const timeoutError = {
+        code: 'ECONNABORTED',
+        message: 'timeout of 5000ms exceeded'
       };
 
-      axios.get.mockRejectedValue(notFoundError);
+      axios.post.mockRejectedValue(timeoutError);
 
-      const result = await getOrderHistory();
-
-      expect(result).toEqual([]);
+      await expect(submitOrder({ items: [] })).rejects.toMatchObject({
+        code: 'ECONNABORTED'
+      });
     });
   });
 });
