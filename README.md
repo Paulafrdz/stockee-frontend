@@ -1,19 +1,20 @@
 # 🍽️ Stockee. - Inventory Management System
 
-## 🖼️ Project Showcase
+
 <br/>
 <p align="center">
-  <img width="30%" alt="Login view" src="https://github.com/user-attachments/assets/fb695e56-eb86-43e8-8038-44d12b6f31dd" />
+  <img width="30%" alt="Login view" src="https://github.com/user-attachments/assets/15c5c0a3-60fc-494b-81b9-4c11aaefbb16" />
   <img width="30%" alt="Dashboard view" src="https://github.com/user-attachments/assets/514a4fdd-a264-4ebb-aacc-27639da8469d" />
-  <img width="30%" alt="Stock management" src="https://github.com/user-attachments/assets/895bf88a-9efc-4499-99cb-0e28911dbf2b" />
+  <img width="30%" alt="Stock management" src="https://github.com/user-attachments/assets/5381a3e3-1fe6-41fb-ab3b-22b62b974c13" />
 
 </p>
 <p align="center">
-  <img width="30%" alt="Order recommendations" src="https://github.com/user-attachments/assets/1fc56e75-8040-43ce-b1f2-9e8a720d647b" />
+  <img width="30%" alt="Order recommendations" src="https://github.com/user-attachments/assets/d512a3fb-74e3-498f-a7d1-d4f752dc8249" />
   <img width="30%" alt="Analytics dashboard" src="https://github.com/user-attachments/assets/f20c2ccf-3498-460b-a7dd-818f14c5bc3c" />
   <img width="30%" alt="Analytics waste" src="https://github.com/user-attachments/assets/7b7356dc-87c1-4f4e-bd18-7cfdd6e9cbce" />
 </p>
 
+<br/>
 
 ## 🎯 About the Project
 
@@ -26,6 +27,8 @@
 - 🔍 Generate detailed performance reports
 
 Built with React and Material-UI, Stockee provides an intuitive interface for restaurant managers to optimize their operations, reduce waste, and improve profitability.
+
+<br/>
 
 ## ✨ Key Features
 
@@ -59,6 +62,8 @@ Built with React and Material-UI, Stockee provides an intuitive interface for re
 - Protected routes
 - Session management
 
+<br/>
+
 ## 🛠️ Tech Stack
 
 ### Frontend Core
@@ -81,6 +86,8 @@ Built with React and Material-UI, Stockee provides an intuitive interface for re
 ### Development Tools
 - **ESLint** - Code linter
 - **@vitejs/plugin-react 4.3.3** - React plugin for Vite
+
+<br/>
 
 ## 🚀 Getting Started
 
@@ -134,6 +141,8 @@ yarn build
 ```
 
 Optimized files will be generated in the `dist/` folder.
+
+<br/>
 
 ## 👤 User Flow
 
