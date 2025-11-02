@@ -1,15 +1,11 @@
-/* WasteTypesPieChart.css */
-
 .waste-pie-container {
   height: 100%;
   background: var(--white);
   border-radius: var(--border-radius);
   padding: var(--space-margin);
   display: flex;
-  flex-wrap: wrap;
-  align-content: space-around;
+  flex-direction: column;
 }
-
 
 /* Header */
 .waste-pie-header {
@@ -47,6 +43,7 @@
   gap: var(--space-section);
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 /* Chart Wrapper */
@@ -57,10 +54,10 @@
   height: 250px;
   display: flex;
   align-items: center;
- 
+  justify-content: center;
 }
 
-/* Total Overlay in the center of donut */
+/* Total Overlay */
 .waste-pie-total-overlay {
   position: absolute;
   top: 50%;
@@ -103,6 +100,14 @@
   gap: var(--space-button);
 }
 
+.waste-pie-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-button);
+  flex: 1;
+}
+
 .waste-pie-legend-info {
   display: flex;
   align-items: center;
@@ -133,35 +138,242 @@
   font-size: 14px;
   color: var(--neutral-750);
   margin-left: var(--space-button);
+}
+
+.MuiChartsLegend-item{
   display: none;
 }
-.MuiChartsLegend-item{
-    display: none;
 
+/* ==================== RESPONSIVE ==================== */
+
+/* Desktop XL (1440px+) */
+@media (min-width: 1440px) {
+  .waste-pie-container {
+    padding: 24px;
+  }
+  
+  .waste-pie-chart-wrapper {
+    width: 280px;
+    height: 280px;
+  }
+  
+  .waste-pie-total-amount {
+    font-size: 36px;
+  }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1350px) {
+  .waste-pie-container {
+    padding: 16px;
+  }
+  
+  .waste-pie-header {
+    margin-bottom: 16px;
+  }
+  
+  .waste-pie-title {
+    font-size: 18px;
+  }
+  
+  .waste-pie-subtitle {
+    font-size: 13px;
+  }
+  
   .waste-pie-content {
+    gap: 20px;
     flex-direction: column;
-    gap: var(--space-margin);
   }
-
+  
+  .waste-pie-chart-wrapper {
+    width: 220px;
+    height: 220px;
+  }
+  
   .waste-pie-total-amount {
-    font-size: var(--h2-size);
+    font-size: 28px;
   }
-
+  
   .waste-pie-legend {
     width: 100%;
+    max-width: 300px;
   }
 }
 
+/* Mobile grande (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+  .waste-pie-container {
+    padding: 16px;
+  }
+  
+  .waste-pie-header {
+    margin-bottom: 14px;
+  }
+  
+  .waste-pie-title {
+    font-size: 16px;
+  }
+  
+  .waste-pie-subtitle {
+    font-size: 12px;
+  }
+  
+  .waste-pie-content {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .waste-pie-chart-wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .waste-pie-total-amount {
+    font-size: 26px;
+  }
+  
+  .waste-pie-total-label {
+    font-size: 13px;
+  }
+  
+  .waste-pie-legend {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .waste-pie-legend-label {
+    font-size: 14px;
+  }
+  
+  .waste-pie-legend-percentage {
+    font-size: 14px;
+  }
+}
+
+/* Mobile (320px - 480px) */
 @media (max-width: 480px) {
   .waste-pie-container {
-    padding: var(--space-body);
+    padding: 14px;
   }
-
+  
+  .waste-pie-header {
+    margin-bottom: 12px;
+  }
+  
+  .waste-pie-title {
+    font-size: 15px;
+  }
+  
+  .waste-pie-subtitle {
+    font-size: 11px;
+  }
+  
+  .waste-pie-content {
+    flex-direction: column;
+    gap: 14px;
+  }
+  
   .waste-pie-chart-wrapper {
+    width: 180px;
+    height: 180px;
+    transform: scale(0.95);
+  }
+  
+  .waste-pie-total-amount {
+    font-size: 24px;
+  }
+  
+  .waste-pie-total-label {
+    font-size: 12px;
+  }
+  
+  .waste-pie-legend {
+    width: 100%;
+    gap: 10px;
+  }
+  
+  .waste-pie-legend-item {
+    gap: 8px;
+  }
+  
+  .waste-pie-legend-dot {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .waste-pie-legend-label {
+    font-size: 13px;
+  }
+  
+  .waste-pie-legend-percentage {
+    font-size: 13px;
+  }
+  
+  .waste-pie-legend-amount {
+    font-size: 12px;
+  }
+}
+
+/* Mobile muy pequeño (menos de 375px) */
+@media (max-width: 374px) {
+  .waste-pie-container {
+    padding: 12px;
+  }
+  
+  .waste-pie-title {
+    font-size: 14px;
+  }
+  
+  .waste-pie-subtitle {
+    font-size: 10px;
+  }
+  
+  .waste-pie-chart-wrapper {
+    width: 160px;
+    height: 160px;
     transform: scale(0.9);
+  }
+  
+  .waste-pie-total-amount {
+    font-size: 22px;
+  }
+  
+  .waste-pie-total-label {
+    font-size: 11px;
+  }
+  
+  .waste-pie-legend-label {
+    font-size: 12px;
+  }
+  
+  .waste-pie-legend-percentage {
+    font-size: 12px;
+  }
+}
+
+/* ===== CRITICAL: PREVENT OVERFLOW ===== */
+@media (max-width: 767px)  and (max-width: 1025px){
+  .waste-pie-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  .waste-pie-content {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .waste-pie-legend {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .waste-pie-legend-label {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

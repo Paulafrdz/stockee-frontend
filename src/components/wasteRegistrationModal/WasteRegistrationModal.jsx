@@ -84,7 +84,6 @@ const WasteRegistrationModal = ({ isOpen, onClose, onWasteRegistered, ingredient
                 });
             }
 
-            alert('✅ Waste registered successfully. Stock has been updated.');
             handleClose();
 
         } catch (error) {

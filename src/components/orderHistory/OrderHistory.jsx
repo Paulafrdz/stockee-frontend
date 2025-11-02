@@ -78,33 +78,33 @@ const OrderHistory = ({ orderHistory = [] }) => {
       {/* Filters */}
       <div className="history-filters">
         <div className="filter-group">
-          <label htmlFor="status-filter">Status:</label>
+          <label htmlFor="status-filter">Estado:</label>
           <select
             id="status-filter"
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
             className="filter-select"
           >
-            <option value="all">All Statuses</option>
-            <option value="delivered">Delivered</option>
-            <option value="processing">Processing</option>
-            <option value="pending">Pending</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all">Todos los estados</option>
+            <option value="delivered">Enviado</option>
+            <option value="processing">Procesando</option>
+            <option value="pending">Pendiente</option>
+            <option value="cancelled">Cancelado</option>
           </select>
         </div>
 
         <div className="filter-group">
-          <label htmlFor="date-filter">Period:</label>
+          <label htmlFor="date-filter">Fechas</label>
           <select
             id="date-filter"
             value={dateRange}
             onChange={(e) => setDateRange(e.target.value)}
             className="filter-select"
           >
-            <option value="all">All Time</option>
-            <option value="week">Last Week</option>
-            <option value="month">Last Month</option>
-            <option value="quarter">Last Quarter</option>
+            <option value="all">Todas las fechas</option>
+            <option value="week">Última semana</option>
+            <option value="month">Última mes</option>
+            <option value="quarter">Último trimestre</option>
           </select>
         </div>
       </div>

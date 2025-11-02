@@ -110,7 +110,7 @@ const OrderTable = ({
             <Search className="search-icon" />
             <input
               type="text"
-              placeholder="Search ingredients..."
+              placeholder="Buscar ingredientes..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -127,7 +127,7 @@ const OrderTable = ({
               disabled={isSubmitting}
               className="global-btn global-btn--decrease"
             >
-              Less
+              Menos
             </Button>
             <Button
               variant="secondary"
@@ -137,7 +137,7 @@ const OrderTable = ({
               disabled={isSubmitting}
               className="global-btn global-btn--increase"
             >
-              More
+              Mas
             </Button>
           </div>
         </div>
@@ -158,7 +158,7 @@ const OrderTable = ({
       <div className="table-container">
         {/* Table Header */}
         <div className="order-th">
-          <div>Ingredientes</div>
+          <div>Ingredientes (prioridad)</div>
           <div>Actual</div>
           <div>Minimo</div>
           <div>Uso semana</div>
@@ -244,7 +244,7 @@ const OrderTable = ({
                    onClick={() => onDeleteItem(item.id)}
                   disabled={isSubmitting}
                 >
-                  Remove
+                  Eliminar
                 </button>
               </div>
             </div>
@@ -252,10 +252,10 @@ const OrderTable = ({
         ) : (
           <div className="empty-state">
             <div className="empty-message">
-              {searchTerm ? "No ingredients match your search" : "No ingredients found"}
+              {searchTerm ? "No se han encontrado inggredientes" : "Ingrediente no encontrado"}
             </div>
             <div className="empty-description">
-              {searchTerm ? "Try different search terms" : "Add your first ingredient"}
+              {searchTerm ? "Prueba a buscar con otro nombre" : "Añade primero un ingrediente"}
             </div>
           </div>
         )}

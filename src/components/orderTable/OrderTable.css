@@ -388,6 +388,8 @@
 
   .recommended-orders-table .table-container {
     overflow-x: scroll;
+      background: var(--neutral-250);
+      border: none;
   }
 
   .order-th, .order-table-row {

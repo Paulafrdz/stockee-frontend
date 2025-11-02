@@ -37,25 +37,23 @@ const ProductEfficiencyTable = ({ products = [] }) => {
   }, [products, sortConfig]);
 
   const getCausaBadgeClass = (causa) => {
-  const causaLower = causa?.toLowerCase() || '';
-  
-
-  const badgeMap = {
-    'expired': 'product-eff-badge-caducidad',
-    'burned': 'product-eff-badge-error',
-    'wrong-ingredient': 'product-eff-badge-error',
-    'over-preparation': 'product-eff-badge-error',
-    'natural-waste': 'product-eff-badge-other',
-    'breakage': 'product-eff-badge-other',
-    'other': 'product-eff-badge-other',
-    'none': 'product-eff-badge-ninguna'
+    const causaLower = causa?.toLowerCase() || '';
+    
+    const badgeMap = {
+      'expired': 'product-eff-badge-caducidad',
+      'burned': 'product-eff-badge-error',
+      'wrong-ingredient': 'product-eff-badge-error',
+      'over-preparation': 'product-eff-badge-error',
+      'natural-waste': 'product-eff-badge-other',
+      'breakage': 'product-eff-badge-other',
+      'other': 'product-eff-badge-other',
+      'none': 'product-eff-badge-ninguna'
+    };
+    
+    return badgeMap[causaLower] || 'product-eff-badge-ninguna';
   };
-  
-  return badgeMap[causaLower] || 'product-eff-badge-ninguna';
-};
 
   const getMainCauseLabel = (mainCause) => {
-    // Si el backend devuelve valores en inglés, los convertimos a español
     const labelMap = {
       'expired': 'Caducidad',
       'burned': 'Error - Quemado',
@@ -69,6 +67,72 @@ const ProductEfficiencyTable = ({ products = [] }) => {
     return labelMap[mainCause] || mainCause;
   };
 
+  const getEfficiencyColor = (efficiency) => {
+    if (efficiency >= 90) return '#4ade80';
+    if (efficiency >= 80) return '#fb923c';
+    return '#ec4899';
+  };
+
+  // ========================================
+  // NUEVA FUNCIÓN: Renderizar Mobile Cards
+  // ========================================
+  const renderMobileCards = () => {
+    if (sortedProducts.length === 0) return null;
+    
+    return (
+      <div className="product-eff-mobile-cards">
+        {sortedProducts.map((product) => {
+          const efficiencyColor = getEfficiencyColor(product.efficiency);
+          
+          return (
+            <div key={product.id} className="product-eff-mobile-card">
+              
+              {/* Header: Nombre del producto */}
+              <div className="product-eff-mobile-card-header">
+                <div className="product-eff-mobile-product-name">
+                  {product.name}
+                </div>
+              </div>
+              
+              {/* Eficiencia con barra */}
+              <div className="product-eff-mobile-efficiency">
+                <div className="product-eff-mobile-row">
+                  <span className="product-eff-mobile-label">Eficiencia</span>
+                  <span className="product-eff-mobile-value">{product.efficiency}%</span>
+                </div>
+                <div className="product-eff-mobile-progress">
+                  <div 
+                    className="product-eff-mobile-progress-fill"
+                    style={{
+                      width: `${product.efficiency}%`,
+                      backgroundColor: efficiencyColor
+                    }}
+                  />
+                </div>
+              </div>
+              
+              {/* Desperdicio */}
+              <div className="product-eff-mobile-row">
+                <span className="product-eff-mobile-label">Desperdicios</span>
+                <span className="product-eff-mobile-value">{product.wastePercentage}%</span>
+              </div>
+              
+              {/* Causa Principal */}
+              <div className="product-eff-mobile-row">
+                <span className="product-eff-mobile-label">Causa Principal</span>
+                <span className={`product-eff-badge ${getCausaBadgeClass(product.mainCause)}`}>
+                  {getMainCauseLabel(product.mainCause)}
+                </span>
+              </div>
+              
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // Empty state
   if (products.length === 0) {
     return (
       <div className="product-eff-container">
@@ -90,6 +154,7 @@ const ProductEfficiencyTable = ({ products = [] }) => {
         <p className="product-eff-subtitle">Rendimiento Individual</p>
       </div>
 
+      {/* ===== TABLA - Visible en Desktop, Oculta en Mobile ===== */}
       <div className="product-eff-table-wrapper">
         <table className="product-eff-table">
           <thead className="product-eff-thead">
@@ -143,9 +208,7 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                         className="product-eff-progress-fill"
                         style={{ 
                           width: `${product.efficiency}%`,
-                          backgroundColor: product.efficiency >= 90 ? '#4ade80' : 
-                                          product.efficiency >= 80 ? '#fb923c' : 
-                                          '#ec4899'
+                          backgroundColor: getEfficiencyColor(product.efficiency)
                         }}
                       />
                     </div>
@@ -170,6 +233,10 @@ const ProductEfficiencyTable = ({ products = [] }) => {
           </tbody>
         </table>
       </div>
+
+      {/* ===== CARDS - Visible en Mobile, Ocultas en Desktop ===== */}
+      {renderMobileCards()}
+      
     </div>
   );
 };

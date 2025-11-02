@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LineChart } from '@mui/x-charts/LineChart';
 import './WasteTrendChart.css';
 
 const WasteTrendChart = ({ data = [] }) => {
   // Validar y procesar datos
   const validData = Array.isArray(data) ? data : [];
-  
+
   const months = validData.map(item => item.month || '');
   const values = validData.map(item => typeof item.value === 'number' ? item.value : 0);
 
@@ -14,6 +14,19 @@ const WasteTrendChart = ({ data = [] }) => {
   const averageWaste = validData.length > 0 ? totalWaste / validData.length : 0;
   const maxWaste = Math.max(...values, 0);
 
+  const [chartWidth, setChartWidth] = useState(600);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      const containerWidth = document.querySelector('.waste-trend-chart-wrapper')?.clientWidth || 600;
+      setChartWidth(Math.min(containerWidth - 32, 600));
+    };
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+  
   if (validData.length === 0 || totalWaste === 0) {
     return (
       <div className="waste-trend-container">
@@ -81,9 +94,9 @@ const WasteTrendChart = ({ data = [] }) => {
               valueFormatter: (value) => `${value?.toFixed(1) || 0}`,
             },
           ]}
-          width={600}
-          height={250}
-          margin={{ top: 20, right: 20, bottom: 30, left: 50 }}
+          width={chartWidth}
+          height={200}
+          margin={{ top: 20, right: 20, bottom: 30, left: 10 }}
           grid={{ horizontal: true }}
           slotProps={{
             legend: { hidden: true },
@@ -116,7 +129,7 @@ const WasteTrendChart = ({ data = [] }) => {
       {/* Leyenda de información adicional */}
       <div className="waste-trend-footer">
         <div className="waste-trend-legend">
-          
+
         </div>
       </div>
     </div>

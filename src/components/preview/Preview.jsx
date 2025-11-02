@@ -14,7 +14,7 @@ const DashboardPreview = () => {
   <div className="preview-container">
     <div className="preview-card">
       <div className="preview-card-top-bar">
-        <div className="preview-logo-small">stockeo.</div>
+        <div className="preview-logo-small">stockee.</div>
         <div className="preview-nav-dots">
           <div className="preview-nav-dot"></div>
           <div className="preview-nav-dot preview-active"></div>

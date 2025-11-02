@@ -1,4 +1,3 @@
-
 .product-eff-container {
   width: 100%;
   background: var(--white);
@@ -41,6 +40,7 @@
   overflow-x: auto;
   border-radius: var(--border-radius);
   border: 1px solid var(--neutral-500);
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Table */
@@ -194,6 +194,7 @@
   background-color: var(--primary-200);
   color: var(--primary-500);
 }
+
 .product-eff-badge-ninguna {
   background-color: #d1fae5;
   color: #065f46;
@@ -210,10 +211,189 @@
   color: var(--border-red);
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
+/* ==================== RESPONSIVE ==================== */
+
+/* Tablet grande (769px - 1023px) */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .product-eff-container {
+    padding: 16px;
+  }
+  
+  .product-eff-title {
+    font-size: 18px;
+  }
+  
+  .product-eff-subtitle {
+    font-size: 13px;
+  }
+  
+  .product-eff-table {
+    min-width: 750px;
+  }
+  
+  .product-eff-th,
+  .product-eff-td {
+    padding: 10px 12px;
+  }
+}
+
+/* Tablet y Mobile grande (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .product-eff-container {
+    padding: 14px;
+  }
+  
+  .product-eff-header {
+    margin-bottom: 14px;
+  }
+  
+  .product-eff-title {
+    font-size: 16px;
+  }
+  
+  .product-eff-subtitle {
+    font-size: 12px;
+  }
+  
   .product-eff-table-wrapper {
-    overflow-x: scroll;
+    overflow-x: auto;
+  }
+  
+  .product-eff-table {
+    min-width: 650px;
+  }
+  
+  .product-eff-th,
+  .product-eff-td {
+    padding: 10px 8px;
+    font-size: 13px;
+  }
+  
+  .product-eff-badge {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+  
+  .product-eff-efficiency-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .product-eff-progress-bar {
+    width: 100%;
+  }
+}
+
+/* Mobile (320px - 480px) */
+@media (max-width: 480px) {
+  .product-eff-container {
+    padding: 12px;
+  }
+  
+  .product-eff-header {
+    margin-bottom: 12px;
+  }
+  
+  .product-eff-title {
+    font-size: 15px;
+  }
+  
+  .product-eff-subtitle {
+    font-size: 11px;
+  }
+  
+  .product-eff-table-wrapper {
+    border-radius: 8px;
+    overflow-x: auto;
+  }
+  
+  .product-eff-table {
+    min-width: 600px;
+  }
+  
+  .product-eff-th,
+  .product-eff-td {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+  
+  .product-eff-th {
+    font-size: 11px;
+  }
+  
+  .product-eff-product-name {
+    font-size: 13px;
+  }
+  
+  .product-eff-progress-bar {
+    height: 6px;
+    min-width: 80px;
+  }
+  
+  .product-eff-percentage-main {
+    font-size: 13px;
+  }
+  
+  .product-eff-waste-percentage {
+    font-size: 13px;
+  }
+  
+  .product-eff-badge {
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 4px;
+  }
+  
+  .product-eff-sort-icon {
+    font-size: 10px;
+  }
+  
+  .product-eff-efficiency-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  
+  .product-eff-progress-bar {
+    width: 100%;
+  }
+}
+
+/* Mobile muy pequeño (menos de 375px) */
+@media (max-width: 374px) {
+  .product-eff-container {
+    padding: 10px;
+  }
+  
+  .product-eff-title {
+    font-size: 14px;
+  }
+  
+  .product-eff-subtitle {
+    font-size: 10px;
+  }
+  
+  .product-eff-table {
+    min-width: 550px;
+  }
+  
+  .product-eff-th,
+  .product-eff-td {
+    padding: 6px 4px;
+    font-size: 11px;
+  }
+  
+  .product-eff-badge {
+    font-size: 10px;
+    padding: 2px 5px;
+  }
+}
+
+/* Desktop normal - scroll horizontal */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .product-eff-table-wrapper {
+    overflow-x: auto;
   }
 
   .product-eff-table {
@@ -221,38 +401,101 @@
   }
 }
 
-@media (max-width: 768px) {
+/* ===== CRITICAL: PREVENT OVERFLOW ===== */
+@media (max-width: 767px) {
   .product-eff-container {
-    padding: var(--space-body);
-  }
-
-  .product-eff-th,
-  .product-eff-td {
-    padding: var(--space-button) var(--space-s);
-    font-size: 14px;
-  }
-
-  .product-eff-efficiency-cell {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-s);
-  }
-
-  .product-eff-progress-bar {
     width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  /* HIDE TABLE, SHOW CARDS */
+  .product-eff-table-wrapper {
+    display: none;
+  }
+  
+  /* CREATE MOBILE CARDS LAYOUT */
+  .product-eff-mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .product-eff-mobile-card {
+    background: var(--white);
+    border: 1px solid var(--neutral-500);
+    border-radius: var(--border-radius);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .product-eff-mobile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--neutral-250);
+  }
+  
+  .product-eff-mobile-product-name {
+    font-size: 15px;
+    font-weight: var(--h3-weight);
+    color: var(--font-color);
+    flex: 1;
+  }
+  
+  .product-eff-mobile-loss {
+    font-size: 15px;
+    font-weight: var(--h3-weight);
+    color: var(--border-red);
+    white-space: nowrap;
+  }
+  
+  .product-eff-mobile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .product-eff-mobile-label {
+    font-size: 13px;
+    color: var(--neutral-750);
+  }
+  
+  .product-eff-mobile-value {
+    font-size: 14px;
+    font-weight: var(--h3-weight);
+    color: var(--font-color);
+  }
+  
+  .product-eff-mobile-efficiency {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .product-eff-mobile-progress {
+    width: 100%;
+    height: 6px;
+    background-color: var(--neutral-250);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  
+  .product-eff-mobile-progress-fill {
+    height: 100%;
+    border-radius: 3px;
   }
 }
 
-@media (max-width: 480px) {
-  .product-eff-title {
-    font-size: var(--body-size);
-  }
-
-  .product-eff-subtitle {
-    font-size: 12px;
-  }
-
-  .product-eff-table {
-    min-width: 600px;
+/* Show cards only in mobile */
+@media (min-width: 768px) {
+  .product-eff-mobile-cards {
+    display: none;
   }
 }

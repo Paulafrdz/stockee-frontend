@@ -5,7 +5,6 @@
     gap: 20px;
 }
 
-/* Alert Banner */
 .stock-alert-banner {
     background: var(--background-red);
     border: 1px solid var(--border-red);
@@ -107,18 +106,17 @@
 }
 
 /* Row status styling */
-
-
 .td {
     font-size: 14px;
-    color: var(--black);
     font-family: var(--font-primary);
+    color: var(--neutral-750);
     display: flex;
     align-items: center;
 }
 
-.ingredient-name {
+.stock-ingredient-name {
     font-weight: 500;
+    color: var(--neutral-750)
 }
 
 .stock-actual {
@@ -146,6 +144,11 @@
     color: var(--secondary-500);
 }
 
+.stock-ok{
+    color: var(--neutral-700);
+    font-weight: 500;
+}
+
 
 
 .status-badge {
@@ -167,6 +170,10 @@
     color: var(--secondary-500);
 }
 
+.status-ok{
+  background: #e7fdce;
+    color: #84cc16;
+}
 
 .text-muted {
     color: var(--neutral-750);
@@ -193,7 +200,7 @@
 }
 
 .edit-btn {
-    color: var(--primary-500);
+    color: var(--neutral-700);
 }
 
 .edit-btn:hover {
@@ -202,7 +209,7 @@
 }
 
 .delete-btn {
-    color: var(--terciary-500);
+    color: var(--neutral-700);
 }
 
 .delete-btn:hover {
@@ -269,7 +276,7 @@
 }
 
 .stat-value.ok {
-    color: var(--secondary-600);
+    color: var(--neutral-700);
 }
 
 /* Animations */
@@ -282,5 +289,374 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+
+@media (max-width: 1023px) {
+    .stock-table-container {
+        gap: 16px;
+    }
+
+    .stock-alert-banner {
+        padding: 12px 16px;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .alert-title {
+        font-size: 13px;
+    }
+
+    .alert-text {
+        font-size: 11px;
+    }
+
+    .table-head {
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+
+    .table-row {
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+
+    /* Ocultar columna "Última actualización" en tablet */
+    .table-head .th:nth-child(6),
+    .table-row .td:nth-child(6) {
+        display: none;
+    }
+
+    .th {
+        font-size: 11px;
+    }
+
+    .td {
+        font-size: 13px;
+    }
+
+    .table-stats {
+        padding: 12px 16px;
+    }
+
+    .stats-row {
+        gap: 24px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+    }
+
+    .stat-value {
+        font-size: 13px;
+    }
+}
+
+/* Mobile (menos de 768px) - LAYOUT TIPO CARD */
+@media (max-width: 767px) {
+    .stock-table-container {
+        gap: 12px;
+    }
+
+    /* Alert Banner Mobile */
+    .stock-alert-banner {
+        padding: 10px 12px;
+        border-radius: 8px;
+    }
+
+    .alert-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .alert-title {
+        font-size: 12px;
+    }
+
+    .alert-text {
+        font-size: 10px;
+    }
+
+    .table-head {
+        display: none;
+    }
+
+    /* files on cards */
+    .table-body {
+        gap: 12px;
+        background: var(--neutral-250);
+    }
+
+    .stock-table{
+        background-color: none;
+        border: none
+    }
+    
+    .table-row {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        border: 1px solid var(--neutral-500);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-row:hover {
+        background: var(--white);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .stock-ingredient-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--font-color);
+        order: -1;
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--neutral-250);
+    }
+
+    .td {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 8px;
+        align-items: center;
+        font-size: 14px;
+    }
+
+    .td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--neutral-750);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stock-currentStock::before {
+        content: "Actual";
+    }
+
+    .stock-minimum::before {
+        content: "Mínimo";
+    }
+
+    .stock-unit::before {
+        content: "Unidad";
+    }
+
+    .stock-status::before {
+        content: "Estado";
+    }
+
+    .last-updated::before {
+        content: "Actualización";
+    }
+
+    /* Ingrediente name sin label */
+    .stock-ingredient-name::before {
+        content: none;
+    }
+
+    /* Actions en mobile */
+    .actions {
+        grid-template-columns: 1fr;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 12px;
+        border-top: 1px solid var(--neutral-250);
+        margin-top: 4px;
+    }
+
+    .actions::before {
+        content: none;
+    }
+
+    .action-btn {
+        padding: 8px 12px;
+        width: 100%;
+        justify-content: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .action-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    /* Añadir texto a botones en mobile */
+    .edit-btn::after {
+        content: "Editar";
+    }
+
+    .delete-btn::after {
+        content: "Eliminar";
+    }
+
+    /* Empty state mobile */
+    .table-empty {
+        padding: 32px 16px;
+    }
+
+    .table-empty h3 {
+        font-size: 16px;
+    }
+
+    .table-empty p {
+        font-size: 13px;
+    }
+
+    /* Statistics en mobile */
+    .table-stats {
+        padding: 12px;
+    }
+
+    .stats-row {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .stat-item {
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: var(--neutral-250);
+        border-radius: 6px;
+    }
+
+    .stat-label {
+        font-size: 12px;
+    }
+
+    .stat-value {
+        font-size: 14px;
+    }
+}
+
+/* Mobile pequeño (menos de 480px) */
+@media (max-width: 479px) {
+    .stock-alert-banner {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .alert-title {
+        font-size: 11px;
+    }
+
+    .alert-text {
+        font-size: 10px;
+    }
+
+    .table-row {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .stock-ingredient-name {
+        font-size: 15px;
+        margin-bottom: 6px;
+        padding-bottom: 6px;
+    }
+
+    .td {
+        grid-template-columns: 100px 1fr;
+        gap: 6px;
+        font-size: 13px;
+    }
+
+    .td::before {
+        font-size: 11px;
+    }
+
+    .action-btn {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .table-stats {
+        padding: 10px;
+    }
+
+    .stat-item {
+        padding: 6px 10px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+    }
+
+    .stat-value {
+        font-size: 13px;
+    }
+}
+
+/* Landscape mobile - ajustes adicionales */
+@media (max-width: 767px) and (orientation: landscape) {
+    .table-row {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .td {
+        grid-template-columns: 100px 1fr;
+    }
+}
+
+/* ==================== ACCESIBILIDAD ==================== */
+
+@media (prefers-contrast: high) {
+    .stock-alert-banner {
+        border-width: 2px;
+    }
+
+    .table-row {
+        border-width: 2px;
+    }
+
+    .status-badge {
+        border: 2px solid currentColor;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stock-alert-banner {
+        animation: none;
+    }
+
+    .table-row {
+        transition: none;
+    }
+
+    .action-btn {
+        transition: none;
+    }
+}
+
+/* ==================== PRINT ==================== */
+@media print {
+    .stock-alert-banner {
+        border: 1px solid #000;
+        background: #fff;
+        color: #000;
+    }
+
+    .actions {
+        display: none;
+    }
+
+    .table-row {
+        page-break-inside: avoid;
+    }
+
+    .table-stats {
+        page-break-before: avoid;
     }
 }

@@ -107,3 +107,7 @@
   background-color: var(--white);
   color: var(--black);
 }
+.filter-buttons .status-ok{
+  background-color: var(--white);
+  color: var(--black);
+}

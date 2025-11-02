@@ -190,7 +190,7 @@
 
 .preview-status-badge {
   padding: 4px 10px;
-  border-radius: 12px;
+  border-radius: 7px;
   font-size: 11px;
   font-weight: 700;
   text-align: center;
@@ -203,7 +203,8 @@
 }
 
 .preview-status-ok {
-  color: var(--black);
+  background: #e7fdce;
+    color: #84cc16;
 }
 
 .preview-status-low {
@@ -224,12 +225,17 @@
   top: 20px;
   right: -40px;
   animation: preview-float1 8s ease-in-out infinite;
+  box-shadow: -1px -1px 1px 1px var(--terciary-200);
+;
+
 }
 
 .preview-floating-card-2 {
   bottom: 40px;
   left: -30px;
   animation: preview-float2 10s ease-in-out infinite;
+  box-shadow: 1px -1px 1px 1px var(--terciary-200);
+
 }
 
 .preview-stat-mini {

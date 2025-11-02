@@ -126,3 +126,35 @@
     color: var(--white);
   }
 }
+/* HEADER MÓVIL */
+.mobile-header {
+  display: none; /* Oculto por defecto */
+  align-items: center;
+  justify-content: space-between;
+  background: var(--white);
+  padding: 10px 16px;
+  height: 60px;
+  border-bottom: 1px solid var(--neutral-300);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.mobile-logo {
+  height: 32px;
+  object-fit: contain;
+}
+
+
+/* Solo visible en móviles */
+@media (max-width: 768px) {
+  .mobile-header {
+    display: flex;
+  }
+
+  .dashboard-layout {
+    flex-direction: column;
+    padding-top: 60px; /* deja espacio para el header fijo */
+  }
+}

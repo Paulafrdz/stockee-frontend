@@ -112,7 +112,7 @@ const StockTable = ({
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => (
                 <div key={item.id} className={`table-row status-row-${item.status}`}>
-                  <div className="td ingredient-name">
+                  <div className="td stock-ingredient-name">
                     {item.name}
                   </div>
                   
