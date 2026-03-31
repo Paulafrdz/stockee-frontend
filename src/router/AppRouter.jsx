@@ -8,6 +8,7 @@ import StockPage from "../pages/StockPage";
 import OrdersPage from "../pages/OrdersPage";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import DashboardPage from "../pages/DashboardPage";
+import DishPage from "../pages/DishPage";
 
 export default function AppRouter({ onUserAuthenticated }) {
   return (
@@ -61,6 +62,13 @@ export default function AppRouter({ onUserAuthenticated }) {
         element={
           <PrivateRoute>
             <AnalyticsPage />
+          </PrivateRoute>
+        }
+      /><Route
+        path="/dishes"
+        element={
+          <PrivateRoute>
+            <DishPage />
           </PrivateRoute>
         }
       />

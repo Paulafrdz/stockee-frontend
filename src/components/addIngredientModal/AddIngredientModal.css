@@ -35,7 +35,7 @@
 .modal-title {
   font-size: 20px;
   font-weight: 700;
-  color: var(--black);
+  color: var(--font-color);
   font-family: var(--font-primary);
   margin: 0;
 }
