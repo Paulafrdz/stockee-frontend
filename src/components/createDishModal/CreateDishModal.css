@@ -1,0 +1,247 @@
+/*  Icon chip picker  */
+.cdm-icon-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cdm-icon-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 20px;                   
+  border: 2px solid var(--neutral-500);
+  background: var(--white);
+  color: var(--font-color);
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cdm-icon-chip:hover:not(:disabled) {
+  border-color: var(--primary-500);
+  background: var(--primary-200);
+  color: var(--primary-800);
+}
+
+/* Selected chip state */
+.cdm-icon-chip--selected {
+  border-color: var(--primary-500);
+  background: var(--primary-200);
+  color: var(--primary-800);
+  font-weight: 600;
+}
+
+.cdm-icon-chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cdm-icon-chip-emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/*  label hint  */
+.cdm-optional {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--neutral-750);
+}
+
+/*  Textarea */
+.cdm-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--neutral-500);
+  border-radius: var( --border-radius);
+  font-size: 15px;
+  color: var(--font-color);
+  background: var(--white);
+  font-family: var(--font-family);
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  resize: vertical;
+  min-height: 90px;
+  line-height: 1.5;
+}
+
+.cdm-textarea:focus {
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+.cdm-textarea::placeholder {
+  color: var(--neutral-500);
+}
+
+.cdm-textarea:disabled {
+  background-color: var(--neutral-250);
+  color: var(--neutral-500);
+  cursor: not-allowed;
+}
+
+/*  Ingredients section header  */
+.cdm-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+/* + Add ingredient button */
+.cdm-add-ingredient-btn {
+  font-family: var(--font-family);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-800);
+  background: var(--primary-200);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cdm-add-ingredient-btn:hover:not(:disabled) {
+  background: var(--primary-500);
+  color: var(--white);
+}
+
+.cdm-add-ingredient-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Empty state */
+.cdm-empty-msg {
+  font-family: var(--font-family);
+  font-size: 14px;
+  color: var(--neutral-750);
+  text-align: center;
+  padding: 16px 0;
+  margin: 0;
+  border: 2px dashed var(--neutral-500);
+  border-radius: 12px;
+}
+
+/* List of ingredient rows */
+.cdm-ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Individual ingredient row card */
+.cdm-ingredient-row {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--neutral-250);
+  border: 2px solid var(--neutral-500);
+  border-radius: 12px;
+  padding: 16px;
+  padding-right: 48px;        /* space for remove button */
+  transition: border-color 0.2s ease;
+}
+
+.cdm-ingredient-row:focus-within {
+  border-color: var(--primary-500);
+}
+
+/* Small label inside the ingredient row */
+.cdm-row-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--font-color);
+  font-family: var(--font-family);
+}
+
+/* Unit read-only display — same height as .input-field */
+.cdm-unit-display {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--neutral-500);
+  border-radius: var( --border-radius);
+  font-size: 15px;
+  color: var(--neutral-750);
+  background: var(--neutral-250);
+  font-family: var(--font-family);
+  box-sizing: border-box;
+  cursor: default;
+}
+
+/* Remove button — top-right corner of the row card */
+.cdm-remove-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--terciary-200);
+  color: var(--terciary-700);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cdm-remove-btn:hover:not(:disabled) {
+  background: var(--terciary-500);
+  color: var(--white);
+}
+
+.cdm-remove-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .cdm-icon-chips {
+    gap: 6px;
+  }
+
+  .cdm-icon-chip {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .cdm-textarea {
+    padding: 12px 14px;
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+
+  .cdm-ingredient-row {
+    padding: 14px;
+    padding-right: 44px;
+  }
+
+  .cdm-unit-display {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cdm-icon-chip {
+    padding: 6px 10px;
+    font-size: 12px;
+    border-radius: 16px;
+  }
+
+  .cdm-icon-chip-emoji {
+    font-size: 14px;
+  }
+}
