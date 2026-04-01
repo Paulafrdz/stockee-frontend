@@ -16,7 +16,7 @@ import './AnalyticsPage.css';
 import { areaElementClasses } from '@mui/x-charts';
 
 const AnalyticsPage = ({ user }) => {
-  const [stockIngredients, setStockIngredients] = useState([]);
+  const [stockItems, setStockItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -28,7 +28,7 @@ const AnalyticsPage = ({ user }) => {
     try {
       const ingredientsData = await getStockItems();
       console.log('📦 Ingredientes cargados para modal:', ingredientsData);
-      setStockIngredients(ingredientsData);
+      setStockItems(ingredientsData);
     } catch (error) {
       console.error('Error fetching stock ingredients:', error);
     }
@@ -129,7 +129,7 @@ const AnalyticsPage = ({ user }) => {
       <WasteRegistrationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        ingredients={stockIngredients}
+        ingredients={stockItems}
         onWasteRegistered={handleWasteRegistered}
       />
     </DashboardLayout>

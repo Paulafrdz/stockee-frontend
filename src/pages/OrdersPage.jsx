@@ -24,7 +24,7 @@ const OrdersPage = () => {
     const [loading, setLoading] = useState(true);
     const [submittingOrder, setSubmittingOrder] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [stockIngredients, setStockIngredients] = useState([]);
+    const [stockItems, setStockItems] = useState([]);
 
 
 
@@ -76,7 +76,7 @@ const OrdersPage = () => {
             try {
                 const stockData = await getStockItems();
                 console.log('Stock data from DB:', stockData);
-                setStockIngredients(stockData);
+                setStockItems(stockData);
             } catch (error) {
                 console.error('Error fetching stock ingredients:', error);
             }
@@ -320,7 +320,7 @@ const OrdersPage = () => {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 onSubmit={handleAddIngredient}
-                availableIngredients={stockIngredients}
+                availableIngredients={stockItems}
                 existingOrderItems={recommendedOrders}
             />
            
