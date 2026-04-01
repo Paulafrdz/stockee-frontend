@@ -42,10 +42,10 @@
 /* Table */
 .stock-table {
     background: var(--white);
-    border-radius: 5px;
     border: 1px solid var(--neutral-500);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius);
 }
 
 .table-header {
@@ -241,7 +241,7 @@
 /* Statistics */
 .table-stats {
     background: var(--white);
-    border-radius: 5px;
+    border-radius: var(--border-radius);
     border: 1px solid var(--neutral-500);
     padding: 16px 20px;
 }

@@ -3,20 +3,20 @@ import { Edit, Trash2, AlertTriangle } from 'lucide-react';
 import StockFilters from '../stockFilters/StockFilters';
 import './StockTable.css';
 
-const StockTable = ({ 
-  stockItems = [], 
-  onUpdateStock, 
+const StockTable = ({
+  stockItems = [],
+  onUpdateStock,
   onEditIngredient,
   onDeleteIngredient,
   searchTerm = '',
   onSearchChange,
   filterStatus = 'all',
-  onFilterChange 
+  onFilterChange
 }) => {
 
   const getStockStatus = (currentStock, minimumStock) => {
     if (currentStock <= minimumStock * 0.5) return 'critical';
-    if (currentStock <= minimumStock) return 'low';
+    if (currentStock <= minimumStock * 1.5) return 'low';
     return 'ok';
   };
 
@@ -77,7 +77,7 @@ const StockTable = ({
         </div>
       )}
 
-    
+
       {/* Filtros reutilizables */}
       <StockFilters
         searchTerm={searchTerm}
@@ -115,40 +115,40 @@ const StockTable = ({
                   <div className="td stock-ingredient-name">
                     {item.name}
                   </div>
-                  
+
                   <div className="td stock-currentStock">
                     <span className={`stock-value stock-${item.status}`}>
                       {item.currentStock}
                     </span>
                   </div>
-                  
+
                   <div className="td stock-minimum">
                     {item.minimumStock}
                   </div>
-                  
+
                   <div className="td stock-unit">
                     {item.unit}
                   </div>
-                  
+
                   <div className="td stock-status">
                     <span className={`status-badge status-${item.status}`}>
                       {item.statusLabel}
                     </span>
                   </div>
-                  
+
                   <div className="td last-updated text-muted">
                     {formatTimeAgo(item.lastUpdate)}
                   </div>
-                  
+
                   <div className="td actions">
-                    <button 
+                    <button
                       className="action-btn edit-btn"
                       onClick={() => onEditIngredient && onEditIngredient(item)}
                       title="Editar ingrediente"
                     >
                       <Edit size={16} />
                     </button>
-                    <button 
+                    <button
                       className="action-btn delete-btn"
                       onClick={() => onDeleteIngredient && onDeleteIngredient(item.id)}
                       title="Eliminar ingrediente"

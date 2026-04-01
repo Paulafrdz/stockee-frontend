@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
-import { Pizza, Salad, Hamburger, Beef, Fish, Sandwich, Soup, X, CakeSlice, Croissant} from 'lucide-react';
+import { Pizza, Salad, Hamburger, Beef, Fish, Sandwich, Soup, X, CakeSlice, Croissant } from 'lucide-react';
 import './CreateDishModal.css';
 
 export const DISH_ICONS = [
-    { id: 'pizza', Icon: Pizza},
-    { id: 'salad', Icon: Salad},
-    { id: 'hamburger', Icon: Hamburger},
-    { id: 'beef', Icon: Beef},
-    { id: 'fish', Icon: Fish},
+    { id: 'pizza', Icon: Pizza },
+    { id: 'salad', Icon: Salad },
+    { id: 'hamburger', Icon: Hamburger },
+    { id: 'beef', Icon: Beef },
+    { id: 'fish', Icon: Fish },
     { id: 'sandwich', Icon: Sandwich },
-    { id: 'soup', Icon: Soup},
-    { id: 'cake', Icon: CakeSlice},
-    { id: 'croissant', Icon: Croissant},
-    
+    { id: 'soup', Icon: Soup },
+    { id: 'cake', Icon: CakeSlice },
+    { id: 'croissant', Icon: Croissant },
+
 ];
 
 
@@ -68,6 +68,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
         );
     };
 
+
     //  Validation
 
     const validateForm = () => {
@@ -80,8 +81,8 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
         if (!formData.name.trim()) {
             newErrors.name = 'El nombre del plato es requerido';
         }
-        if (!formData.ingredients.trim()) {
-            newErrors.ingredients = 'Los ingredientes del plato es requerido';
+        if (ingredients.length === 0) {
+            newErrors.ingredients = 'Añade al menos un ingrediente';
         }
 
         // Validate each ingredient row that has been partially filled
@@ -112,7 +113,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                 ingredients: ingredients
                     .filter(ing => ing.itemId && ing.quantity)
                     .map(ing => ({
-                        inventoryItemId: parseInt(ing.itemId, 10),
+                        ingredientId: parseInt(ing.itemId, 10),
                         quantity: parseFloat(ing.quantity),
                         unit: ing.unit,
                     })),
@@ -145,12 +146,17 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
     // \ Close / reset 
 
     const handleClose = () => {
-        if (isLoading) return;
-        setFormData({ icon: null, name: '', description: '' });
+    if (!isLoading) {
+        setFormData({
+            icon: null,
+            name: '',
+            description: '',
+        });
         setIngredients([]);
         setErrors({});
         onClose();
-    };
+    }
+};
 
     if (!isOpen) return null;
 
