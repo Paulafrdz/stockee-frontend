@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
-import { Pizza, Salad, Hamburger, Beef, Fish, Sandwich, Soup, X, CakeSlice, Croissant } from 'lucide-react';
+import { Pizza, Salad, Hamburger, Beef, Fish, Sandwich, Soup, CakeSlice, Croissant, X } from 'lucide-react';
 import './CreateDishModal.css';
+import '../modal/Modal.css';
 
 export const DISH_ICONS = [
     { id: 'pizza', Icon: Pizza },
@@ -18,17 +19,44 @@ export const DISH_ICONS = [
 ];
 
 
-const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => {
+const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initialData = null }) => {
     const [formData, setFormData] = useState({
-        icon: null,
-        name: '',
+        icon:        null,
+        name:        '',
         description: '',
     });
     const [ingredients, setIngredients] = useState([]);
-    const [errors, setErrors] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-
-
+    const [errors, setErrors]           = useState({});
+    const [isLoading, setIsLoading]     = useState(false);
+ 
+    // Pre-fill when editing, reset when creating — mirrors AddIngredientModal pattern
+    useEffect(() => {
+        if (initialData) {
+            setFormData({
+                icon:        initialData.icon        || null,
+                name:        initialData.name        || '',
+                description: initialData.description || '',
+            });
+            // Map backend shape { ingredientId, quantity, unit } → internal row shape
+            setIngredients(
+                (initialData.ingredients ?? []).map(ing => ({
+                    id:       ing.ingredientId,       // stable row key
+                    itemId:   String(ing.ingredientId),
+                    quantity: String(ing.quantity),
+                    unit:     ing.unit,
+                }))
+            );
+        } else {
+            setFormData({ icon: null, name: '', description: '' });
+            setIngredients([]);
+        }
+        setErrors({});
+    }, [initialData]);
+ 
+    const isEditing = !!initialData;
+ 
+    // Field handlers
+ 
     const handleChange = (field) => (e) => {
         const value = e.target.value;
         setFormData(prev => ({ ...prev, [field]: value }));
@@ -36,13 +64,13 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
             setErrors(prev => ({ ...prev, [field]: '' }));
         }
     };
-
+ 
     const handleIconSelect = (iconId) => {
         setFormData(prev => ({ ...prev, icon: prev.icon === iconId ? null : iconId }));
         if (errors.icon) setErrors(prev => ({ ...prev, icon: '' }));
     };
-
-    //  Ingredient row handlers
+ 
+    // Ingredient row handlers
 
     const handleAddIngredient = () => {
         setIngredients(prev => [
@@ -50,11 +78,11 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
             { id: Date.now(), itemId: '', quantity: '', unit: '' },
         ]);
     };
-
+ 
     const handleRemoveIngredient = (rowId) => {
         setIngredients(prev => prev.filter(ing => ing.id !== rowId));
     };
-
+ 
     const handleIngredientChange = (rowId, field, value) => {
         setIngredients(prev =>
             prev.map(ing => {
@@ -67,66 +95,62 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
             })
         );
     };
-
-
-    //  Validation
+ 
+    // Validation 
 
     const validateForm = () => {
         const newErrors = {};
-
+ 
         if (!formData.icon) {
             newErrors.icon = 'Selecciona un icono para el plato';
         }
-
         if (!formData.name.trim()) {
             newErrors.name = 'El nombre del plato es requerido';
         }
         if (ingredients.length === 0) {
             newErrors.ingredients = 'Añade al menos un ingrediente';
         }
-
-        // Validate each ingredient row that has been partially filled
         const invalidIngredients = ingredients.some(
             ing => (ing.itemId && !ing.quantity) || (!ing.itemId && ing.quantity)
         );
         if (invalidIngredients) {
             newErrors.ingredients = 'Completa o elimina los ingredientes incompletos';
         }
-
+ 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-
-    //  Submit 
-
+ 
+    // Submit 
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-
+ 
         setIsLoading(true);
-
+ 
         try {
             const dishData = {
-                icon: formData.icon,
-                name: formData.name.trim(),
+                icon:        formData.icon,
+                name:        formData.name.trim(),
                 description: formData.description.trim(),
                 ingredients: ingredients
                     .filter(ing => ing.itemId && ing.quantity)
                     .map(ing => ({
                         ingredientId: parseInt(ing.itemId, 10),
-                        quantity: parseFloat(ing.quantity),
-                        unit: ing.unit,
+                        quantity:     parseFloat(ing.quantity),
+                        unit:         ing.unit,
                     })),
             };
-
+ 
             console.log('🔍 CreateDishModal - Enviando data:', dishData);
-
+ 
             await onSubmit(dishData);
-
+ 
         } catch (error) {
             console.error('❌ Error en CreateDishModal:', error);
-            let errorMessage = 'Error al crear el plato';
-
+            let errorMessage = isEditing ? 'Error al actualizar el plato' : 'Error al crear el plato';
+ 
             if (error.response) {
                 errorMessage = error.response.data?.message
                     || error.response.data?.error
@@ -136,37 +160,34 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
             } else {
                 errorMessage = error.message || errorMessage;
             }
-
+ 
             setErrors({ submit: errorMessage });
         } finally {
             setIsLoading(false);
         }
     };
-
-    // \ Close / reset 
+ 
+    // Close / reset 
 
     const handleClose = () => {
-    if (!isLoading) {
-        setFormData({
-            icon: null,
-            name: '',
-            description: '',
-        });
+        if (isLoading) return;
+        setFormData({ icon: null, name: '', description: '' });
         setIngredients([]);
         setErrors({});
         onClose();
-    }
-};
-
+    };
+ 
     if (!isOpen) return null;
-
+ 
     return (
         <div className="modal-overlay" onClick={handleClose}>
             <div className="modal-container" onClick={e => e.stopPropagation()}>
-
+ 
                 {/* ── Header ── */}
                 <div className="modal-header">
-                    <h2 className="modal-title">Crear plato</h2>
+                    <h2 className="modal-title">
+                        {isEditing ? 'Editar plato' : 'Crear plato'}
+                    </h2>
                     <button
                         className="modal-close-button"
                         onClick={handleClose}
@@ -175,6 +196,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                         <X size={24} />
                     </button>
                 </div>
+ 
 
                 {/* ── Form ── */}
                 <form onSubmit={handleSubmit} className="modal-form">
@@ -219,7 +241,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                             disabled={isLoading}
                         />
                     </div>
-
+ 
                     {/* Description */}
                     <div className="form-field">
                         <label className="input-label">
@@ -234,36 +256,33 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                             rows={3}
                         />
                     </div>
-
+ 
                     {/* Ingredients */}
                     <div className="form-field">
                         <div className="cdm-section-header">
                             <label className="input-label required">
                                 Ingredientes y receta
                             </label>
-
                             <button
                                 type="button"
                                 className="cdm-add-ingredient-btn"
                                 onClick={handleAddIngredient}
-                                required
                                 disabled={isLoading}
                             >
                                 + Añadir
                             </button>
                         </div>
-
+ 
                         {ingredients.length === 0 && (
                             <p className="cdm-empty-msg">
                                 Añade los ingredientes que componen este plato.
                             </p>
                         )}
-
+ 
                         <div className="cdm-ingredients-list">
                             {ingredients.map(ing => (
                                 <div key={ing.id} className="cdm-ingredient-row">
-
-                                    {/* Ingredient selector */}
+ 
                                     <div className="form-field">
                                         <label className="cdm-row-label">Ingrediente</label>
                                         <select
@@ -280,8 +299,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                                             ))}
                                         </select>
                                     </div>
-
-                                    {/* Quantity + unit side by side */}
+ 
                                     <div className="form-row">
                                         <div className="form-field">
                                             <Input
@@ -302,8 +320,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                                             </div>
                                         </div>
                                     </div>
-
-                                    {/* Remove row */}
+ 
                                     <button
                                         type="button"
                                         className="cdm-remove-btn"
@@ -316,17 +333,17 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                                 </div>
                             ))}
                         </div>
-
+ 
                         {errors.ingredients && (
                             <span className="input-error">{errors.ingredients}</span>
                         )}
                     </div>
-
+ 
                     {/* Submit error */}
                     {errors.submit && (
                         <div className="form-error">{errors.submit}</div>
                     )}
-
+ 
                     {/* Actions */}
                     <div className="modal-actions">
                         <Button
@@ -345,14 +362,14 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [] }) => 
                             loading={isLoading}
                             disabled={isLoading}
                         >
-                            Guardar plato
+                            {isEditing ? 'Actualizar plato' : 'Guardar plato'}
                         </Button>
                     </div>
-
+ 
                 </form>
             </div>
         </div>
     );
 };
-
+ 
 export default CreateDishModal;
