@@ -11,7 +11,7 @@ const getAuthHeaders = () => {
   };
 };
 
-// ✅ CREATE DISH
+// CREATE DISH
 export const createDish = async (dishData) => {
   try {
     const response = await axios.post(API_URL, dishData, getAuthHeaders());
@@ -26,14 +26,20 @@ export const createDish = async (dishData) => {
   }
 };
 
-// ✅ GET ALL DISHES
+// GET ALL DISHES
 export const getAllDishes = async () => {
   const response = await axios.get(API_URL, getAuthHeaders());
   return response.data;
 };
 
-// ✅ DELETE DISH
+// DELETE DISH
 export const deleteDish = async (dishId) => {
   const response = await axios.delete(`${API_URL}/${dishId}`, getAuthHeaders());
   return response.data;
+};
+
+// EDIT DISH
+export const updateDish = async (dishId, dishData) => {
+    const response = await axios.put(`${API_URL}/${dishId}`, dishData, getAuthHeaders());
+    return response.data;
 };

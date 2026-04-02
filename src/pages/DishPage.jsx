@@ -2,23 +2,30 @@ import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import DashboardLayout from '../components/dashboardLayout/DashboardLayout';
 import CreateDishModal from '../components/createDishModal/CreateDishModal';
+import DishDetailModal from '../components/dishDetailModal/DishDetailModal';
 import DishCard from '../components/dishCard/DishCard';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import { getStockItems } from '../services/stockService';
-import { createDish, getAllDishes, deleteDish } from '../services/dishService';
+import { createDish, getAllDishes, deleteDish, updateDish } from '../services/dishService';
 import './DishPage.css';
 
 const DishPage = ({ user }) => {
-    const [dishes, setDishes]           = useState([]);
-    const [stockItems, setStockItems]   = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoading, setIsLoading]     = useState(true);
+    const [dishes, setDishes]         = useState([]);
+    const [stockItems, setStockItems] = useState([]);
+    const [isLoading, setIsLoading]   = useState(true);
+
+    // CreateDishModal 
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [editingDish, setEditingDish]             = useState(null); 
+
+    // DishDetailModal
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [selectedDish, setSelectedDish]           = useState(null);
 
     useEffect(() => {
         fetchData();
     }, []);
 
-    // Fetch dishes and stock items in parallel
     const fetchData = async () => {
         setIsLoading(true);
         try {
@@ -35,17 +42,56 @@ const DishPage = ({ user }) => {
         }
     };
 
-    const handleCreateDish = async (dishData) => {
+    // Create 
+    const handleOpenCreate = () => {
+        setEditingDish(null);
+        setIsCreateModalOpen(true);
+    };
+
+    // Detail 
+    const handleViewDetails = (dish) => {
+        setSelectedDish(dish);
+        setIsDetailModalOpen(true);
+    };
+
+    const handleCloseDetail = () => {
+        setIsDetailModalOpen(false);
+        setSelectedDish(null);
+    };
+
+    // Edit 
+
+    const handleEdit = (dish) => {
+        setEditingDish(dish);
+        setIsDetailModalOpen(false); // Close detail first
+        setIsCreateModalOpen(true);
+    };
+
+    // Submit 
+
+    const handleSubmitDish = async (dishData) => {
         try {
-            const savedDish = await createDish(dishData);
-            console.log('✅ Dish created:', savedDish);
-            setDishes(prev => [...prev, savedDish]); // Add to list without re-fetching
-            setIsModalOpen(false);
+            if (editingDish) {
+                const updated = await updateDish(editingDish.id, dishData);
+                setDishes(prev => prev.map(d => d.id === updated.id ? updated : d));
+            } else {
+                const saved = await createDish(dishData);
+                setDishes(prev => [...prev, saved]);
+            }
+            setIsCreateModalOpen(false);
+            setEditingDish(null);
         } catch (error) {
-            console.error('❌ Error creating dish:', error);
+            console.error('❌ Error saving dish:', error);
             throw error; // Let the modal display the error
         }
     };
+
+    const handleCloseCreate = () => {
+        setIsCreateModalOpen(false);
+        setEditingDish(null);
+    };
+
+    // Delete
 
     const handleDelete = async (dishId) => {
         try {
@@ -72,14 +118,10 @@ const DishPage = ({ user }) => {
                     </p>
                 </div>
 
-                {/* Loading state */}
                 {isLoading && (
-                    <div className="dish-page-loading">
-                        Cargando platos...
-                    </div>
+                    <div className="dish-page-loading">Cargando platos...</div>
                 )}
 
-                {/* Empty state */}
                 {!isLoading && dishes.length === 0 && (
                     <div className="dish-page-empty">
                         <p className="dish-page-empty-title">Aún no hay platos</p>
@@ -89,7 +131,6 @@ const DishPage = ({ user }) => {
                     </div>
                 )}
 
-                {/* Dish grid */}
                 {!isLoading && dishes.length > 0 && (
                     <div className="dc-grid">
                         {dishes.map(dish => (
@@ -97,6 +138,7 @@ const DishPage = ({ user }) => {
                                 key={dish.id}
                                 dish={dish}
                                 inventoryItems={stockItems}
+                                onViewDetails={handleViewDetails}
                                 onDelete={handleDelete}
                             />
                         ))}
@@ -111,16 +153,27 @@ const DishPage = ({ user }) => {
                 variant="primary"
                 size="small"
                 tooltip="Crear plato"
-                onClick={() => setIsModalOpen(true)}
+                onClick={handleOpenCreate}
             />
 
-            {/* Create dish modal */}
-            <CreateDishModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSubmit={handleCreateDish}
+            {/* Detail modal */}
+            <DishDetailModal
+                isOpen={isDetailModalOpen}
+                onClose={handleCloseDetail}
+                onEdit={handleEdit}
+                dish={selectedDish}
                 inventoryItems={stockItems}
             />
+
+        
+            <CreateDishModal
+                isOpen={isCreateModalOpen}
+                onClose={handleCloseCreate}
+                onSubmit={handleSubmitDish}
+                inventoryItems={stockItems}
+                initialData={editingDish}
+            />
+
         </DashboardLayout>
     );
 };

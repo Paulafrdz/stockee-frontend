@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
 import './AddIngredientModal.css';
+import '../modal/Modal.css';
 
 const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
   const [formData, setFormData] = useState({
