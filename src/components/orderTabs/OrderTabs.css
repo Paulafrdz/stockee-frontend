@@ -3,7 +3,6 @@
 .order-tabs__list {
   display: flex;
   gap: 0;
-  padding: 0 var(--space-margin);
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;

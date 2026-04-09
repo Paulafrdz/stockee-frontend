@@ -95,8 +95,7 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
           </p>
         </div>
       </div>
-
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleSubmit} className="form-flex">
         <Input
           type="email"
           label="Email"
@@ -119,7 +118,7 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
           showPasswordToggle
           required
         />
-
+        
         <div className="form-options">
           <button type="button" className="forgot-password">
             ¿Olvidaste tu contraseña?
@@ -145,6 +144,7 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
           {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
         </Button>
       </form>
+  
 
       <div className="form-footer">
         <span className="toggle-text">¿No tienes cuenta?</span>

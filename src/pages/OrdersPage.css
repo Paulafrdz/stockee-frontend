@@ -30,6 +30,13 @@
   line-height: 1.2;
 }
 
+.orders-subtitle{
+  font-family: var(--font-family);
+  font-size: var(--body-size);
+  font-weight: var(--body-weight);
+  color: var(--font-color);
+  margin: 0;
+}
 .orders-header-actions {
   display: flex;
   align-items: center;
