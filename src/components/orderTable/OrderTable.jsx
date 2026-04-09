@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Plus, Minus, ShoppingCart, AlertTriangle, TrendingUp, CheckCircle } from 'lucide-react';
 import Button from '../button/Button';
+import { Trash2 } from 'lucide-react';
+
 import './OrderTable.css';
 
 const OrderTable = ({
@@ -244,7 +246,7 @@ const OrderTable = ({
                    onClick={() => onDeleteItem(item.id)}
                   disabled={isSubmitting}
                 >
-                  Eliminar
+                  <Trash2 size={16} />
                 </button>
               </div>
             </div>

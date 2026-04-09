@@ -1,0 +1,26 @@
+
+.sales-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-section);
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.sales-page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sales-page-title {
+    font-family: var(--font-family);
+    font-size: var(--h1-size);
+    font-weight: var(--h1-weight);
+    color: var(--font-color);
+    margin: 0;
+}
+.tabs-search{
+    display: flex;
+    justify-content: space-between;
+}

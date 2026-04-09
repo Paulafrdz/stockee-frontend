@@ -9,6 +9,7 @@ import OrdersPage from "../pages/OrdersPage";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import DashboardPage from "../pages/DashboardPage";
 import DishPage from "../pages/DishPage";
+import SalePage from "../pages/SalePage";
 
 export default function AppRouter({ onUserAuthenticated }) {
   return (
@@ -64,11 +65,20 @@ export default function AppRouter({ onUserAuthenticated }) {
             <AnalyticsPage />
           </PrivateRoute>
         }
-      /><Route
+      />
+      <Route
         path="/dishes"
         element={
           <PrivateRoute>
             <DishPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/sales"
+        element={
+          <PrivateRoute>
+            <SalePage />
           </PrivateRoute>
         }
       />

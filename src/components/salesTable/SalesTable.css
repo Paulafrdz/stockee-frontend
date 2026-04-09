@@ -1,0 +1,254 @@
+.sale-table-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Table */
+.sale-table {
+    background: var(--white);
+    border: 1px solid var(--neutral-500);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius);
+}
+
+.table-content {
+    width: 100%;
+}
+
+/* Grid: icon | dish name | quantity | date | actions */
+.sale-table .table-head {
+    display: grid;
+    grid-template-columns: 60px 2fr 1fr 1.5fr 60px;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--neutral-250);
+    border-bottom: 1px solid var(--neutral-500);
+}
+
+.sale-table .table-row {
+    display: grid;
+    grid-template-columns: 60px 2fr 1fr 1.5fr 60px;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--neutral-250);
+    transition: all 0.2s ease;
+}
+
+.sale-table .table-row:hover {
+    background: var(--neutral-250);
+}
+
+.sale-table .table-row:last-child {
+    border-bottom: none;
+}
+
+/* ── Tabs: Hoy / Historial ── */
+.st-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 4px;
+}
+
+.st-tab {
+    font-family: var(--font-family);
+    font-size: var(--body-size);
+    font-weight: 500;
+    color: var(--neutral-750);
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.st-tab:hover {
+    color: var(--font-color);
+}
+
+.st-tab--active {
+    color: var(--primary-500);
+    font-weight: 600;
+    border-bottom-color: var(--primary-500);
+}
+
+/* ── Icon cell ── */
+.st-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--font-color);
+}
+
+/* ── Dish name ── */
+.st-dish-name {
+    font-weight: 500;
+    color: var(--font-color);
+}
+
+/* ── Date cell ── */
+.st-date {
+    color: var(--neutral-750);
+    font-size: 13px;
+}
+
+/* ── Shared td/th styles (reuse from StockTable pattern) ── */
+.sale-table .th {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--neutral-750);
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sale-table .td {
+    font-size: 14px;
+    font-family: var(--font-family);
+    color: var(--neutral-750);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* ── Actions ── */
+.sale-table .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.sale-table .action-btn {
+    background: none;
+    border: none;
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sale-table .delete-btn-sale {
+    color: var(--neutral-750);
+}
+
+.sale-table .delete-btn-sale:hover {
+    background: var(--terciary-200);
+    color: var(--terciary-700);
+}
+
+/* ── Empty state ── */
+.sale-table .table-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--neutral-750);
+}
+
+.sale-table .table-empty h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    color: var(--black);
+    font-family: var(--font-family);
+}
+
+.sale-table .table-empty p {
+    font-size: 14px;
+    margin: 0;
+    font-family: var(--font-family);
+}
+
+/* ── Tablet (< 1024px) ── */
+@media (max-width: 1023px) {
+    .sale-table-container {
+        gap: 16px;
+    }
+
+    .sale-table .table-head,
+    .sale-table .table-row {
+        grid-template-columns: 60px 2fr 1fr 60px;
+        gap: 12px;
+        padding: 12px 16px;
+    }
+
+    /* Hide date column on tablet */
+    .sale-table .table-head .th:nth-child(4),
+    .sale-table .table-row .td:nth-child(4) {
+        display: none;
+    }
+
+    .sale-table .th {
+        font-size: 11px;
+    }
+
+    .sale-table .td {
+        font-size: 13px;
+    }
+}
+
+/* ── Mobile (< 768px) — card layout ── */
+@media (max-width: 767px) {
+    .sale-table .table-head,
+    .sale-table .table-row {
+        grid-template-columns: 32px 1fr 40px 40px;
+        gap: 8px;
+        padding: 12px 14px;
+    }
+
+    /* Hide date column on mobile */
+    .sale-table .table-head .th:nth-child(4),
+    .sale-table .table-row .st-date {
+        display: none;
+    }
+
+    .sale-table .th {
+        font-size: 10px;
+    }
+
+    .sale-table .td {
+        font-size: 13px;
+    }
+
+    .sale-table .st-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+   
+}
+
+@media (max-width: 480px) {
+    .sale-table .table-head,
+    .sale-table .table-row {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        padding: 10px 12px;
+    }
+      .st-date{
+        display: none;
+    }
+}
+
+
+
+/* ── Accessibility ── */
+@media (prefers-contrast: high) {
+    .sale-table .table-row {
+        border-width: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sale-table .table-row {
+        transition: none;
+    }
+
+    .sale-table .action-btn {
+        transition: none;
+    }
+}
