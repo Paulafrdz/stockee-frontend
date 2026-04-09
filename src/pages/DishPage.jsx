@@ -3,24 +3,27 @@ import { Plus } from 'lucide-react';
 import DashboardLayout from '../components/dashboardLayout/DashboardLayout';
 import CreateDishModal from '../components/createDishModal/CreateDishModal';
 import DishDetailModal from '../components/dishDetailModal/DishDetailModal';
-import DishCard from '../components/dishCard/DishCard';
+import DishCard, { getDishStockStatus } from '../components/dishCard/DishCard';
 import FloatingButton from '../components/floatingButton/FloatingButton';
+import StockFilters from '../components/stockFilters/StockFilters';
 import { getStockItems } from '../services/stockService';
 import { createDish, getAllDishes, deleteDish, updateDish } from '../services/dishService';
 import './DishPage.css';
 
 const DishPage = ({ user }) => {
-    const [dishes, setDishes]         = useState([]);
+    const [dishes, setDishes] = useState([]);
     const [stockItems, setStockItems] = useState([]);
-    const [isLoading, setIsLoading]   = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filterStatus, setFilterStatus] = useState('all');
 
     // CreateDishModal 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [editingDish, setEditingDish]             = useState(null); 
+    const [editingDish, setEditingDish] = useState(null);
 
     // DishDetailModal
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-    const [selectedDish, setSelectedDish]           = useState(null);
+    const [selectedDish, setSelectedDish] = useState(null);
 
     useEffect(() => {
         fetchData();
@@ -102,6 +105,19 @@ const DishPage = ({ user }) => {
         }
     };
 
+    // Search dishes
+    const filteredDishes = dishes.filter(dish => {
+        const matchesSearch =
+            dish.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            dish.ingredients?.some(ing =>
+                ing.ingredientName.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+        if (filterStatus === 'all') return matchesSearch;
+
+        const status = getDishStockStatus(dish.ingredients, stockItems);
+        return matchesSearch && status === filterStatus;
+    });
+
     return (
         <DashboardLayout
             user={user}
@@ -110,7 +126,7 @@ const DishPage = ({ user }) => {
             subtitle="Gestiona los platos de tu restaurante"
         >
             <div className="dish-page">
-
+                <div className="dish-page-title-filters">
                 <div className="dish-page-header">
                     <h1 className="dish-page-title">Platos</h1>
                     <p className="dish-page-subtitle">
@@ -131,9 +147,22 @@ const DishPage = ({ user }) => {
                     </div>
                 )}
 
+                <StockFilters
+                    searchTerm={searchTerm}
+                    onSearchChange={setSearchTerm}
+                    filterStatus={filterStatus}
+                    onFilterChange={setFilterStatus}
+                    filterLabels={{
+                        critical: 'Sin stock',
+                        low: 'Bajo',
+                        ok: 'Ok'
+                    }}
+                    searchPlaceholder="Buscar platos..."
+                />
+                </div>
                 {!isLoading && dishes.length > 0 && (
                     <div className="dc-grid">
-                        {dishes.map(dish => (
+                        {filteredDishes.map(dish => (
                             <DishCard
                                 key={dish.id}
                                 dish={dish}
@@ -165,7 +194,7 @@ const DishPage = ({ user }) => {
                 inventoryItems={stockItems}
             />
 
-        
+
             <CreateDishModal
                 isOpen={isCreateModalOpen}
                 onClose={handleCloseCreate}

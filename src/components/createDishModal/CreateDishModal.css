@@ -1,12 +1,4 @@
-/* ============================================================
-   CreateDishModal.css  –  Stockeo
-   Prefix: cdm- (Create Dish Modal)
-   Only styles specific to this modal.
-   Shared base styles live in Modal.css.
-   All comments in English
-   ============================================================ */
 
-/* ── Icon chip picker ── */
 .cdm-icon-chips {
     display: flex;
     flex-wrap: wrap;
@@ -67,7 +59,7 @@
     border: 2px solid var(--neutral-500);
     border-radius: 12px;
     font-size: 15px;
-    color: var(--black);
+    color: var(--font-color);
     background: var(--white);
     font-family: var(--font-family);
     outline: none;

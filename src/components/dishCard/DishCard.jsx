@@ -2,19 +2,8 @@ import { Trash2 } from 'lucide-react';
 import { DISH_ICONS } from '../createDishModal/CreateDishModal';
 import './DishCard.css';
 
-/**
- * Computes the worst stock status across all dish ingredients.
- *
- * Status levels (matching Stockeo's existing stock logic):
- *  - 'critical' → currentStock ≤ 50% of minimumStock  (pink / terciary)
- *  - 'low'      → currentStock ≤ minimumStock          (orange / secondary)
- *  - 'ok'       → adequate stock                       (no banner)
- *
- * @param {Array} dishIngredients   [{ inventoryItemId, quantity, unit }]
- * @param {Array} inventoryItems    [{ id, name, currentStock, minimumStock, unit }]
- * @returns {'ok'|'low'|'critical'}
- */
-const getDishStockStatus = (dishIngredients = [], inventoryItems = []) => {
+
+export const getDishStockStatus = (dishIngredients = [], inventoryItems = []) => {
     let worst = 'ok';
 
     for (const ing of dishIngredients) {

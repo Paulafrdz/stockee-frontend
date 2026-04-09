@@ -73,9 +73,8 @@
   height: 28px;
   border-radius: 50%;
   border: none;
-  background: var(--terciary-200);
   color: var(--terciary-700);
-  border: 0.5px solid var(--terciary-700);
+  border: 1px solid var(--terciary-700);
   cursor: pointer;
   display: flex;
   align-items: center;

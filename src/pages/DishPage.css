@@ -13,6 +13,11 @@
     gap: 4px;
 }
 
+.dish-page-title-filters{
+    display: flex;
+    justify-content: space-between;
+}
+
 .dish-page-title {
     font-family: var(--font-family);
     font-size: var(--h1-size);
