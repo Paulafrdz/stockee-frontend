@@ -85,7 +85,7 @@
 
 
 .filter-buttons .status-critical.active:hover{
-  color: var(--black)
+  color: var(--font-color)
 }
 
 .filter-buttons .status-critical:hover{
@@ -93,7 +93,7 @@
 }
 
 .filter-buttons .status-low.active:hover{
-  color: var(--black)
+  color: var(--font-color)
 }
 
 .filter-buttons .status-low:hover{
@@ -101,13 +101,13 @@
 }
 .filter-buttons .status-critical{
   background-color: var(--white);
-  color: var(--black);
+  color: var(--font-color);
 }
 .filter-buttons .status-low{
   background-color: var(--white);
-  color: var(--black);
+  color: var(--font-color);
 }
 .filter-buttons .status-ok{
   background-color: var(--white);
-  color: var(--black);
+  color: var(--font-color);
 }
