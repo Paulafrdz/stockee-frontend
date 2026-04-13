@@ -92,6 +92,7 @@ const SalePage = ({ user }) => {
                         Historial
                     </button>
                 </div>
+                
                 <StockFilters
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}

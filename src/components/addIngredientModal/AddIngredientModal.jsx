@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
+import InputSelect from '../inputSelect/inputSelect';
 import './AddIngredientModal.css';
 import '../modal/Modal.css';
 
@@ -50,7 +51,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
       ...prev,
       [field]: value
     }));
-    
+
     // Limpiar error cuando el usuario empiece a escribir
     if (errors[field]) {
       setErrors(prev => ({
@@ -62,17 +63,17 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'El nombre del ingrediente es requerido';
     }
-    
+
     if (!formData.currentStock) {
       newErrors.currentStock = 'El stock actual es requerido';
     } else if (isNaN(formData.currentStock) || parseFloat(formData.currentStock) < 0) {
       newErrors.currentStock = 'Debe ser un número válido mayor o igual a 0';
     }
-    
+
     if (!formData.minimumStock) {
       newErrors.minimumStock = 'El stock mínimo es requerido';
     } else if (isNaN(formData.minimumStock) || parseFloat(formData.minimumStock) < 0) {
@@ -82,7 +83,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     if (!formData.unit) {
       newErrors.unit = 'La unidad es requerida';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -91,9 +92,9 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     e.preventDefault();
 
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    
+
     try {
       const ingredientData = {
         ...(initialData && { id: formData.id }), // Include ID only if editing
@@ -102,17 +103,17 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         minimumStock: parseFloat(formData.minimumStock),
         unit: formData.unit
       };
-      
+
       console.log('🔍 Modal - Enviando data:', ingredientData);
-      
+
       await onSubmit(ingredientData);
-      
+
       // Reset only happens in parent component now
-      
+
     } catch (error) {
       console.error('❌ Error en modal:', error);
       let errorMessage = 'Error al procesar el ingrediente';
-      
+
       if (error.response) {
         // El servidor respondió con un error
         errorMessage = error.response.data?.message || error.response.data?.error || `Error ${error.response.status}: ${error.response.statusText}`;
@@ -123,7 +124,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         // Otro tipo de error
         errorMessage = error.message || errorMessage;
       }
-      
+
       setErrors({ submit: errorMessage });
     } finally {
       setIsLoading(false);
@@ -156,7 +157,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           <h2 className="modal-title">
             {isEditing ? 'Editar Ingrediente' : 'Añadir Ingrediente al Stock'}
           </h2>
-          <button 
+          <button
             className="modal-close-button"
             onClick={handleClose}
             disabled={isLoading}
@@ -215,20 +216,19 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
 
           {/* Unidad */}
           <div className="form-field">
-            <label className="input-label required">Unidad</label>
-            <select 
-              className="select-field"
+            <InputSelect
               value={formData.unit}
               onChange={handleChange('unit')}
               disabled={isLoading}
               required
+              error={errors.unit}
             >
               {unites.map(unit => (
                 <option key={unit.value} value={unit.value}>
                   {unit.label}
                 </option>
               ))}
-            </select>
+            </InputSelect>
             {errors.unit && (
               <div className="input-error">{errors.unit}</div>
             )}

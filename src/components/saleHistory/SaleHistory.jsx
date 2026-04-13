@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { DISH_ICONS } from '../createDishModal/CreateDishModal';
-import StockFilters from '../stockFilters/StockFilters';
-
+import InputSelect from '../inputSelect/inputSelect';
 import './SaleHistory.css';
 
 
@@ -11,13 +10,12 @@ const SaleHistory = ({ sales = [] }) => {
     const [dateRange, setDateRange] = useState('all');
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Filter out today's sales — history = past days only
     const today = new Date().toDateString();
 
+    // Filter out today, apply date range and search
     const filteredSales = sales
         .filter(sale => new Date(sale.date).toDateString() !== today)
         .filter(sale => {
-            // Date range filter
             if (dateRange === 'all') return true;
             const diff = Math.floor(
                 (new Date() - new Date(sale.date)) / (1000 * 60 * 60 * 24)
@@ -28,14 +26,23 @@ const SaleHistory = ({ sales = [] }) => {
             return true;
         })
         .filter(sale =>
-            // Search by dish name inside lines
             searchTerm === '' ||
             sale.lines.some(line =>
                 line.dishName.toLowerCase().includes(searchTerm.toLowerCase())
             )
         )
-        // Most recent first
         .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Group by day
+    const groupedByDay = filteredSales.reduce((acc, sale) => {
+        const day = new Date(sale.date).toDateString();
+        if (!acc[day]) acc[day] = [];
+        acc[day].push(sale);
+        return acc;
+    }, {});
+
+    const groupedDays = Object.entries(groupedByDay)
+        .sort(([a], [b]) => new Date(b) - new Date(a));
 
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('es-ES', {
@@ -53,9 +60,6 @@ const SaleHistory = ({ sales = [] }) => {
         });
     };
 
-    const totalDishes = (sale) =>
-        sale.lines.reduce((acc, line) => acc + line.quantity, 0);
-
     const toggleExpand = (id) =>
         setExpandedId(prev => prev === id ? null : id);
 
@@ -63,9 +67,9 @@ const SaleHistory = ({ sales = [] }) => {
         <div className="sh-container">
 
             {/* ── Controls ── */}
-            <div className="sh-controls">
-                <select
-                    className="select-field"
+            <div className="sh-select-wrapper">
+
+                <InputSelect
                     value={dateRange}
                     onChange={e => setDateRange(e.target.value)}
                 >
@@ -73,7 +77,7 @@ const SaleHistory = ({ sales = [] }) => {
                     <option value="week">Última semana</option>
                     <option value="month">Último mes</option>
                     <option value="quarter">Último trimestre</option>
-                </select>
+                </InputSelect>
             </div>
 
             {/* ── Empty state ── */}
@@ -89,38 +93,45 @@ const SaleHistory = ({ sales = [] }) => {
                 </div>
             )}
 
-            {/* ── Sale cards ── */}
+            {/* ── Sale cards grouped by day ── */}
             <div className="sh-list">
-                {filteredSales.map(sale => {
-                    const isExpanded = expandedId === sale.id;
+                {groupedDays.map(([day, daySales]) => {
+                    const isExpanded = expandedId === day;
+                    const allLines = daySales.flatMap(sale =>
+                        sale.lines.map(line => ({
+                            ...line,
+                            time: sale.date,
+                            saleId: sale.id,
+                        }))
+                    );
+                    const totalQty = allLines.reduce((acc, l) => acc + l.quantity, 0);
 
                     return (
-                        <div key={sale.id} className="sh-card">
+                        <div key={day} className="sh-card">
 
-                            {/* Card header — always visible */}
+                            {/* Card header */}
                             <button
                                 className="sh-card-header"
-                                onClick={() => toggleExpand(sale.id)}
+                                onClick={() => toggleExpand(day)}
                                 aria-expanded={isExpanded}
                             >
                                 <div className="sh-card-left">
                                     <div className="sh-card-date">
                                         <Calendar size={14} />
-                                        {formatDate(sale.date)}
+                                        {formatDate(daySales[0].date)}
                                     </div>
                                     <div className="sh-card-meta">
                                         <span className="sh-badge">
-                                            {sale.lines.length} {sale.lines.length === 1 ? 'plato' : 'platos'}
+                                            {allLines.length} {allLines.length === 1 ? 'plato' : 'platos'}
                                         </span>
                                         <span className="sh-badge">
-                                            {totalDishes(sale)} uds. vendidas
+                                            {totalQty} uds. vendidas
                                         </span>
-                                        <span className="sh-time">
-                                            {formatTime(sale.date)}
+                                        <span className="sh-badge">
+                                            {daySales.length} {daySales.length === 1 ? 'venta' : 'ventas'}
                                         </span>
                                     </div>
                                 </div>
-
                                 <div className="sh-chevron">
                                     {isExpanded
                                         ? <ChevronUp size={18} />
@@ -129,20 +140,24 @@ const SaleHistory = ({ sales = [] }) => {
                                 </div>
                             </button>
 
-                            {/* Expandable lines table */}
+                            {/* Expandable lines */}
                             {isExpanded && (
                                 <div className="sh-lines">
                                     <div className="sh-lines-head">
                                         <div className="sh-th">Icono</div>
                                         <div className="sh-th">Plato</div>
                                         <div className="sh-th sh-th--center">Cantidad</div>
+                                        <div className="sh-th sh-th--center">Hora</div>
                                     </div>
-                                    {sale.lines.map((line, idx) => {
+                                    {allLines.map((line, idx) => {
                                         const iconEntry = DISH_ICONS.find(i => i.id === line.dishIcon);
                                         const IconComponent = iconEntry?.Icon ?? null;
 
                                         return (
-                                            <div key={`${sale.id}-${line.dishId}-${idx}`} className="sh-line-row">
+                                            <div
+                                                key={`${line.saleId}-${line.dishId}-${idx}`}
+                                                className="sh-line-row"
+                                            >
                                                 <div className="sh-td sh-td--icon">
                                                     {IconComponent
                                                         ? <IconComponent size={18} strokeWidth={1.5} />
@@ -151,6 +166,9 @@ const SaleHistory = ({ sales = [] }) => {
                                                 </div>
                                                 <div className="sh-td">{line.dishName}</div>
                                                 <div className="sh-td sh-td--center">{line.quantity}</div>
+                                                <div className="sh-td sh-td--center">
+                                                    {formatTime(line.time)}
+                                                </div>
                                             </div>
                                         );
                                     })}

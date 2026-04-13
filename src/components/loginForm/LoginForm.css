@@ -190,7 +190,7 @@ margin-top: 0;
     padding: 0 8px;
   }
   
-  .sidebar-header {
+  .sidebar-header-logo {
     max-width: 180px;
     margin: 0 auto;
   }
@@ -238,7 +238,7 @@ margin-top: 0;
     padding: 0;
   }
   
-  .sidebar-header {
+  .sidebar-header-logo {
     max-width: 160px;
     margin: 0 auto;
   }
@@ -306,7 +306,7 @@ margin-top: 0;
     gap: 12px;
   }
   
-  .sidebar-header {
+  .sidebar-header-logo {
     max-width: 140px;
   }
   
@@ -341,7 +341,7 @@ margin-top: 0;
     gap: 10px;
   }
   
-  .sidebar-header {
+  .sidebar-header-logo {
     max-width: 140px;
   }
   

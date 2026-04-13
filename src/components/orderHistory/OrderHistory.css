@@ -7,44 +7,6 @@
   font-family: var(--font-family);
 }
 
-/* Filters */
-.order-history .history-filters {
-  display: flex;
-  gap: var(--space-margin);
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.order-history .filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.order-history .filter-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--font-color);
-  font-family: var(--font-family);
-}
-
-.order-history .filter-select {
-  padding: var(--space-s) 12px;
-  border: 1px solid var(--neutral-500);
-  border-radius: var(--border-radius);
-  font-size: 14px;
-  background: var(--white);
-  color: var(--font-color);
-  font-family: var(--font-family);
-  min-width: 140px;
-}
-
-.order-history .filter-select:focus {
-  outline: none;
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
 /* Orders List */
 .order-history .orders-list {
   display: flex;
@@ -408,19 +370,19 @@
     gap: var(--space-body);
   }
   
-  .order-history .history-filters {
+  .order-history  {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-button);
   }
   
-  .order-history .filter-group {
+  .order-history  {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
   }
   
-  .order-history .filter-select {
+  .order-history {
     min-width: 120px;
   }
   

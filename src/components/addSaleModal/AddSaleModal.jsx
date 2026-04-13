@@ -3,16 +3,17 @@ import { X } from 'lucide-react';
 import { DISH_ICONS } from '../createDishModal/CreateDishModal';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
+import InputSelect from '../inputSelect/inputSelect';
 import '../modal/Modal.css';
 import './AddSaleModal.css';
 
 
 const AddSaleModal = ({ isOpen, onClose, onSubmit, dishes = [] }) => {
     const [formData, setFormData] = useState({
-        dishId:   '',
+        dishId: '',
         quantity: '',
     });
-    const [errors, setErrors]     = useState({});
+    const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
     // Reset on open
@@ -24,7 +25,7 @@ const AddSaleModal = ({ isOpen, onClose, onSubmit, dishes = [] }) => {
     }, [isOpen]);
 
     const selectedDish = dishes.find(d => String(d.id) === formData.dishId) ?? null;
-    const iconEntry    = DISH_ICONS.find(i => i.id === selectedDish?.icon);
+    const iconEntry = DISH_ICONS.find(i => i.id === selectedDish?.icon);
     const IconComponent = iconEntry?.Icon ?? null;
 
     const handleChange = (field) => (e) => {
@@ -35,7 +36,7 @@ const AddSaleModal = ({ isOpen, onClose, onSubmit, dishes = [] }) => {
 
     const validateForm = () => {
         const newErrors = {};
-        if (!formData.dishId)  newErrors.dishId   = 'Selecciona un plato';
+        if (!formData.dishId) newErrors.dishId = 'Selecciona un plato';
         if (!formData.quantity) {
             newErrors.quantity = 'La cantidad es requerida';
         } else if (isNaN(formData.quantity) || parseFloat(formData.quantity) <= 0) {
@@ -52,7 +53,7 @@ const AddSaleModal = ({ isOpen, onClose, onSubmit, dishes = [] }) => {
         setIsLoading(true);
         try {
             await onSubmit({
-                dishId:   parseInt(formData.dishId, 10),
+                dishId: parseInt(formData.dishId, 10),
                 dishName: selectedDish.name,
                 dishIcon: selectedDish.icon,
                 quantity: parseFloat(formData.quantity),
@@ -102,25 +103,21 @@ const AddSaleModal = ({ isOpen, onClose, onSubmit, dishes = [] }) => {
                 <form onSubmit={handleSubmit} className="modal-form">
 
                     {/* Dish selector */}
-                    <div className="form-field">
-                        <label className="input-label required">Plato</label>
-                        <select
-                            className="select-field"
-                            value={formData.dishId}
-                            onChange={handleChange('dishId')}
-                            disabled={isLoading}
-                        >
-                            <option value="">Selecciona un plato...</option>
-                            {dishes.map(dish => (
-                                <option key={dish.id} value={dish.id}>
-                                    {dish.name}
-                                </option>
-                            ))}
-                        </select>
-                        {errors.dishId && (
-                            <span className="input-error">{errors.dishId}</span>
-                        )}
-                    </div>
+                    <InputSelect
+                        label="Plato"
+                        value={formData.dishId}
+                        onChange={handleChange('dishId')}
+                        disabled={isLoading}
+                        required
+                        error={errors.dishId}
+                    >
+                        <option value="">Selecciona un plato...</option>
+                        {dishes.map(dish => (
+                            <option key={dish.id} value={dish.id}>
+                                {dish.name}
+                            </option>
+                        ))}
+                    </InputSelect>
 
                     {/* Selected dish preview */}
                     {selectedDish && (
