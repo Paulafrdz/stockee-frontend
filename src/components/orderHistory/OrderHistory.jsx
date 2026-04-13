@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Calendar, Package, Download, Eye } from 'lucide-react';
 import Button from '../button/Button';
+import InputSelect from '../inputSelect/inputSelect';
 import './OrderHistory.css';
 
 const OrderHistory = ({ orderHistory = [] }) => {
@@ -77,35 +78,29 @@ const OrderHistory = ({ orderHistory = [] }) => {
     <div className="order-history">
       {/* Filters */}
       <div className="history-filters">
-        <div className="filter-group">
-          <label htmlFor="status-filter">Estado:</label>
-          <select
-            id="status-filter"
+        <div className="history-filters">
+          <InputSelect
+            label="Estado"
             value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="filter-select"
+            onChange={e => setFilterStatus(e.target.value)}
           >
             <option value="all">Todos los estados</option>
             <option value="delivered">Enviado</option>
             <option value="processing">Procesando</option>
             <option value="pending">Pendiente</option>
             <option value="cancelled">Cancelado</option>
-          </select>
-        </div>
+          </InputSelect>
 
-        <div className="filter-group">
-          <label htmlFor="date-filter">Fechas</label>
-          <select
-            id="date-filter"
+          <InputSelect
+            label="Fechas"
             value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
-            className="filter-select"
+            onChange={e => setDateRange(e.target.value)}
           >
             <option value="all">Todas las fechas</option>
             <option value="week">Última semana</option>
-            <option value="month">Última mes</option>
+            <option value="month">Último mes</option>
             <option value="quarter">Último trimestre</option>
-          </select>
+          </InputSelect>
         </div>
       </div>
 

@@ -83,7 +83,7 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
   return (
     <div className="login-form">
       <div className="form-header">
-        <div className="sidebar-header">
+        <div className="sidebar-header-logo">
           <Link to="/login">
             <img src={Logo} alt="logotype" className="logo" />
           </Link>

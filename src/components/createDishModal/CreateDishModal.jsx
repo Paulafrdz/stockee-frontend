@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
+import InputSelect from '../inputSelect/inputSelect';
 import { Pizza, Salad, Hamburger, Beef, Fish, Sandwich, Soup, CakeSlice, Croissant, X } from 'lucide-react';
 import './CreateDishModal.css';
 import '../modal/Modal.css';
@@ -21,29 +22,29 @@ export const DISH_ICONS = [
 
 const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initialData = null }) => {
     const [formData, setFormData] = useState({
-        icon:        null,
-        name:        '',
+        icon: null,
+        name: '',
         description: '',
     });
     const [ingredients, setIngredients] = useState([]);
-    const [errors, setErrors]           = useState({});
-    const [isLoading, setIsLoading]     = useState(false);
- 
+    const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+
     // Pre-fill when editing, reset when creating — mirrors AddIngredientModal pattern
     useEffect(() => {
         if (initialData) {
             setFormData({
-                icon:        initialData.icon        || null,
-                name:        initialData.name        || '',
+                icon: initialData.icon || null,
+                name: initialData.name || '',
                 description: initialData.description || '',
             });
             // Map backend shape { ingredientId, quantity, unit } → internal row shape
             setIngredients(
                 (initialData.ingredients ?? []).map(ing => ({
-                    id:       ing.ingredientId,       // stable row key
-                    itemId:   String(ing.ingredientId),
+                    id: ing.ingredientId,       // stable row key
+                    itemId: String(ing.ingredientId),
                     quantity: String(ing.quantity),
-                    unit:     ing.unit,
+                    unit: ing.unit,
                 }))
             );
         } else {
@@ -52,11 +53,11 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
         }
         setErrors({});
     }, [initialData]);
- 
+
     const isEditing = !!initialData;
- 
+
     // Field handlers
- 
+
     const handleChange = (field) => (e) => {
         const value = e.target.value;
         setFormData(prev => ({ ...prev, [field]: value }));
@@ -64,12 +65,12 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
             setErrors(prev => ({ ...prev, [field]: '' }));
         }
     };
- 
+
     const handleIconSelect = (iconId) => {
         setFormData(prev => ({ ...prev, icon: prev.icon === iconId ? null : iconId }));
         if (errors.icon) setErrors(prev => ({ ...prev, icon: '' }));
     };
- 
+
     // Ingredient row handlers
 
     const handleAddIngredient = () => {
@@ -78,11 +79,11 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
             { id: Date.now(), itemId: '', quantity: '', unit: '' },
         ]);
     };
- 
+
     const handleRemoveIngredient = (rowId) => {
         setIngredients(prev => prev.filter(ing => ing.id !== rowId));
     };
- 
+
     const handleIngredientChange = (rowId, field, value) => {
         setIngredients(prev =>
             prev.map(ing => {
@@ -95,12 +96,12 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
             })
         );
     };
- 
+
     // Validation 
 
     const validateForm = () => {
         const newErrors = {};
- 
+
         if (!formData.icon) {
             newErrors.icon = 'Selecciona un icono para el plato';
         }
@@ -116,41 +117,41 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
         if (invalidIngredients) {
             newErrors.ingredients = 'Completa o elimina los ingredientes incompletos';
         }
- 
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
- 
+
     // Submit 
- 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
- 
+
         setIsLoading(true);
- 
+
         try {
             const dishData = {
-                icon:        formData.icon,
-                name:        formData.name.trim(),
+                icon: formData.icon,
+                name: formData.name.trim(),
                 description: formData.description.trim(),
                 ingredients: ingredients
                     .filter(ing => ing.itemId && ing.quantity)
                     .map(ing => ({
                         ingredientId: parseInt(ing.itemId, 10),
-                        quantity:     parseFloat(ing.quantity),
-                        unit:         ing.unit,
+                        quantity: parseFloat(ing.quantity),
+                        unit: ing.unit,
                     })),
             };
- 
+
             console.log('🔍 CreateDishModal - Enviando data:', dishData);
- 
+
             await onSubmit(dishData);
- 
+
         } catch (error) {
             console.error('❌ Error en CreateDishModal:', error);
             let errorMessage = isEditing ? 'Error al actualizar el plato' : 'Error al crear el plato';
- 
+
             if (error.response) {
                 errorMessage = error.response.data?.message
                     || error.response.data?.error
@@ -160,13 +161,13 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
             } else {
                 errorMessage = error.message || errorMessage;
             }
- 
+
             setErrors({ submit: errorMessage });
         } finally {
             setIsLoading(false);
         }
     };
- 
+
     // Close / reset 
 
     const handleClose = () => {
@@ -176,13 +177,13 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
         setErrors({});
         onClose();
     };
- 
+
     if (!isOpen) return null;
- 
+
     return (
         <div className="modal-overlay" onClick={handleClose}>
             <div className="modal-container" onClick={e => e.stopPropagation()}>
- 
+
                 {/* ── Header ── */}
                 <div className="modal-header">
                     <h2 className="modal-title">
@@ -196,7 +197,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                         <X size={24} />
                     </button>
                 </div>
- 
+
 
                 {/* ── Form ── */}
                 <form onSubmit={handleSubmit} className="modal-form">
@@ -241,7 +242,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                             disabled={isLoading}
                         />
                     </div>
- 
+
                     {/* Description */}
                     <div className="form-field">
                         <label className="input-label">
@@ -256,7 +257,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                             rows={3}
                         />
                     </div>
- 
+
                     {/* Ingredients */}
                     <div className="form-field">
                         <div className="cdm-section-header">
@@ -272,34 +273,31 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                                 + Añadir
                             </button>
                         </div>
- 
+
                         {ingredients.length === 0 && (
                             <p className="cdm-empty-msg">
                                 Añade los ingredientes que componen este plato.
                             </p>
                         )}
- 
+
                         <div className="cdm-ingredients-list">
                             {ingredients.map(ing => (
                                 <div key={ing.id} className="cdm-ingredient-row">
- 
-                                    <div className="form-field">
-                                        <label className="cdm-row-label">Ingrediente</label>
-                                        <select
-                                            className="select-field"
-                                            value={ing.itemId}
-                                            onChange={e => handleIngredientChange(ing.id, 'itemId', e.target.value)}
-                                            disabled={isLoading}
-                                        >
-                                            <option value="">Selecciona un producto...</option>
-                                            {inventoryItems.map(item => (
-                                                <option key={item.id} value={item.id}>
-                                                    {item.name} — {item.currentStock} {item.unit} disponibles
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
- 
+
+                                    <InputSelect
+                                        label="Ingrediente"
+                                        value={ing.itemId}
+                                        onChange={e => handleIngredientChange(ing.id, 'itemId', e.target.value)}
+                                        disabled={isLoading}
+                                    >
+                                        <option value="">Selecciona un producto...</option>
+                                        {inventoryItems.map(item => (
+                                            <option key={item.id} value={item.id}>
+                                                {item.name} — {item.currentStock} {item.unit} disponibles
+                                            </option>
+                                        ))}
+                                    </InputSelect>
+
                                     <div className="form-row">
                                         <div className="form-field">
                                             <Input
@@ -320,7 +318,7 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                                             </div>
                                         </div>
                                     </div>
- 
+
                                     <button
                                         type="button"
                                         className="cdm-remove-btn"
@@ -333,17 +331,17 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                                 </div>
                             ))}
                         </div>
- 
+
                         {errors.ingredients && (
                             <span className="input-error">{errors.ingredients}</span>
                         )}
                     </div>
- 
+
                     {/* Submit error */}
                     {errors.submit && (
                         <div className="form-error">{errors.submit}</div>
                     )}
- 
+
                     {/* Actions */}
                     <div className="modal-actions">
                         <Button
@@ -365,11 +363,11 @@ const CreateDishModal = ({ isOpen, onClose, onSubmit, inventoryItems = [], initi
                             {isEditing ? 'Actualizar plato' : 'Guardar plato'}
                         </Button>
                     </div>
- 
+
                 </form>
             </div>
         </div>
     );
 };
- 
+
 export default CreateDishModal;
