@@ -70,7 +70,7 @@
 /* ── Ingredients table ── */
 .ddm-table {
     border: 2px solid var(--neutral-500);
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     overflow: hidden;
 }
 
@@ -135,7 +135,7 @@
     align-items: center;
     justify-content: center;
     padding: 4px 10px;
-    border-radius: 20px;
+    border-radius: var(--small-radius);
     font-family: var(--font-family);
     font-size: 13px;
     font-weight: 600;

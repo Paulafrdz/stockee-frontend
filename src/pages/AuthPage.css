@@ -21,8 +21,8 @@
 
 /* ── Form section (right) ── */
 .auth-form-section {
-    width: 280px;
-    min-width: 280px;
+    width: 300px;
+    min-width: 300px;
     background: var(--white);
     display: flex;
     align-items: center;
