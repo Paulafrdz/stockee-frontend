@@ -64,7 +64,7 @@
 
 /* Individual sale card */
 .sh-card {
-    border: 1px solid var(--neutral-500);
+    border: 2px solid var(--neutral-500);
     border-radius: 12px;
     overflow: hidden;
     background: var(--white);
@@ -158,7 +158,7 @@
     grid-template-columns: 48px 1fr 80px;
     padding: 8px var(--space-margin);
     background: var(--neutral-250);
-    border-bottom: 1px solid var(--neutral-500);
+    border-bottom: 2px solid var(--neutral-500);
 }
 
 .sh-th {
@@ -182,7 +182,7 @@
 .sh-line-row {
     display: grid;
     padding: 10px var(--space-margin);
-    border-bottom: 1px solid var(--neutral-250);
+    border-bottom: 2px solid var(--neutral-250);
     transition: background 0.15s;
 }
 

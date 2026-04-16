@@ -7,7 +7,7 @@
 
 .stock-alert-banner {
     background: var(--background-red);
-    border: 1px solid var(--border-red);
+    border: 2px solid var(--border-red);
     border-radius: 12px;
     padding: 16px 20px;
     display: flex;
@@ -42,7 +42,7 @@
 /* Table */
 .stock-table {
     background: var(--white);
-    border: 1px solid var(--neutral-500);
+    border: 2px solid var(--neutral-500);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     border-radius: var(--border-radius);
@@ -71,7 +71,7 @@
     gap: 16px;
     padding: 16px 20px;
     background: var(--neutral-250);
-    border-bottom: 1px solid var(--neutral-500);
+    border-bottom: 2px solid var(--neutral-500);
 }
 
 .th {
@@ -93,7 +93,7 @@
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1.5fr 1fr;
     gap: 16px;
     padding: 16px 20px;
-    border-bottom: 1px solid var(--neutral-250);
+    border-bottom: 2px solid var(--neutral-250);
     transition: all var(--transition-normal);
 }
 
@@ -242,7 +242,7 @@
 .table-stats {
     background: var(--white);
     border-radius: var(--border-radius);
-    border: 1px solid var(--neutral-500);
+    border: 2px solid var(--neutral-500);
     padding: 16px 20px;
 }
 
@@ -400,7 +400,7 @@
         flex-direction: column;
         gap: 12px;
         padding: 16px;
-        border: 1px solid var(--neutral-500);
+        border: 2px solid var(--neutral-500);
         border-radius: 8px;
         background: var(--white);
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -418,7 +418,7 @@
         order: -1;
         margin-bottom: 8px;
         padding-bottom: 8px;
-        border-bottom: 1px solid var(--neutral-250);
+        border-bottom: 2px solid var(--neutral-250);
     }
 
     .td {
@@ -469,7 +469,7 @@
         justify-content: flex-end;
         gap: 12px;
         padding-top: 12px;
-        border-top: 1px solid var(--neutral-250);
+        border-top: 2px solid var(--neutral-250);
         margin-top: 4px;
     }
 
@@ -643,7 +643,7 @@
 /* ==================== PRINT ==================== */
 @media print {
     .stock-alert-banner {
-        border: 1px solid #000;
+        border: 2px solid #000;
         background: #fff;
         color: #000;
     }

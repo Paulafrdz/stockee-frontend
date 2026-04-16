@@ -2,6 +2,8 @@
 .is-group {
     display: flex;
     gap: var(--space-s);
+    flex-direction: column;
+
 }
 
 .is-label {
@@ -25,7 +27,7 @@
 .is-field {
     width: 100%;
     padding: 14px 40px 14px var(--space-button);
-    border: 1px solid var(--neutral-500);
+    border: 2px solid var(--neutral-500);
     border-radius: var(--border-radius);
     font-size: var(--body-size);
     color: var(--font-color);
