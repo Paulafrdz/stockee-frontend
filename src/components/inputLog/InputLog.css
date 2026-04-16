@@ -28,7 +28,7 @@
 .input-field {
   width: 100%;
   padding: 14px 16px;
-  border: 1px solid var(--neutral-500);
+  border: 2px solid var(--neutral-500);
   border-radius: 12px;
   font-size: 15px;
   color: var(--black);

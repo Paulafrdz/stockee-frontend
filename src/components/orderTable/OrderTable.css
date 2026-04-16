@@ -10,7 +10,7 @@
 .recommended-orders-table .table-container {
   overflow-x: auto;
   background: var(--white);
-  border: 1px solid var(--neutral-500);
+  border: 2px solid var(--neutral-500);
   border-radius: var(--border-radius);
   padding: 0;
   margin: 0;
@@ -32,7 +32,7 @@
 
 .order-th {
   background: var(--neutral-250);
-  border-bottom: 1px solid var(--neutral-500);
+  border-bottom: 2px solid var(--neutral-500);
   font-size: 12px;
   font-weight: var(--button-weight);
   color: var(--neutral-750);
@@ -42,7 +42,7 @@
 }
 
 .order-table-row {
-  border-bottom: 1px solid var(--neutral-250);
+  border-bottom: 2px solid var(--neutral-250);
   transition: background-color 0.2s ease-in-out;
 }
 
@@ -88,7 +88,7 @@
 .recommended-orders-table .search-input {
   width: 100%;
   padding: 10px 12px 10px 40px;
-  border: 1px solid var(--neutral-500);
+  border: 2px solid var(--neutral-500);
   border-radius: var(--border-radius);
   font-size: 14px;
   font-family: var(--font-family);
@@ -110,6 +110,7 @@
 .recommended-orders-table .global-btn--decrease {
   background: var(--terciary-200);
   color: var(--terciary-700);
+  border-radius: var(--border-radius);
 }
 
 .recommended-orders-table .global-btn--decrease:hover {
@@ -120,7 +121,7 @@
 .recommended-orders-table .global-btn--increase {
   background: var(--secondary-200);
   color: var(--secondary-600);
-  border-color: var(--secondary-200);
+  border-radius: var(--border-radius);
 }
 
 .recommended-orders-table .global-btn--increase:hover {
@@ -152,7 +153,7 @@
 .recommended-orders-table .filter-checkbox input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  border: 1px solid var(--neutral-500);
+  border: 2px solid var(--neutral-500);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -419,7 +420,7 @@
     align-items: flex-start;
     gap: 10px;
     padding: 16px;
-    border: 1px solid var(--neutral-500);
+    border: 2px solid var(--neutral-500);
     border-radius: var(--border-radius);
     margin-bottom: var(--space-s);
     background: var(--white);
@@ -437,7 +438,7 @@
   /* Ingredient name as card title */
   .recommended-orders-table .ingredient-cell {
     padding-bottom: 10px;
-    border-bottom: 1px solid var(--neutral-250);
+    border-bottom: 2px solid var(--neutral-250);
   }
 
   .recommended-orders-table .ingredient-name {
@@ -501,7 +502,7 @@
   /* Delete button full width */
   .recommended-orders-table .actions-cell {
     padding-top: 10px;
-    border-top: 1px solid var(--neutral-250);
+    border-top: 2px solid var(--neutral-250);
   }
 
   .recommended-orders-table .remove-btn {
