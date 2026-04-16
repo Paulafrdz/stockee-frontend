@@ -41,7 +41,7 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
     
     setTimeout(() => {
       console.log('🔄 Redirigiendo a /dashboard');
-      navigate('/dashboad', { replace: true });
+      navigate('/dashboard', { replace: true });
     }, 100);
   };
 

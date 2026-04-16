@@ -62,7 +62,7 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
   return (
     <div className="register-form">
       <div className="form-header">
-          <div className="sidebar-header">
+          <div className="sidebar-header-register">
                         <Link to="/dashboard">
                             <img src={Logo} alt="logotype" className="logo" />
                         </Link>
@@ -75,7 +75,7 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="form">
+      <form onSubmit={handleSubmit} className="form-flex">
 
         <Input
           type="text"
