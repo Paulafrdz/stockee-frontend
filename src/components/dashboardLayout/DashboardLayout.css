@@ -151,6 +151,7 @@
 @media (max-width: 768px) {
   .mobile-header {
     display: flex;
+    align-items: flex-end;
   }
 
   .dashboard-layout {

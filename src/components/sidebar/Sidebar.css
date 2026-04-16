@@ -157,7 +157,7 @@ img{
 
 .sidebar-toggle {
   position: fixed;
-  top: 16px;
+  top: 10px;
   left: 16px;
   z-index: 2000;
   background: var(--primary-500);
