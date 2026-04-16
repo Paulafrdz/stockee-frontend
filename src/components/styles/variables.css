@@ -58,4 +58,6 @@
 
     /* ⚙️ Border radius */
     --border-radius: 12px;
+    --small-radius: 8px;
+    --big-radius: 16px;
 }
