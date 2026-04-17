@@ -1,7 +1,8 @@
-import React from 'react';
-import { Edit, Trash2, AlertTriangle } from 'lucide-react';
+import { useState } from 'react';
+import { Edit, Trash2, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
 import StockFilters from '../stockFilters/StockFilters';
 import './StockTable.css';
+import { getLotesByStockId } from '../../services/stockService';
 
 const StockTable = ({
   stockItems = [],
@@ -13,6 +14,9 @@ const StockTable = ({
   filterStatus = 'all',
   onFilterChange
 }) => {
+
+  const [expandedRow, setExpandedRow] = useState(null);
+  const [lotesMap, setLotesMap] = useState({});
 
   const getStockStatus = (currentStock, minimumStock) => {
     if (currentStock <= minimumStock * 0.5) return 'critical';
@@ -59,6 +63,18 @@ const StockTable = ({
     return timestamp;
   };
 
+  const toggleLotes = async (itemId) => {
+    if (expandedRow === itemId) {
+      setExpandedRow(null);
+      return;
+    }
+    if (!lotesMap[itemId]) {
+      const lotes = await getLotesByStockId(itemId);
+      setLotesMap(prev => ({ ...prev, [itemId]: lotes }));
+    }
+    setExpandedRow(itemId);
+  }
+
   return (
     <div className="stock-table-container">
       {/* Alert Banner */}
@@ -104,7 +120,7 @@ const StockTable = ({
             <div className="th">Mínimo</div>
             <div className="th">Unidad</div>
             <div className="th">Estado</div>
-            <div className="th">Última actualización</div>
+            <div className="th">Caducidad</div>
             <div className="th"></div>
           </div>
 
@@ -136,8 +152,31 @@ const StockTable = ({
                     </span>
                   </div>
 
-                  <div className="td last-updated text-muted">
-                    {formatTimeAgo(item.lastUpdate)}
+                  <div className="td lotes-cell">
+                    <button
+                      className="lotes-toggle-btn"
+                      onClick={() => toggleLotes(item.id)}
+                    >
+                      {expandedRow === item.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      {expandedRow === item.id ? 'Ocultar' : 'Ver lotes'}
+                    </button>
+
+                    {expandedRow === item.id && (
+                      <div className="lotes-dropdown">
+                        {lotesMap[item.id]?.length > 0 ? (
+                          lotesMap[item.id].map(lote => (
+                            <div key={lote.id} className="lote-item">
+                              <span className="lote-qty">{lote.quantity} {lote.unit}</span>
+                              <span className="lote-expiry">
+                                Caduca: {new Date(lote.expiryDate).toLocaleDateString('es-ES')}
+                              </span>
+                            </div>
+                          ))
+                        ) : (
+                          <span className="lotes-empty">Sin lotes registrados</span>
+                        )}
+                      </div>
+                    )}
                   </div>
 
                   <div className="td actions">
