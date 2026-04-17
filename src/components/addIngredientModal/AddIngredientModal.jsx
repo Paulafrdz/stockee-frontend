@@ -11,7 +11,8 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     name: '',
     currentStock: '',
     minimumStock: '',
-    unit: 'kg' // Valor por defecto agregado
+    unit: 'kg',
+    shelfLifeDays: 4
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -24,6 +25,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         currentStock: initialData.currentStock || '',
         minimumStock: initialData.minimumStock || '',
         unit: initialData.unit || 'kg',
+        shelfLifeDays: initialData.shelfLifeDays || 4,
       });
     } else {
       // Reset form when switching from edit to add
@@ -31,7 +33,8 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         name: '',
         currentStock: '',
         minimumStock: '',
-        unit: 'kg'
+        unit: 'kg',
+        shelfLifeDays: 4
       });
     }
   }, [initialData]);
@@ -44,6 +47,18 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     { value: 'units', label: 'unites' },
     { value: 'packages', label: 'paquetes' }
   ];
+
+  const shelfLifeOptions = [
+    { value: 1, label: '1 día' },
+    { value: 2, label: '2 día' },
+    { value: 3, label: '3 día' },
+    { value: 4, label: '4 día' },
+    { value: 5, label: '5 día' },
+    { value: 7, label: '1 semana' },
+    { value: 10, label: '10 día' },
+    { value: 14, label: '2 semanas' },
+    { value: 30, label: '1 mes' },
+  ]
 
   const handleChange = (field) => (e) => {
     const value = e.target.value;
@@ -101,7 +116,8 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
         name: formData.name.trim(),
         currentStock: parseFloat(formData.currentStock),
         minimumStock: parseFloat(formData.minimumStock),
-        unit: formData.unit
+        unit: formData.unit,
+        shelfLifeDays: parseInt(formData.shelfLifeDays),
       };
 
       console.log('🔍 Modal - Enviando data:', ingredientData);
@@ -232,6 +248,21 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             {errors.unit && (
               <div className="input-error">{errors.unit}</div>
             )}
+          </div>
+
+          <div className="form-field">
+            <InputSelect
+              label="Caduca en"
+              value={formData.shelfLifeDays}
+              onChange={handleChange('shelfLifeDays')}
+              disabled={isLoading}
+            >
+              {shelfLifeOptions.map(opt => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </InputSelect>
           </div>
 
           {/* Error de submit */}

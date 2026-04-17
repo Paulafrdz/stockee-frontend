@@ -31,7 +31,8 @@ export const updateStockItem = async (id, ingredientData) => {
         name: ingredientData.name,
         currentStock: ingredientData.currentStock,
         minimumStock: ingredientData.minimumStock,
-        unit: ingredientData.unit
+        unit: ingredientData.unit,
+        shelfLifeDays: ingredientData.shelfLifeDays 
       },
       getAuthHeaders()
     );
@@ -56,3 +57,8 @@ export const deleteStockItem = async (id) => {
   const response = await axios.delete(`${API_URL}/${id}`, getAuthHeaders());
   return response.data;
 };
+
+export const getLotesByStockId = async (id) => {
+  const response = await axios.get(`${API_URL}/${id}/lotes`, getAuthHeaders());
+  return response.data;
+}

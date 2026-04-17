@@ -54,6 +54,7 @@ const StockPage = () => {
         currentStock: parseFloat(newIngredient.currentStock),
         minimumStock: parseFloat(newIngredient.minimumStock),
         unit: newIngredient.unit,
+        shelfLifeDays: parseInt(newIngredient.shelfLifeDays),
       });
       setStockItems((prev) => [...prev, savedItem]);
       handleCloseModal();
