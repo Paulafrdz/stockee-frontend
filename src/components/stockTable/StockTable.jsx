@@ -52,17 +52,6 @@ const StockTable = ({
     total: processedItems.length
   };
 
-  const handleStockUpdate = (item, newActual) => {
-    if (onUpdateStock) {
-      onUpdateStock(item.id, parseFloat(newActual));
-    }
-  };
-
-  const formatTimeAgo = (timestamp) => {
-    if (timestamp === 'ahora') return 'ahora';
-    return timestamp;
-  };
-
   const toggleLotes = async (itemId) => {
     if (expandedRow === itemId) {
       setExpandedRow(null);
@@ -73,14 +62,36 @@ const StockTable = ({
       setLotesMap(prev => ({ ...prev, [itemId]: lotes }));
     }
     setExpandedRow(itemId);
-  }
+  };
+
+  // Panel reutilizable — vive dentro del mismo <tr>
+  const LotesPanel = ({ item }) => (
+    <td colSpan={7} className="lotes-inline-panel" id={`lotes-${item.id}`}>
+      {lotesMap[item.id]?.length > 0 ? (
+        <ul className="lotes-panel" aria-label={`Lotes de ${item.name}`}>
+          {lotesMap[item.id].map(lote => (
+            <li key={lote.id} className="lote-row">
+              <span className="lote-label">Cantidad</span>
+              <span className="lote-qty">{lote.quantity} {lote.unit}</span>
+              <span className="lote-label">Caducidad</span>
+              <span className="lote-expiry">
+                {new Date(lote.expiryDate).toLocaleDateString('es-ES')}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="lotes-empty">Sin lotes registrados</p>
+      )}
+    </td>
+  );
 
   return (
     <div className="stock-table-container">
-      {/* Alert Banner */}
+
       {(statusCounts.critical > 0 || statusCounts.low > 0) && (
-        <div className="stock-alert-banner">
-          <AlertTriangle className="alert-icon" size={20} />
+        <div className="stock-alert-banner" role="alert">
+          <AlertTriangle className="alert-icon" size={20} aria-hidden="true" />
           <div className="alert-content">
             <div className="alert-title">
               {statusCounts.critical + statusCounts.low} items necesitan atención
@@ -93,8 +104,6 @@ const StockTable = ({
         </div>
       )}
 
-
-      {/* Filtros reutilizables */}
       <StockFilters
         searchTerm={searchTerm}
         onSearchChange={onSearchChange}
@@ -102,121 +111,112 @@ const StockTable = ({
         onFilterChange={onFilterChange}
         statusCounts={statusCounts}
         totalLabel="Total"
-        filterLabels={{
-          critical: 'Crítico',
-          low: 'Low',
-          ok: 'Ok'
-        }}
+        filterLabels={{ critical: 'Crítico', low: 'Low', ok: 'Ok' }}
         searchPlaceholder="Buscar ingredientes..."
       />
 
-      {/* Table */}
       <div className="stock-table">
+        <table aria-label="Inventario de ingredientes">
+          <caption className="sr-only">
+            Tabla de ingredientes con stock actual, mínimo, unidad y estado
+          </caption>
 
-        <div className="table-content">
-          <div className="table-head">
-            <div className="th">Ingredientes</div>
-            <div className="th">Actual</div>
-            <div className="th">Mínimo</div>
-            <div className="th">Unidad</div>
-            <div className="th">Estado</div>
-            <div className="th">Caducidad</div>
-            <div className="th"></div>
-          </div>
+          <thead className="table-head">
+            <tr>
+              <th scope="col" className="th">Ingredientes</th>
+              <th scope="col" className="th">Actual</th>
+              <th scope="col" className="th">Mínimo</th>
+              <th scope="col" className="th">Unidad</th>
+              <th scope="col" className="th">Estado</th>
+              <th scope="col" className="th">Caducidad</th>
+              <th scope="col" className="th"><span className="sr-only">Acciones</span></th>
+            </tr>
+          </thead>
 
-          <div className="table-body">
+          <tbody className="table-body">
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => (
-                <div key={item.id} className={`table-row status-row-${item.status}`}>
-                  <div className="td stock-ingredient-name">
-                    {item.name}
-                  </div>
+                <tr
+                  key={item.id}
+                  className={`table-row status-row-${item.status}`}
+                  aria-expanded={expandedRow === item.id}
+                >
+                  <td className="td stock-ingredient-name">{item.name}</td>
 
-                  <div className="td stock-currentStock">
+                  <td className="td stock-currentStock">
                     <span className={`stock-value stock-${item.status}`}>
                       {item.currentStock}
                     </span>
-                  </div>
+                  </td>
 
-                  <div className="td stock-minimum">
-                    {item.minimumStock}
-                  </div>
+                  <td className="td stock-minimum">{item.minimumStock}</td>
 
-                  <div className="td stock-unit">
-                    {item.unit}
-                  </div>
+                  <td className="td stock-unit">{item.unit}</td>
 
-                  <div className="td stock-status">
+                  <td className="td stock-status">
                     <span className={`status-badge status-${item.status}`}>
                       {item.statusLabel}
                     </span>
-                  </div>
+                  </td>
 
-                  <div className="td lotes-cell">
+                  <td className="td lotes-cell">
                     <button
                       className="lotes-toggle-btn"
                       onClick={() => toggleLotes(item.id)}
+                      aria-expanded={expandedRow === item.id}
+                      aria-controls={`lotes-${item.id}`}
+                      aria-label={`${expandedRow === item.id ? 'Ocultar' : 'Ver'} lotes de ${item.name}`}
                     >
-                      {expandedRow === item.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                      {expandedRow === item.id
+                        ? <ChevronUp size={16} aria-hidden="true" />
+                        : <ChevronDown size={16} aria-hidden="true" />
+                      }
                     </button>
+                  </td>
 
-                    {expandedRow === item.id && (
-                      <div className="lotes-dropdown">
-                        {lotesMap[item.id]?.length > 0 ? (
-                          lotesMap[item.id].map(lote => (
-                            <div key={lote.id} className="lote-item">
-                              <span className="lote-qty">{lote.quantity} {lote.unit}</span>
-                              <span className="lote-expiry">
-                                Caduca: {new Date(lote.expiryDate).toLocaleDateString('es-ES')}
-                              </span>
-                            </div>
-                          ))
-                        ) : (
-                          <span className="lotes-empty">Sin lotes registrados</span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="td actions">
+                  <td className="td actions">
                     <button
                       className="action-btn edit-btn"
                       onClick={() => onEditIngredient && onEditIngredient(item)}
-                      title="Editar ingrediente"
+                      aria-label={`Editar ${item.name}`}
                     >
-                      <Edit size={16} />
+                      <Edit size={16} aria-hidden="true" />
                     </button>
                     <button
                       className="action-btn delete-btn"
                       onClick={() => onDeleteIngredient && onDeleteIngredient(item.id)}
-                      title="Eliminar ingrediente"
+                      aria-label={`Eliminar ${item.name}`}
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={16} aria-hidden="true" />
                     </button>
-                  </div>
-                </div>
+                  </td>
+
+                  {/* Panel de lotes — inline dentro del mismo <tr> */}
+                  {expandedRow === item.id && <LotesPanel item={item} />}
+                </tr>
               ))
             ) : (
-              <div className="table-empty">
-                {searchTerm || filterStatus !== 'all' ? (
-                  <div>
-                    <h3>No se encontraron ingredientes</h3>
-                    <p>Intenta ajustar los filtros o términos de búsqueda</p>
-                  </div>
-                ) : (
-                  <div>
-                    <h3>No hay ingredientes en el inventario</h3>
-                    <p>Añade tu primer ingrediente usando el botón "Añadir ingrediente"</p>
-                  </div>
-                )}
-              </div>
+              <tr>
+                <td colSpan={7} className="table-empty">
+                  {searchTerm || filterStatus !== 'all' ? (
+                    <>
+                      <h3>No se encontraron ingredientes</h3>
+                      <p>Intenta ajustar los filtros o términos de búsqueda</p>
+                    </>
+                  ) : (
+                    <>
+                      <h3>No hay ingredientes en el inventario</h3>
+                      <p>Añade tu primer ingrediente usando el botón "Añadir ingrediente"</p>
+                    </>
+                  )}
+                </td>
+              </tr>
             )}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
 
-      {/* Statistics */}
-      <div className="table-stats">
+      <div className="table-stats" aria-label="Resumen del inventario">
         <div className="stats-row">
           <div className="stat-item">
             <span className="stat-label">Total items:</span>
