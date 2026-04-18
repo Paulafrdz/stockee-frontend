@@ -48,18 +48,6 @@
     border-radius: var(--border-radius);
 }
 
-.table-header {
-    background: var(--primary-500);
-    padding: 16px 20px;
-    color: var(--white);
-}
-
-.table-title {
-    font-size: 16px;
-    font-weight: 600;
-    font-family: var(--font-primary);
-    margin: 0;
-}
 
 .table-content {
     width: 100%;
@@ -144,7 +132,7 @@
     color: var(--secondary-500);
 }
 
-.stock-ok{
+.stock-ok {
     color: var(--neutral-700);
     font-weight: 500;
 }
@@ -165,13 +153,13 @@
     color: var(--terciary-700);
 }
 
-.status-low{
+.status-low {
     background: var(--secondary-200);
     color: var(--secondary-500);
 }
 
-.status-ok{
-  background: #e7fdce;
+.status-ok {
+    background: #e7fdce;
     color: #84cc16;
 }
 
@@ -279,6 +267,86 @@
     color: var(--neutral-700);
 }
 
+/* ==================== LOTES DROPDOWN ==================== */
+.lotes-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.lotes-toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: 1.5px solid var(--neutral-500);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: var(--font-primary);
+    color: var(--neutral-750);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.lotes-toggle-btn:hover {
+    background: var(--neutral-250);
+    border-color: var(--neutral-700);
+    color: var(--black);
+}
+
+.lotes-dropdown {
+    width: 100%;
+    border: 1.5px solid var(--neutral-500);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--white);
+}
+
+.lote-item {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 6px 10px;
+    gap: 4px;
+    font-size: 12px;
+    font-family: var(--font-primary);
+    border-bottom: 1px solid var(--neutral-250);
+}
+
+.lote-item:last-child {
+    border-bottom: none;
+}
+
+.lote-qty {
+    color: var(--neutral-750);
+    font-weight: 500;
+}
+
+.lote-expiry {
+    color: var(--neutral-700);
+}
+
+.lotes-empty {
+    display: block;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: var(--neutral-750);
+    font-family: var(--font-primary);
+}
+
+/* ANIMACIÓN */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Animations */
 @keyframes slideDown {
     from {
@@ -313,21 +381,15 @@
     }
 
     .table-head {
-        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-        gap: 12px;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 60px;
+        gap: 8px;
         padding: 12px 16px;
     }
 
     .table-row {
-        grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-        gap: 12px;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 60px;
+        gap: 8px;
         padding: 12px 16px;
-    }
-
-    /* Ocultar columna "Última actualización" en tablet */
-    .table-head .th:nth-child(6),
-    .table-row .td:nth-child(6) {
-        display: none;
     }
 
     .th {
@@ -352,6 +414,21 @@
 
     .stat-value {
         font-size: 13px;
+    }
+
+    .lotes-cell {
+        display: flex;
+    }
+
+    .lote-item{
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Mostrar columna caducidad en tablet */
+    .table-head .th:nth-child(3),
+    .table-row .td:nth-child(3) {
+        display: none;
     }
 }
 
@@ -390,11 +467,11 @@
         background: var(--neutral-250);
     }
 
-    .stock-table{
+    .stock-table {
         background-color: none;
         border: none
     }
-    
+
     .table-row {
         display: flex;
         flex-direction: column;
@@ -454,9 +531,10 @@
         content: "Estado";
     }
 
-    .last-updated::before {
-        content: "Actualización";
+    .lotes-cell::before {
+        content: "Caducidad";
     }
+
 
     /* Ingrediente name sin label */
     .stock-ingredient-name::before {
@@ -538,6 +616,29 @@
     .stat-value {
         font-size: 14px;
     }
+
+    .lotes-cell {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .lotes-cell::before {
+        content: "Caducidad";
+    }
+
+    .lotes-toggle-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lotes-dropdown {
+        width: 100%;
+    }
+
+    .lote-item {
+        flex-direction: row;
+        
+    }
 }
 
 /* Mobile pequeño (menos de 480px) */
@@ -596,19 +697,23 @@
     .stat-value {
         font-size: 13px;
     }
-}
 
-/* Landscape mobile - ajustes adicionales */
-@media (max-width: 767px) and (orientation: landscape) {
-    .table-row {
-        padding: 12px;
-        gap: 8px;
+    .lotes-toggle-btn {
+        font-size: 11px;
+        padding: 4px 8px;
     }
 
-    .td {
-        grid-template-columns: 100px 1fr;
+    .lote-item {
+        font-size: 11px;
+        padding: 6px 8px;
     }
+
+    .lotes-cell {
+        grid-template-columns: 1fr;
+    }
+  
 }
+
 
 /* ==================== ACCESIBILIDAD ==================== */
 
@@ -637,26 +742,5 @@
 
     .action-btn {
         transition: none;
-    }
-}
-
-/* ==================== PRINT ==================== */
-@media print {
-    .stock-alert-banner {
-        border: 2px solid #000;
-        background: #fff;
-        color: #000;
-    }
-
-    .actions {
-        display: none;
-    }
-
-    .table-row {
-        page-break-inside: avoid;
-    }
-
-    .table-stats {
-        page-break-before: avoid;
     }
 }
