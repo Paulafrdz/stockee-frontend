@@ -5,6 +5,8 @@
     gap: 20px;
 }
 
+/* ==================== ALERT BANNER ==================== */
+
 .stock-alert-banner {
     background: var(--background-red);
     border: 2px solid var(--border-red);
@@ -21,9 +23,7 @@
     flex-shrink: 0;
 }
 
-.alert-content {
-    flex: 1;
-}
+.alert-content { flex: 1; }
 
 .alert-title {
     font-size: 14px;
@@ -39,7 +39,8 @@
     font-family: var(--font-primary);
 }
 
-/* Table */
+/* ==================== TABLE ==================== */
+
 .stock-table {
     background: var(--white);
     border: 2px solid var(--neutral-500);
@@ -48,18 +49,27 @@
     border-radius: var(--border-radius);
 }
 
-
-.table-content {
+/* Forzar display block — los navegadores ignoran flex/grid en
+   elementos de tabla sin este override */
+.stock-table table {
     width: 100%;
+    display: block;
+    border-collapse: collapse;
 }
 
 .table-head {
+    display: block;
+    background: var(--neutral-250);
+    border-bottom: 2px solid var(--neutral-500);
+}
+
+/* El grid va en el <tr> interno del thead */
+.table-head tr {
     display: grid;
+    justify-items: start;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1.5fr 1fr;
     gap: 16px;
     padding: 16px 20px;
-    background: var(--neutral-250);
-    border-bottom: 2px solid var(--neutral-500);
 }
 
 .th {
@@ -79,36 +89,29 @@
 .table-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1.5fr 1fr;
-    gap: 16px;
+    /* Cuando el panel de lotes está activo, añade una fila extra al grid */
+    grid-template-rows: auto auto;
+    gap: 0 16px;
     padding: 16px 20px;
     border-bottom: 2px solid var(--neutral-250);
-    transition: all var(--transition-normal);
+    transition: background var(--transition-normal);
 }
 
-.table-row:hover {
-    background: var(--neutral-250);
-}
+.table-row:hover { background: var(--neutral-250); }
+.table-row:last-child { border-bottom: none; }
 
-.table-row:last-child {
-    border-bottom: none;
-}
-
-/* Row status styling */
 .td {
     font-size: 14px;
     font-family: var(--font-primary);
     color: var(--neutral-750);
     display: flex;
     align-items: center;
+    padding: 8px 0;
 }
 
 .stock-ingredient-name {
     font-weight: 500;
-    color: var(--neutral-750)
-}
-
-.stock-actual {
-    font-weight: 700;
+    color: var(--neutral-750);
 }
 
 .stock-value {
@@ -117,27 +120,9 @@
     font-weight: 700;
 }
 
-.stock-empty {
-    background: var(--neutral-500);
-    color: var(--neutral-750);
-}
-
-.stock-critical {
-    background: var(--terciary-200);
-    color: var(--terciary-700);
-}
-
-.stock-low {
-    background: var(--secondary-200);
-    color: var(--secondary-500);
-}
-
-.stock-ok {
-    color: var(--neutral-700);
-    font-weight: 500;
-}
-
-
+.stock-critical { background: var(--terciary-200); color: var(--terciary-700); }
+.stock-low      { background: var(--secondary-200); color: var(--secondary-500); }
+.stock-ok       { color: var(--neutral-700); font-weight: 500; }
 
 .status-badge {
     padding: 4px 12px;
@@ -145,30 +130,99 @@
     font-size: 12px;
     font-weight: 600;
     font-family: var(--font-primary);
-    text-align: center;
 }
 
-.status-critical {
-    background: var(--terciary-200);
-    color: var(--terciary-700);
+.status-critical { background: var(--terciary-200); color: var(--terciary-700); }
+.status-low      { background: var(--secondary-200); color: var(--secondary-500); }
+.status-ok       { background: #e7fdce; color: #84cc16; }
+
+/* ==================== LOTES INLINE PANEL ==================== */
+
+/* El <td colspan=7> que vive dentro del mismo <tr> */
+.lotes-inline-panel {
+    /* Ocupa todas las columnas del grid del <tr> */
+    grid-column: 1 / -1;
+    padding: 0 0 12px 0;
 }
 
-.status-low {
-    background: var(--secondary-200);
-    color: var(--secondary-500);
+.lotes-panel {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    border: 2px solid var(--neutral-500);
+    border-radius: var(--border-radius);
+    background: var(--neutral-250);
+    overflow: hidden;
 }
 
-.status-ok {
-    background: #e7fdce;
-    color: #84cc16;
+/* Cada fila: Cantidad [val] Caducidad [fecha] */
+.lote-row {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content 1fr;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--neutral-500);
 }
 
-.text-muted {
+.lote-row:last-child { border-bottom: none; }
+
+.lote-label {
+    font-size: 12px;
+    font-weight: 600;
     color: var(--neutral-750);
-    font-size: 13px;
+    font-family: var(--font-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
 }
 
-/* Actions */
+.lote-qty,
+.lote-expiry {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--neutral-750);
+    font-family: var(--font-primary);
+}
+
+.lotes-empty {
+    margin: 0;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--neutral-750);
+    font-family: var(--font-primary);
+    text-align: center;
+    border: 2px solid var(--neutral-500);
+    border-radius: var(--border-radius);
+    background: var(--neutral-250);
+}
+
+/* ==================== LOTES TOGGLE BUTTON ==================== */
+
+.lotes-cell {
+    align-items: center;
+}
+
+.lotes-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 4px;
+    border-radius: 6px;
+    color: var(--neutral-750);
+    cursor: pointer;
+    transition: color var(--transition-normal), background var(--transition-normal);
+}
+
+.lotes-toggle-btn:hover {
+    background: var(--neutral-250);
+    color: var(--black);
+}
+
+/* ==================== ACTIONS ==================== */
+
 .actions {
     display: flex;
     gap: 8px;
@@ -187,25 +241,14 @@
     justify-content: center;
 }
 
-.edit-btn {
-    color: var(--neutral-700);
-}
+.edit-btn   { color: var(--neutral-700); }
+.delete-btn { color: var(--neutral-700); }
 
-.edit-btn:hover {
-    background: var(--primary-200);
-    color: var(--primary-800);
-}
+.edit-btn:hover   { background: var(--primary-200); color: var(--primary-800); }
+.delete-btn:hover { background: var(--terciary-200); color: var(--terciary-700); }
 
-.delete-btn {
-    color: var(--neutral-700);
-}
+/* ==================== EMPTY STATE ==================== */
 
-.delete-btn:hover {
-    background: var(--terciary-200);
-    color: var(--terciary-700);
-}
-
-/* Empty state */
 .table-empty {
     padding: 40px 20px;
     text-align: center;
@@ -226,7 +269,8 @@
     font-family: var(--font-primary);
 }
 
-/* Statistics */
+/* ==================== STATISTICS ==================== */
+
 .table-stats {
     background: var(--white);
     border-radius: var(--border-radius);
@@ -259,219 +303,99 @@
     font-family: var(--font-primary);
 }
 
-.stat-value.critical {
-    color: var(--terciary-500);
-}
+.stat-value.critical { color: var(--terciary-500); }
+.stat-value.ok       { color: var(--neutral-700); }
 
-.stat-value.ok {
-    color: var(--neutral-700);
-}
+/* ==================== ACCESIBILIDAD ==================== */
 
-/* ==================== LOTES DROPDOWN ==================== */
-.lotes-cell {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-}
-
-.lotes-toggle-btn {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: none;
-    border: 1.5px solid var(--neutral-500);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-size: 12px;
-    font-family: var(--font-primary);
-    color: var(--neutral-750);
-    cursor: pointer;
-    transition: all var(--transition-normal);
-}
-
-.lotes-toggle-btn:hover {
-    background: var(--neutral-250);
-    border-color: var(--neutral-700);
-    color: var(--black);
-}
-
-.lotes-dropdown {
-    width: 100%;
-    border: 1.5px solid var(--neutral-500);
-    border-radius: 8px;
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
     overflow: hidden;
-    background: var(--white);
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
-.lote-item {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 6px 10px;
-    gap: 4px;
-    font-size: 12px;
-    font-family: var(--font-primary);
-    border-bottom: 1px solid var(--neutral-250);
-}
+/* ==================== ANIMACIONES ==================== */
 
-.lote-item:last-child {
-    border-bottom: none;
-}
-
-.lote-qty {
-    color: var(--neutral-750);
-    font-weight: 500;
-}
-
-.lote-expiry {
-    color: var(--neutral-700);
-}
-
-.lotes-empty {
-    display: block;
-    padding: 8px 10px;
-    font-size: 12px;
-    color: var(--neutral-750);
-    font-family: var(--font-primary);
-}
-
-/* ANIMACIÓN */
-@keyframes fadeSlide {
-    from {
-        opacity: 0;
-        transform: translateY(-6px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Animations */
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ==================== TABLET (max 1023px) ==================== */
 
 @media (max-width: 1023px) {
-    .stock-table-container {
-        gap: 16px;
-    }
+    .stock-table-container { gap: 16px; }
 
     .stock-alert-banner {
         padding: 12px 16px;
-        flex-direction: row;
         align-items: flex-start;
     }
 
-    .alert-title {
-        font-size: 13px;
-    }
+    .alert-title { font-size: 13px; }
+    .alert-text  { font-size: 11px; }
 
-    .alert-text {
-        font-size: 11px;
-    }
-
-    .table-head {
-        grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 60px;
-        gap: 8px;
-        padding: 12px 16px;
-    }
-
-    .table-row {
-        grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 60px;
-        gap: 8px;
-        padding: 12px 16px;
-    }
-
-    .th {
-        font-size: 11px;
-    }
-
-    .td {
-        font-size: 13px;
-    }
-
-    .table-stats {
-        padding: 12px 16px;
-    }
-
-    .stats-row {
-        gap: 24px;
-    }
-
-    .stat-label {
-        font-size: 12px;
-    }
-
-    .stat-value {
-        font-size: 13px;
-    }
-
-    .lotes-cell {
-        display: flex;
-    }
-
-    .lote-item{
-        display: flex;
-        justify-content: space-between;
-    }
-
-    /* Mostrar columna caducidad en tablet */
-    .table-head .th:nth-child(3),
-    .table-row .td:nth-child(3) {
+    /* Ocultar columna Mínimo en tablet */
+    .table-head tr th:nth-child(3),
+    .table-row > td:nth-child(3) {
         display: none;
     }
-}
 
-/* Mobile (menos de 768px) - LAYOUT TIPO CARD */
-@media (max-width: 767px) {
-    .stock-table-container {
-        gap: 12px;
+    .table-head tr,
+    .table-row {
+        grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr 60px;
+        gap: 0 8px;
+        padding: 12px 16px;
     }
 
-    /* Alert Banner Mobile */
+    .th { font-size: 11px; }
+    .td { font-size: 13px; }
+
+    .table-stats { padding: 12px 16px; }
+    .stats-row   { gap: 24px; }
+    .stat-label  { font-size: 12px; }
+    .stat-value  { font-size: 13px; }
+}
+
+/* ==================== MOBILE (max 767px) - LAYOUT TIPO CARD ==================== */
+
+@media (max-width: 767px) {
+    .stock-table-container { gap: 12px; }
+
     .stock-alert-banner {
         padding: 10px 12px;
         border-radius: 8px;
     }
 
-    .alert-icon {
-        width: 16px;
-        height: 16px;
-    }
+    .alert-icon { width: 16px; height: 16px; }
+    .alert-title { font-size: 12px; }
+    .alert-text  { font-size: 10px; }
 
-    .alert-title {
-        font-size: 12px;
-    }
-
-    .alert-text {
-        font-size: 10px;
-    }
-
-    .table-head {
-        display: none;
-    }
-
-    /* files on cards */
-    .table-body {
-        gap: 12px;
-        background: var(--neutral-250);
-    }
+    /* Ocultar cabecera — las labels vienen de ::before */
+    .table-head { display: none; }
 
     .stock-table {
-        background-color: none;
-        border: none
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
     }
 
+    /* FIX borde superior cortado: padding para que el box-shadow
+       y el borde de la primera card no queden clippeados */
+    .table-body {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: var(--neutral-250);
+        padding: 2px;
+    }
+
+    /* Card layout */
     .table-row {
         display: flex;
         flex-direction: column;
@@ -488,6 +412,22 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
+    /* El panel de lotes se coloca naturalmente en el flujo flex,
+       justo antes de las acciones gracias al order */
+    .lotes-inline-panel {
+        grid-column: unset;
+        padding: 0;
+        order: 5;
+    }
+
+    /* El panel hereda la forma de la card */
+    .lotes-panel {
+        border-radius: 8px;
+    }
+
+    /* Acciones al final */
+    .actions { order: 6; }
+
     .stock-ingredient-name {
         font-size: 16px;
         font-weight: 600;
@@ -498,16 +438,17 @@
         border-bottom: 2px solid var(--neutral-250);
     }
 
+    /* Label + valor */
     .td {
         display: grid;
         grid-template-columns: 120px 1fr;
         gap: 8px;
         align-items: center;
         font-size: 14px;
+        padding: 0;
     }
 
     .td::before {
-        content: attr(data-label);
         font-weight: 600;
         color: var(--neutral-750);
         font-size: 12px;
@@ -515,86 +456,55 @@
         letter-spacing: 0.5px;
     }
 
-    .stock-currentStock::before {
-        content: "Actual";
-    }
+    .stock-currentStock::before { content: "Actual"; }
+    .stock-minimum::before      { content: "Mínimo"; }
+    .stock-unit::before         { content: "Unidad"; }
+    .stock-status::before       { content: "Estado"; }
+    .lotes-cell::before         { content: "Caducidad"; }
 
-    .stock-minimum::before {
-        content: "Mínimo";
-    }
-
-    .stock-unit::before {
-        content: "Unidad";
-    }
-
-    .stock-status::before {
-        content: "Estado";
-    }
-
-    .lotes-cell::before {
-        content: "Caducidad";
-    }
-
-
-    /* Ingrediente name sin label */
-    .stock-ingredient-name::before {
+    .stock-ingredient-name::before,
+    .actions::before {
         content: none;
     }
 
-    /* Actions en mobile */
+    /* Lote rows en mobile: 2 columnas apiladas */
+    .lote-row {
+        grid-template-columns: max-content 1fr;
+        grid-template-rows: auto auto;
+        gap: 4px 12px;
+        padding: 10px 12px;
+    }
+
+    /* Actions */
     .actions {
-        grid-template-columns: 1fr;
-        justify-content: flex-end;
+        display: flex;
         gap: 12px;
         padding-top: 12px;
         border-top: 2px solid var(--neutral-250);
         margin-top: 4px;
     }
 
-    .actions::before {
-        content: none;
-    }
-
     .action-btn {
         padding: 8px 12px;
-        width: 100%;
+        flex: 1;
         justify-content: center;
         gap: 8px;
         font-size: 14px;
         font-weight: 500;
     }
 
-    .action-btn svg {
-        width: 18px;
-        height: 18px;
-    }
+    .action-btn svg { width: 18px; height: 18px; }
 
-    /* Añadir texto a botones en mobile */
-    .edit-btn::after {
-        content: "Editar";
-    }
+    .edit-btn::after   { content: "Editar"; }
+    .delete-btn::after { content: "Eliminar"; }
 
-    .delete-btn::after {
-        content: "Eliminar";
-    }
+    /* Empty state */
+    .table-empty { padding: 32px 16px; }
+    .table-empty h3 { font-size: 16px; }
+    .table-empty p  { font-size: 13px; }
 
-    /* Empty state mobile */
-    .table-empty {
-        padding: 32px 16px;
-    }
-
-    .table-empty h3 {
-        font-size: 16px;
-    }
-
-    .table-empty p {
-        font-size: 13px;
-    }
-
-    /* Statistics en mobile */
-    .table-stats {
-        padding: 12px;
-    }
+    /* Statistics */
+    .table-stats { padding: 12px; }
 
     .stats-row {
         flex-direction: column;
@@ -609,57 +519,18 @@
         border-radius: 6px;
     }
 
-    .stat-label {
-        font-size: 12px;
-    }
-
-    .stat-value {
-        font-size: 14px;
-    }
-
-    .lotes-cell {
-        grid-template-columns: 1fr;
-        flex-direction: column;
-    }
-
-    .lotes-cell::before {
-        content: "Caducidad";
-    }
-
-    .lotes-toggle-btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .lotes-dropdown {
-        width: 100%;
-    }
-
-    .lote-item {
-        flex-direction: row;
-        
-    }
+    .stat-label { font-size: 12px; }
+    .stat-value { font-size: 14px; }
 }
 
-/* Mobile pequeño (menos de 480px) */
+/* ==================== MOBILE PEQUEÑO (max 479px) ==================== */
+
 @media (max-width: 479px) {
-    .stock-alert-banner {
-        padding: 8px 10px;
-        gap: 8px;
-    }
+    .stock-alert-banner { padding: 8px 10px; gap: 8px; }
+    .alert-title { font-size: 11px; }
+    .alert-text  { font-size: 10px; }
 
-    .alert-title {
-        font-size: 11px;
-    }
-
-    .alert-text {
-        font-size: 10px;
-    }
-
-    .table-row {
-        padding: 12px;
-        gap: 10px;
-    }
+    .table-row { padding: 12px; gap: 10px; }
 
     .stock-ingredient-name {
         font-size: 15px;
@@ -673,74 +544,37 @@
         font-size: 13px;
     }
 
-    .td::before {
+    .td::before { font-size: 11px; }
+
+    .action-btn { padding: 8px; font-size: 13px; }
+
+    .table-stats { padding: 10px; }
+    .stat-item   { padding: 6px 10px; }
+    .stat-label  { font-size: 11px; }
+    .stat-value  { font-size: 13px; }
+
+    .lotes-toggle-btn { 
         font-size: 11px;
+        padding: 4px 8px; 
+        border: 1px solid var(--neutral-500)
     }
 
-    .action-btn {
-        padding: 8px;
-        font-size: 13px;
-    }
-
-    .table-stats {
-        padding: 10px;
-    }
-
-    .stat-item {
-        padding: 6px 10px;
-    }
-
-    .stat-label {
-        font-size: 11px;
-    }
-
-    .stat-value {
-        font-size: 13px;
-    }
-
-    .lotes-toggle-btn {
-        font-size: 11px;
-        padding: 4px 8px;
-    }
-
-    .lote-item {
-        font-size: 11px;
-        padding: 6px 8px;
-    }
-
-    .lotes-cell {
-        grid-template-columns: 1fr;
-    }
-  
+    .lote-label  { font-size: 11px; }
+    .lote-qty,
+    .lote-expiry { font-size: 12px; }
 }
 
-
-/* ==================== ACCESIBILIDAD ==================== */
+/* ==================== HIGH CONTRAST / REDUCED MOTION ==================== */
 
 @media (prefers-contrast: high) {
-    .stock-alert-banner {
-        border-width: 2px;
-    }
-
-    .table-row {
-        border-width: 2px;
-    }
-
-    .status-badge {
-        border: 2px solid currentColor;
-    }
+    .stock-alert-banner,
+    .table-row,
+    .status-badge { border-width: 2px; }
+    .status-badge { border: 2px solid currentColor; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .stock-alert-banner {
-        animation: none;
-    }
-
-    .table-row {
-        transition: none;
-    }
-
-    .action-btn {
-        transition: none;
-    }
+    .stock-alert-banner { animation: none; }
+    .table-row,
+    .action-btn { transition: none; }
 }
