@@ -158,7 +158,6 @@ const StockTable = ({
                       onClick={() => toggleLotes(item.id)}
                     >
                       {expandedRow === item.id ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                      {expandedRow === item.id ? 'Ocultar' : 'Ver lotes'}
                     </button>
 
                     {expandedRow === item.id && (

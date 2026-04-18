@@ -71,8 +71,6 @@ const AddOrderModal = ({
       newErrors.quantity = 'La cantidad es requerida';
     } else if (isNaN(quantity) || parseFloat(quantity) <= 0) {
       newErrors.quantity = 'La cantidad debe ser mayor a 0';
-    } else if (selectedIngredient && parseFloat(quantity) > selectedIngredient.currentStock) {
-      newErrors.quantity = `Stock insuficiente. Disponible: ${selectedIngredient.currentStock} ${selectedIngredient.unit}`;
     }
     
     setErrors(newErrors);
@@ -222,7 +220,6 @@ const AddOrderModal = ({
                 disabled={isLoading}
                 min="0"
                 step="0.1"
-                max={selectedIngredient.currentStock}
               />
               <div className="add-order-modal-quantity-hint">
                 Disponible: {selectedIngredient.currentStock} {selectedIngredient.unit}
