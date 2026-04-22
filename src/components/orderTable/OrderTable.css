@@ -179,7 +179,6 @@
 /* Priority Badge Styles */
 .recommended-orders-table .priority-badge {
   display: inline-flex;
-  padding: 2px var(--space-s);
   border-radius: 12px;
   font-size: 11px;
   font-weight: var(--button-weight);
@@ -223,7 +222,7 @@
 /* Stock Badge Styles */
 .recommended-orders-table .stock-badge {
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: var(--small-radius);
   font-weight: 700;
   font-size: 14px;
   font-family: var(--font-family);
@@ -439,6 +438,7 @@
   .recommended-orders-table .ingredient-cell {
     padding-bottom: 10px;
     border-bottom: 2px solid var(--neutral-250);
+    width: 100%;
   }
 
   .recommended-orders-table .ingredient-name {
@@ -503,6 +503,7 @@
   .recommended-orders-table .actions-cell {
     padding-top: 10px;
     border-top: 2px solid var(--neutral-250);
+    width: 100%;
   }
 
   .recommended-orders-table .remove-btn {
@@ -535,4 +536,5 @@
   .recommended-orders-table .ingredient-name {
     font-size: 15px;
   }
+  
 }

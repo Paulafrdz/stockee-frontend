@@ -4,12 +4,6 @@ import Button from '../button/Button';
 import InputSelect from '../inputSelect/inputSelect';
 import './OrderHistory.css';
 
-const STATUS_CONFIG = {
-  delivered:  { label: 'Entregado',  className: 'oh-badge--delivered' },
-  pending:    { label: 'Pendiente',  className: 'oh-badge--pending' },
-  cancelled:  { label: 'Cancelado',  className: 'oh-badge--cancelled' },
-  processing: { label: 'Procesando', className: 'oh-badge--processing' },
-};
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -20,22 +14,12 @@ const formatDate = (dateString) => {
   });
 };
 
-const StatusBadge = ({ status }) => {
-  const config = STATUS_CONFIG[status] ?? { label: status, className: '' };
-  return (
-    <span className={`oh-badge ${config.className}`}>
-      {config.label}
-    </span>
-  );
-};
-
 const OrderHistory = ({ orderHistory = [] }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [filterStatus, setFilterStatus] = useState('all');
   const [dateRange, setDateRange] = useState('all');
 
   const filteredOrders = orderHistory.filter(order => {
-    if (filterStatus !== 'all' && order.status !== filterStatus) return false;
 
     if (dateRange !== 'all') {
       const orderDate = new Date(order.date);
@@ -55,18 +39,6 @@ const OrderHistory = ({ orderHistory = [] }) => {
 
       {/* Filtros */}
       <div className="oh-filters">
-        <InputSelect
-          label="Estado"
-          value={filterStatus}
-          onChange={e => setFilterStatus(e.target.value)}
-        >
-          <option value="all">Todos los estados</option>
-          <option value="delivered">Entregado</option>
-          <option value="processing">Procesando</option>
-          <option value="pending">Pendiente</option>
-          <option value="cancelled">Cancelado</option>
-        </InputSelect>
-
         <InputSelect
           label="Fechas"
           value={dateRange}
@@ -98,7 +70,6 @@ const OrderHistory = ({ orderHistory = [] }) => {
                     {formatDate(order.date)}
                   </span>
                 </div>
-                <StatusBadge status={order.status} />
               </div>
 
               <div className="oh-card__preview">
@@ -161,10 +132,6 @@ const OrderHistory = ({ orderHistory = [] }) => {
                   <div className="oh-detail-item">
                     <span className="oh-detail-label">Fecha</span>
                     <span className="oh-detail-value">{formatDate(selectedOrder.date)}</span>
-                  </div>
-                  <div className="oh-detail-item">
-                    <span className="oh-detail-label">Estado</span>
-                    <StatusBadge status={selectedOrder.status} />
                   </div>
                   <div className="oh-detail-item">
                     <span className="oh-detail-label">Total items</span>

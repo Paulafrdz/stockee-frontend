@@ -1,7 +1,7 @@
 .analytics-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px;
+  padding: var(--space-body);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -194,12 +194,7 @@
 /* Mobile muy pequeño (menos de 375px) */
 @media (max-width: 374px) {
   .analytics-page {
-    padding: 8px;
     gap: 10px;
-  }
-  
-  .analytics-page-title {
-    font-size: 20px;
   }
   
   .analytics-page-container {
@@ -209,9 +204,6 @@
 
 /* Landscape mobile */
 @media (max-height: 600px) and (orientation: landscape) and (min-width: 481px) {
-  .analytics-page {
-    padding: 16px;
-  }
   
   .analytics-page-container {
     grid-template-columns: 1fr 1fr;

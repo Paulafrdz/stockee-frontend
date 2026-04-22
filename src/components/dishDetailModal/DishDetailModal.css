@@ -1,12 +1,3 @@
-/* ============================================================
-   DishDetailModal.css  –  Stockeo
-   Prefix: ddm- (Dish Detail Modal)
-   Only styles specific to this modal.
-   Shared base styles live in Modal.css.
-   All comments in English
-   ============================================================ */
-
-/* ── Header: icon + title inline ── */
 .ddm-header-title {
     display: flex;
     align-items: center;
@@ -74,12 +65,19 @@
     overflow: hidden;
 }
 
-.ddm-table-head {
+/* Desktop: nombre | cantidad | unidad | estado */
+.ddm-table-head,
+.ddm-table-row {
     display: grid;
     grid-template-columns: 1fr 80px 70px 90px;
+    padding: 0 16px;
+    /* Necesario para que el truncado del nombre funcione */
+    min-width: 0;
+}
+
+.ddm-table-head {
     background: var(--neutral-250);
     border-bottom: 2px solid var(--neutral-500);
-    padding: 0 16px;
 }
 
 .ddm-th {
@@ -102,9 +100,6 @@
 }
 
 .ddm-table-row {
-    display: grid;
-    grid-template-columns: 1fr 80px 70px 90px;
-    padding: 0 16px;
     border-bottom: 1px solid var(--neutral-500);
     transition: background 0.15s;
 }
@@ -124,12 +119,24 @@
     padding: 12px 0;
     display: flex;
     align-items: center;
+    /* Necesario para que min-width del grid no expanda la celda */
+    min-width: 0;
 }
 
-.ddm-td--name   { font-weight: 500; }
+.ddm-td--name {
+    font-weight: 500;
+    /* Truncado con ellipsis */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* El display:block permite que ellipsis funcione dentro del flex */
+    display: block;
+    align-content: center;
+}
+
 .ddm-td--center { justify-content: center; }
 
-/* ── Status badges — mirrors StockTable ── */
+/* ── Status badges ── */
 .ddm-badge {
     display: inline-flex;
     align-items: center;
@@ -143,15 +150,79 @@
 
 .ddm-badge--ok       { background: #dcfce7; color: #15803d; }
 .ddm-badge--low      { background: var(--secondary-200); color: var(--secondary-600); }
-.ddm-badge--critical { background: var(--terciary-200);  color: var(--terciary-700);  }
+.ddm-badge--critical { background: var(--terciary-200);  color: var(--terciary-700); }
 
-/* ── Responsive ── */
-@media (max-width: 480px) {
-    .ddm-body { padding: var(--space-button); }
+/* ==================== RESPONSIVE ==================== */
+
+/* Tablet — reducir padding y columnas fijas ligeramente */
+@media (max-width: 600px) {
+    .ddm-body {
+        max-height: 65vh;
+    }
 
     .ddm-table-head,
     .ddm-table-row {
-        grid-template-columns: 1fr 64px 64px 76px;
-        padding: 0 var(--space-button);
+        grid-template-columns: 1fr 64px 56px 80px;
+        padding: 0 12px;
+    }
+
+    .ddm-th { font-size: 11px; }
+    .ddm-td { font-size: 14px; }
+}
+
+/* Mobile — columnas fijas más pequeñas, el nombre se trunca */
+@media (max-width: 480px) {
+    .ddm-body {
+        max-height: 70vh;
+    }
+
+    .ddm-table-head,
+    .ddm-table-row {
+        grid-template-columns: 1fr 52px 46px 68px;
+        padding: 0 10px;
+        gap: 4px;
+    }
+
+    .ddm-th {
+        font-size: 10px;
+        padding: 8px 0;
+        letter-spacing: 0;
+    }
+
+    .ddm-td {
+        font-size: 12px;
+        padding: 10px 0;
+    }
+
+    .ddm-badge {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+
+    .ddm-header-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .ddm-header-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Mobile muy pequeño */
+@media (max-width: 360px) {
+    .ddm-table-head,
+    .ddm-table-row {
+        grid-template-columns: 1fr 46px 40px 62px;
+        padding: 0 8px;
+    }
+
+    .ddm-th { font-size: 9px; }
+    .ddm-td { font-size: 11px; }
+
+    .ddm-badge {
+        font-size: 10px;
+        padding: 2px 5px;
     }
 }

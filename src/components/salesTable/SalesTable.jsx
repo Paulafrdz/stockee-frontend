@@ -50,77 +50,84 @@ const SalesTable = ({
     };
 
     return (
-        <div className="sale-table-container">
-            <div className="sale-table">
-                <div className="table-content">
+        <div className="st-container">
+            <div className="st-table">
 
-                    {/* Head */}
-                    <div className="table-head">
-                        <div className="td st-icon">Icono</div>
-                        <div className="td st-dish-name">Plato</div>
-                        <div className="td st-quantity">Cantidad</div>
-                        <div className="td st-date">Fecha y hora</div>
-                        <div className="th"></div>
-                    </div>
-
-                    {/* Body */}
-                    <div className="table-body">
-                        {filteredRows.length > 0 ? (
-                            filteredRows.map((row, idx) => {
-                                const iconEntry = DISH_ICONS.find(i => i.id === row.dishIcon);
-                                const IconComponent = iconEntry?.Icon ?? null;
-
-                                return (
-                                    <div key={`${row.saleId}-${row.dishId}-${idx}`} className="table-row">
-
-                                        {/* Icon */}
-                                        <div className="td">
-                                            {IconComponent
-                                                ? <IconComponent size={20} strokeWidth={1.5} />
-                                                : <span>🍽️</span>
-                                            }
-                                        </div>
-
-                                        {/* Dish name */}
-                                        <div className="td">{row.dishName}</div>
-
-                                        {/* Quantity */}
-                                        <div className="td">{row.quantity}</div>
-
-                                        {/* Date */}
-                                        <div className="td st-date">
-                                            {formatDate(row.date)}
-                                        </div>
-
-                                        {/* Delete */}
-                                        <div className="td actions">
-                                            <button
-                                                className="action-btn delete-btn-sale"
-                                                onClick={() => onDelete && onDelete(row.saleId)}
-                                                title="Eliminar venta"
-                                            >
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <div className="table-empty">
-                                <h3>
-                                    {activeTab === 'today'
-                                        ? 'No hay ventas hoy'
-                                        : 'No hay ventas en el historial'}
-                                </h3>
-                                <p>
-                                    {activeTab === 'today'
-                                        ? 'Pulsa + para registrar la primera venta del día'
-                                        : 'Las ventas de días anteriores aparecerán aquí'}
-                                </p>
-                            </div>
-                        )}
+                {/* Head */}
+                <div className="st-head">
+                    <div className="st-th st-col-icon">Icono</div>
+                    <div className="st-th st-col-name">Plato</div>
+                    <div className="st-th st-col-qty">Cantidad</div>
+                    <div className="st-th st-col-date">Fecha y hora</div>
+                    <div className="st-th st-col-actions">
+                        <span className="sr-only">Acciones</span>
                     </div>
                 </div>
+
+                {/* Body */}
+                <div className="st-body">
+                    {filteredRows.length > 0 ? (
+                        filteredRows.map((row, idx) => {
+                            const iconEntry = DISH_ICONS.find(i => i.id === row.dishIcon);
+                            const IconComponent = iconEntry?.Icon ?? null;
+
+                            return (
+                                <div
+                                    key={`${row.saleId}-${row.dishId}-${idx}`}
+                                    className="st-row"
+                                >
+                                    {/* Icon */}
+                                    <div className="st-td st-col-icon">
+                                        {IconComponent
+                                            ? <IconComponent size={20} strokeWidth={1.5} aria-hidden="true" />
+                                            : <span aria-hidden="true">🍽️</span>
+                                        }
+                                    </div>
+
+                                    {/* Dish name */}
+                                    <div className="st-td st-col-name">
+                                        {row.dishName}
+                                    </div>
+
+                                    {/* Quantity */}
+                                    <div className="st-td st-col-qty">
+                                        {row.quantity}
+                                    </div>
+
+                                    {/* Date */}
+                                    <div className="st-td st-col-date">
+                                        {formatDate(row.date)}
+                                    </div>
+
+                                    {/* Delete */}
+                                    <div className="st-td st-col-actions">
+                                        <button
+                                            className="st-delete-btn"
+                                            onClick={() => onDelete && onDelete(row.saleId)}
+                                            aria-label={`Eliminar venta de ${row.dishName}`}
+                                        >
+                                            <Trash2 size={16} aria-hidden="true" />
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })
+                    ) : (
+                        <div className="st-empty">
+                            <h3>
+                                {activeTab === 'today'
+                                    ? 'No hay ventas hoy'
+                                    : 'No hay ventas en el historial'}
+                            </h3>
+                            <p>
+                                {activeTab === 'today'
+                                    ? 'Pulsa + para registrar la primera venta del día'
+                                    : 'Las ventas de días anteriores aparecerán aquí'}
+                            </p>
+                        </div>
+                    )}
+                </div>
+
             </div>
         </div>
     );

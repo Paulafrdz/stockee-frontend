@@ -20,7 +20,7 @@ const DashboardPage = ({ user }) => {
             <div className='dashboard-page'>
                 <div className="dashboard-page-header">
                     <div className="dashboard-page-title-section">
-                        <h1 className="dashboard-page-title">Panel de Control</h1>
+                        <h1 className="dashboard-page-title">Panel de control</h1>
                     </div>
                 </div>
 
