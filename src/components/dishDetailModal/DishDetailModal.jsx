@@ -84,40 +84,42 @@ const DishDetailModal = ({ isOpen, onClose, onEdit, dish, inventoryItems = [] })
                             {ingredientsWithStatus.length === 0 ? (
                                 <p className="ddm-empty">Este plato no tiene ingredientes registrados.</p>
                             ) : (
-                                <div className="ddm-table">
+                                <table className="ddm-table" aria-label="Ingredientes del plato">
                                     {/* Head */}
-                                    <div className="ddm-table-head">
-                                        <div className="ddm-th">Ingrediente</div>
-                                        <div className="ddm-th ddm-th--center">Cantidad</div>
-                                        <div className="ddm-th ddm-th--center">Unidad</div>
-                                        <div className="ddm-th ddm-th--center">Estado</div>
-                                    </div>
+                                    <thead className="ddm-table-head">
+                                        <tr>
+                                            <th scope="col" className="ddm-th">Ingrediente</th>
+                                            <th scope="col" className="ddm-th ddm-th--center">Cantidad</th>
+                                            <th scope="col" className="ddm-th ddm-th--center">Unidad</th>
+                                            <th scope="col" className="ddm-th ddm-th--center">Estado</th>
+                                        </tr>
+                                    </thead>
 
                                     {/* Rows */}
-                                    <div className="ddm-table-body">
+                                    <tbody className="ddm-table-body">
                                         {ingredientsWithStatus.map((ing, idx) => (
-                                            <div
+                                            <tr
                                                 key={ing.ingredientId ?? idx}
                                                 className={`ddm-table-row ddm-row--${ing.status}`}
                                             >
-                                                <div className="ddm-td ddm-td--name">
+                                                <td className="ddm-td ddm-td--name">
                                                     {ing.ingredientName}
-                                                </div>
-                                                <div className="ddm-td ddm-td--center">
+                                                </td>
+                                                <td className="ddm-td ddm-td--center">
                                                     {ing.quantity}
-                                                </div>
-                                                <div className="ddm-td ddm-td--center">
+                                                </td>
+                                                <td className="ddm-td ddm-td--center">
                                                     {ing.unit}
-                                                </div>
-                                                <div className="ddm-td ddm-td--center">
+                                                </td>
+                                                <td className="ddm-td ddm-td--center">
                                                     <span className={`ddm-badge ddm-badge--${ing.status}`}>
                                                         {ing.statusLabel}
                                                     </span>
-                                                </div>
-                                            </div>
+                                                </td>
+                                            </tr>
                                         ))}
-                                    </div>
-                                </div>
+                                    </tbody>
+                                </table>
                             )}
                         </div>
                     </div>

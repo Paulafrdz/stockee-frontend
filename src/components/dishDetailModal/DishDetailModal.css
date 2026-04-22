@@ -63,21 +63,29 @@
     border: 2px solid var(--neutral-500);
     border-radius: var(--border-radius);
     overflow: hidden;
+    display: block;
 }
 
-/* Desktop: nombre | cantidad | unidad | estado */
-.ddm-table-head,
-.ddm-table-row {
-    display: grid;
-    grid-template-columns: 1fr 80px 70px 90px;
-    padding: 0 16px;
-    /* Necesario para que el truncado del nombre funcione */
-    min-width: 0;
-}
 
 .ddm-table-head {
     background: var(--neutral-250);
     border-bottom: 2px solid var(--neutral-500);
+    display: block;
+}
+
+.ddm-table-head tr {
+    display: grid;
+    grid-template-columns: 1fr 80px 70px 90px;
+    padding: 0 16px;
+    justify-items: start;
+
+}
+
+.ddm-table-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 70px 90px;
+    padding: 0 16px;
+    
 }
 
 .ddm-th {
@@ -90,9 +98,6 @@
     padding: 10px 0;
 }
 
-.ddm-th--center {
-    text-align: center;
-}
 
 .ddm-table-body {
     display: flex;
@@ -134,8 +139,6 @@
     align-content: center;
 }
 
-.ddm-td--center { justify-content: center; }
-
 /* ── Status badges ── */
 .ddm-badge {
     display: inline-flex;
@@ -152,15 +155,13 @@
 .ddm-badge--low      { background: var(--secondary-200); color: var(--secondary-600); }
 .ddm-badge--critical { background: var(--terciary-200);  color: var(--terciary-700); }
 
-/* ==================== RESPONSIVE ==================== */
 
-/* Tablet — reducir padding y columnas fijas ligeramente */
 @media (max-width: 600px) {
     .ddm-body {
         max-height: 65vh;
     }
 
-    .ddm-table-head,
+    .ddm-table-head tr,
     .ddm-table-row {
         grid-template-columns: 1fr 64px 56px 80px;
         padding: 0 12px;
@@ -170,15 +171,14 @@
     .ddm-td { font-size: 14px; }
 }
 
-/* Mobile — columnas fijas más pequeñas, el nombre se trunca */
 @media (max-width: 480px) {
     .ddm-body {
         max-height: 70vh;
     }
 
-    .ddm-table-head,
+    .ddm-table-head tr,
     .ddm-table-row {
-        grid-template-columns: 1fr 52px 46px 68px;
+        grid-template-columns: 1fr 60px 50px 55px;
         padding: 0 10px;
         gap: 4px;
     }
