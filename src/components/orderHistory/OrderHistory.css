@@ -140,25 +140,6 @@
     border-top: 1px solid var(--neutral-250);
 }
 
-/* ==================== BADGES ==================== */
-
-.oh-badge {
-    display: inline-flex;
-    padding: 4px 12px;
-    border-radius: 16px;
-    font-size: 12px;
-    font-weight: var(--button-weight);
-    font-family: var(--font-family);
-    text-transform: uppercase;
-    letter-spacing: 0.025em;
-    flex-shrink: 0;
-}
-
-.oh-badge--delivered  { background: #e7fdce; color: #84cc16; }
-.oh-badge--processing { background: var(--primary-200); color: var(--primary-800); }
-.oh-badge--pending    { background: var(--secondary-200); color: var(--secondary-600); }
-.oh-badge--cancelled  { background: var(--terciary-200); color: var(--terciary-700); }
-
 /* ==================== MODAL ==================== */
 
 /* Wrapper fixed que cubre toda la pantalla */
@@ -590,11 +571,6 @@
     letter-spacing: 0.025em;
     flex-shrink: 0;
 }
-
-.oh-badge--delivered  { background: #e7fdce; color: #84cc16; }
-.oh-badge--processing { background: var(--primary-200); color: var(--primary-800); }
-.oh-badge--pending    { background: var(--secondary-200); color: var(--secondary-600); }
-.oh-badge--cancelled  { background: var(--terciary-200); color: var(--terciary-700); }
 
 /* ==================== MODAL ==================== */
 

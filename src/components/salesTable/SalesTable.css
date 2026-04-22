@@ -1,12 +1,11 @@
-.sale-table-container {
+.st-container {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Table */
-.sale-table {
+.st-table {
     background: var(--white);
     border: 2px solid var(--neutral-500);
     overflow: hidden;
@@ -14,38 +13,76 @@
     border-radius: var(--border-radius);
 }
 
-.table-content {
-    width: 100%;
-}
-
-/* Grid: icon | dish name | quantity | date | actions */
-.sale-table .table-head {
+.st-head,
+.st-row {
     display: grid;
     grid-template-columns: 60px 2fr 1fr 1.5fr 60px;
     gap: 16px;
     padding: 16px 20px;
+}
+
+.st-head {
     background: var(--neutral-250);
     border-bottom: 2px solid var(--neutral-500);
 }
 
-.sale-table .table-row {
-    display: grid;
-    grid-template-columns: 60px 2fr 1fr 1.5fr 60px;
-    gap: 16px;
-    padding: 16px 20px;
+.st-row {
     border-bottom: 2px solid var(--neutral-250);
-    transition: all 0.2s ease;
+    transition: background 0.2s ease;
 }
 
-.sale-table .table-row:hover {
+.st-row:hover {
     background: var(--neutral-250);
 }
 
-.sale-table .table-row:last-child {
+.st-row:last-child {
     border-bottom: none;
 }
 
-/* ── Tabs: Hoy / Historial ── */
+.st-th {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--neutral-750);
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+}
+
+.st-td {
+    font-size: 14px;
+    font-family: var(--font-family);
+    color: var(--neutral-750);
+    display: flex;
+    align-items: center;
+}
+
+/* Columnas específicas */
+.st-col-icon {
+    justify-content: center;
+    color: var(--font-color);
+}
+
+.st-col-name {
+    color: var(--font-color);
+}
+
+.st-col-qty {
+    color: var(--font-color);
+}
+
+.st-col-date {
+    color: var(--neutral-750);
+    font-size: 13px;
+}
+
+.st-col-actions {
+    justify-content: center;
+}
+
+/* ==================== TABS ==================== */
+
 .st-tabs {
     display: flex;
     gap: 0;
@@ -76,81 +113,33 @@
     border-bottom-color: var(--primary-500);
 }
 
-/* ── Icon cell ── */
-.st-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--font-color);
-}
 
-/* ── Dish name ── */
-.st-dish-name {
-    font-weight: 500;
-    color: var(--font-color);
-}
-
-/* ── Date cell ── */
-.st-date {
-    color: var(--neutral-750);
-    font-size: 13px;
-}
-
-/* ── Shared td/th styles (reuse from StockTable pattern) ── */
-.sale-table .th {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--neutral-750);
-    font-family: var(--font-family);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.sale-table .td {
-    font-size: 14px;
-    font-family: var(--font-family);
-    color: var(--neutral-750);
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-/* ── Actions ── */
-.sale-table .actions {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-}
-
-.sale-table .action-btn {
+.st-delete-btn {
     background: none;
     border: none;
     padding: 6px;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    color: var(--neutral-750);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.2s ease, color 0.2s ease;
 }
 
-.sale-table .delete-btn-sale {
-    color: var(--neutral-750);
-}
-
-.sale-table .delete-btn-sale:hover {
+.st-delete-btn:hover {
     background: var(--terciary-200);
     color: var(--terciary-700);
 }
 
-/* ── Empty state ── */
-.sale-table .table-empty {
+
+.st-empty {
     padding: 40px 20px;
     text-align: center;
     color: var(--neutral-750);
 }
 
-.sale-table .table-empty h3 {
+.st-empty h3 {
     font-size: 18px;
     font-weight: 600;
     margin: 0 0 8px 0;
@@ -158,97 +147,87 @@
     font-family: var(--font-family);
 }
 
-.sale-table .table-empty p {
+.st-empty p {
     font-size: 14px;
     margin: 0;
     font-family: var(--font-family);
 }
 
-/* ── Tablet (< 1024px) ── */
+
 @media (max-width: 1023px) {
-    .sale-table-container {
+    .st-container {
         gap: 16px;
     }
 
-    .sale-table .table-head,
-    .sale-table .table-row {
+    .st-head,
+    .st-row {
         grid-template-columns: 60px 2fr 1fr 60px;
         gap: 12px;
         padding: 12px 16px;
     }
 
-    /* Hide date column on tablet */
-    .sale-table .table-head .th:nth-child(4),
-    .sale-table .table-row .td:nth-child(4) {
+    .st-col-date {
         display: none;
     }
 
-    .sale-table .th {
-        font-size: 11px;
-    }
-
-    .sale-table .td {
-        font-size: 13px;
-    }
+    .st-th { font-size: 11px; }
+    .st-td { font-size: 13px; }
 }
 
-/* ── Mobile (< 768px) — card layout ── */
+
 @media (max-width: 767px) {
-    .sale-table .table-head,
-    .sale-table .table-row {
+    .st-head,
+    .st-row {
         grid-template-columns: 32px 1fr 40px 40px;
         gap: 8px;
         padding: 12px 14px;
     }
 
-    /* Hide date column on mobile */
-    .sale-table .table-head .th:nth-child(4),
-    .sale-table .table-row .st-date {
+    .st-col-date {
         display: none;
     }
 
-    .sale-table .th {
-        font-size: 10px;
-    }
+    .st-th { font-size: 10px; }
+    .st-td { font-size: 13px; }
 
-    .sale-table .td {
-        font-size: 13px;
-    }
-
-    .sale-table .st-icon svg {
+    .st-col-icon svg {
         width: 16px;
         height: 16px;
     }
-   
 }
 
-@media (max-width: 480px) {
-    .sale-table .table-head,
-    .sale-table .table-row {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 6px;
+@media (max-width: 479px) {
+    .st-head,
+    .st-row {
+        grid-template-columns: 28px 1fr 36px 36px;
+        gap: 12px;
         padding: 10px 12px;
     }
-      .st-date{
-        display: none;
-    }
 }
 
+/* ==================== ACCESIBILIDAD ==================== */
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 
-/* ── Accessibility ── */
 @media (prefers-contrast: high) {
-    .sale-table .table-row {
+    .st-row {
         border-width: 2px;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .sale-table .table-row {
-        transition: none;
-    }
-
-    .sale-table .action-btn {
+    .st-row,
+    .st-delete-btn {
         transition: none;
     }
 }
