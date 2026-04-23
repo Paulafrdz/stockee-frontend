@@ -171,6 +171,7 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                 )}
               </th>
               <th 
+                scope="col"
                 className="product-eff-th product-eff-th-clickable"
                 onClick={() => handleSort('efficiency')}
               >
@@ -182,6 +183,7 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                 )}
               </th>
               <th 
+                scope="col"
                 className="product-eff-th product-eff-th-clickable"
                 onClick={() => handleSort('wastePercentage')}
               >
@@ -192,7 +194,7 @@ const ProductEfficiencyTable = ({ products = [] }) => {
                   </span>
                 )}
               </th>
-              <th className="product-eff-th">Causa Principal</th>
+              <th scope="col" className="product-eff-th">Causa Principal</th>
             </tr>
           </thead>
           <tbody className="product-eff-tbody">

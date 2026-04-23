@@ -75,7 +75,7 @@ const OrderTable = ({
   // Calculate order totals
   const orderTotals = useMemo(() => {
     const itemsToOrder = filteredOrders.filter(item => item.recommendedQuantity > 0);
-    
+
     return {
       itemCount: itemsToOrder.length,
       urgentItems: itemsToOrder.filter(item => item.priority === 'high').length
@@ -104,7 +104,7 @@ const OrderTable = ({
 
   return (
     <div className="recommended-orders-table">
-        {/* Header Controls */}
+      {/* Header Controls */}
       <div className="table-header">
         <div className="table-header__controls">
           {/* Search Bar */}
@@ -158,109 +158,121 @@ const OrderTable = ({
       </div>
 
       <div className="table-container">
-        {/* Table Header */}
-        <div className="order-th">
-          <div>Ingredientes (prioridad)</div>
-          <div>Actual</div>
-          <div>Minimo</div>
-          <div>Uso semana</div>
-          <div>Cantidad Recomendada</div>
-          <div></div>
-        </div>
+        <table aria-label="Recomendaciones de pedido">
+          <caption className="sr-only">
+            Tabla de ingredientes con stock actual, mínimo, uso semanal y cantidad recomendada para hacer pedido.
+          </caption>
 
-        {/* Table Body */}
-        {filteredOrders.length > 0 ? (
-          filteredOrders.map((item) => (
-            <div key={item.id} className={`order-table-row status-row-${item.status}`}>
-              {/* Ingredient */}
-              <div className="ingredient-cell">
-                <div className="ingredient-info">
-                  {getStockStatusIcon(item.currentStock, item.minimumStock)}
-                  <div className="ingredient-details">
-                    <div className="ingredient-name">{item.name}</div>
-                    <div className={`priority-badge priority-${item.priority.toLowerCase()}`}>
-                      {item.priority}
+          {/* Table Header */}
+          <thead>
+            <tr className="order-th">
+              <th scope="col">Ingredientes (prioridad)</th>
+              <th scope="col">Actual</th>
+              <th scope="col">Minimo</th>
+              <th scope="col">Uso semana</th>
+              <th scope="col">Cantidad Recomendada</th>
+              <th scope="col"><span className="sr-only">Acciones</span></th>
+            </tr>
+          </thead>
+
+          {/* Table Body */}
+          <tbody>
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((item) => (
+              <tr key={item.id} className={`order-table-row status-row-${item.status}`}>
+                {/* Ingredient */}
+                <td className="ingredient-cell">
+                  <div className="ingredient-info">
+                    {getStockStatusIcon(item.currentStock, item.minimumStock)}
+                    <div className="ingredient-details">
+                      <div className="ingredient-name">{item.name}</div>
+                      <div className={`priority-badge priority-${item.priority.toLowerCase()}`}>
+                        {item.priority}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                </td>
 
-              {/* Current Stock */}
-              <div className="stock-cell">
-                <div className="stock-value">
-                  <span className={`stock-badge stock-${item.status}`}>
-                    {item.currentStock} {item.unit}
-                  </span>
-                </div>
-                {item.lastOrderDate && (
-                  <div className="last-order">
-                    Updated: {new Date(item.lastOrderDate).toLocaleDateString()}
+                {/* Current Stock */}
+                <td className="stock-cell">
+                  <div className="stock-value-order">
+                    <span className={`stock-badge stock-${item.status}`}>
+                      {item.currentStock} {item.unit}
+                    </span>
                   </div>
-                )}
-              </div>
+                  {item.lastOrderDate && (
+                    <div className="last-order">
+                      Updated: {new Date(item.lastOrderDate).toLocaleDateString()}
+                    </div>
+                  )}
+                </td>
 
-              {/* Minimum */}
-              <div className="minimum-cell">
-                {item.minimumStock} {item.unit}
-              </div>
+                {/* Minimum */}
+                <td className="minimum-cell">
+                  {item.minimumStock} {item.unit}
+                </td>
 
-              {/* Weekly Usage */}
-              <div className="usage-cell">
-                {item.weeklyUsage} {item.unit}
-              </div>
+                {/* Weekly Usage */}
+                <td className="usage-cell">
+                  {item.weeklyUsage} {item.unit}
+                </td>
 
-              {/* Recommended Quantity */}
-              <div className="quantity-cell">
-                <div className="quantity-controls">
+                {/* Recommended Quantity */}
+                <td className="quantity-cell">
+                  <div className="quantity-controls">
+                    <button
+                      className="quantity-btn quantity-btn--decrease"
+                      onClick={() => onQuantityChange(item.id, item.recommendedQuantity - 1)}
+                      disabled={isSubmitting}
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <input
+                      type="number"
+                      value={item.recommendedQuantity}
+                      onChange={(e) => onQuantityChange(item.id, parseFloat(e.target.value) || 0)}
+                      className="quantity-input"
+                      min="0"
+                      step="0.1"
+                      disabled={isSubmitting}
+                    />
+                    <span className="quantity-unit">{item.unit}</span>
+                    <button
+                      className="quantity-btn quantity-btn--increase"
+                      onClick={() => onQuantityChange(item.id, item.recommendedQuantity + 1)}
+                      disabled={isSubmitting}
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </td>
+
+                {/* Actions */}
+                <td className="actions-cell">
                   <button
-                    className="quantity-btn quantity-btn--decrease"
-                    onClick={() => onQuantityChange(item.id, item.recommendedQuantity - 1)}
+                    className="remove-btn"
+                    onClick={() => onDeleteItem(item.id)}
                     disabled={isSubmitting}
                   >
-                    <Minus size={16} />
+                    <Trash2 size={16} />
                   </button>
-                  <input
-                    type="number"
-                    value={item.recommendedQuantity}
-                    onChange={(e) => onQuantityChange(item.id, parseFloat(e.target.value) || 0)}
-                    className="quantity-input"
-                    min="0"
-                    step="0.1"
-                    disabled={isSubmitting}
-                  />
-                  <span className="quantity-unit">{item.unit}</span>
-                  <button
-                    className="quantity-btn quantity-btn--increase"
-                    onClick={() => onQuantityChange(item.id, item.recommendedQuantity + 1)}
-                    disabled={isSubmitting}
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+            <td colSpan={6} className="empty-state">
+              <div className="empty-message">
+                {searchTerm ? "No se han encontrado inggredientes" : "Ingrediente no encontrado"}
               </div>
-
-              {/* Actions */}
-              <div className="actions-cell">
-                <button
-                  className="remove-btn"
-                   onClick={() => onDeleteItem(item.id)}
-                  disabled={isSubmitting}
-                >
-                  <Trash2 size={16} />
-                </button>
+              <div className="empty-description">
+                {searchTerm ? "Prueba a buscar con otro nombre" : "Añade primero un ingrediente"}
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="empty-state">
-            <div className="empty-message">
-              {searchTerm ? "No se han encontrado inggredientes" : "Ingrediente no encontrado"}
-            </div>
-            <div className="empty-description">
-              {searchTerm ? "Prueba a buscar con otro nombre" : "Añade primero un ingrediente"}
-            </div>
-          </div>
-        )}
+            </td>
+            </tr>
+          )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

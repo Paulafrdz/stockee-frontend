@@ -18,6 +18,16 @@
   width: 100%;
 }
 
+.table-container table {
+  width: 100%;
+  display: block;
+}
+
+.table-container thead,
+.table-container tbody {
+  display: block;
+}
+
 .order-th,
 .order-table-row {
   display: grid;
@@ -27,7 +37,6 @@
   padding: 16px 20px;
   box-sizing: border-box;
   color: var(--neutral-750);
-
 }
 
 .order-th {
@@ -39,6 +48,7 @@
   font-family: var(--font-family);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  justify-items: flex-start;
 }
 
 .order-table-row {
@@ -222,7 +232,7 @@
 /* Stock Badge Styles */
 .recommended-orders-table .stock-badge {
   padding: 4px 8px;
-  border-radius: var(--small-radius);
+  border-radius: 6px;
   font-weight: 700;
   font-size: 14px;
   font-family: var(--font-family);
@@ -370,9 +380,7 @@
 
   .order-th,
   .order-table-row {
-    grid-template-columns: 1.3fr 0.5fr 1fr 0.5fr 3fr 0.3fr 8px;
-;
-    gap: 12px;
+    grid-template-columns: 1.3fr 0.5fr 0.5fr 0fr 2fr 0.3fr 8px;
     padding: 12px 16px;
   }
 
@@ -383,12 +391,21 @@
   .recommended-orders-table .search-container {
     max-width: none;
   }
+
+  .recommended-orders-table .quantity-controls {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {
   .recommended-orders-table .table-header {
     padding: var(--space-button);
     padding-left: 0;
+  }
+
+  .table-container tbody {
+    display: flex;
+    gap: var(--space-button);
   }
 
   .recommended-orders-table .table-header__controls {
@@ -456,6 +473,11 @@
     align-items: center;
     font-size: 14px;
   }
+   
+  .recommended-orders-table .minimum-cell,
+  .recommended-orders-table .usage-cell {
+    gap: 8px;
+  }
 
   .recommended-orders-table .stock-cell::before {
     content: "ACTUAL";
@@ -514,6 +536,7 @@
     display: flex;
     gap: 6px;
   }
+
 }
 
 @media (max-width: 480px) {
@@ -536,5 +559,13 @@
   .recommended-orders-table .ingredient-name {
     font-size: 15px;
   }
-  
+
+  .table-container tbody {
+    flex-direction: column;
+  }
+
+    .recommended-orders-table .quantity-controls {
+      justify-content: flex-start;
+    }
+
 }
