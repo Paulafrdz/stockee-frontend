@@ -151,7 +151,7 @@
     padding: 4px 0;
     border: 2px solid var(--neutral-500);
     border-radius: var(--border-radius);
-    background: var(--neutral-250);
+    background: #f8f8f8;
     overflow: hidden;
 }
 
@@ -194,7 +194,7 @@
     text-align: center;
     border: 2px solid var(--neutral-500);
     border-radius: var(--border-radius);
-    background: var(--neutral-250);
+    background: #f8f8f8;
 }
 
 /* ==================== LOTES TOGGLE BUTTON ==================== */
