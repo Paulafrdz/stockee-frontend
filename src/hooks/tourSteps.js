@@ -45,31 +45,31 @@ export const stockTourSteps = [
     },
     {
         element: '#stock-badge-low',
-    popover: {
-      title: 'Estado Low',
-      description: 'Naranja significa stock bajo — estás entre el mínimo y 1.5 veces el mínimo. Conviene reponer pronto.',
-      side: 'top',
-      align: 'start',
+        popover: {
+            title: 'Estado Low',
+            description: 'Naranja significa stock bajo — estás entre el mínimo y 1.5 veces el mínimo. Conviene reponer pronto.',
+            side: 'top',
+            align: 'start',
+        },
     },
-  },
-  {
-    element: '#stock-badge-critical',
-    popover: {
-      title: 'Estado Crítico',
-      description: 'Rosa/rojo significa stock crítico — estás por debajo del 50% del mínimo. Repón cuanto antes.',
-      side: 'top',
-      align: 'start',
+    {
+        element: '#stock-badge-critical',
+        popover: {
+            title: 'Estado Crítico',
+            description: 'Rosa/rojo significa stock crítico — estás por debajo del 50% del mínimo. Repón cuanto antes.',
+            side: 'top',
+            align: 'start',
+        },
     },
-  },
-  {
-    element: '#stock-add-btn',
-    popover: {
-        title: 'Añadir ingrediente',
-        description: 'Pulsa aquí para añadir un nuevo ingrediente al inventario. Puedes definir su stock actual y mínimo.',
-        side: 'left',
-        align: 'start',
+    {
+        element: '#stock-add-btn',
+        popover: {
+            title: 'Añadir ingrediente',
+            description: 'Pulsa aquí para añadir un nuevo ingrediente al inventario. Puedes definir su stock actual y mínimo.',
+            side: 'left',
+            align: 'start',
+        },
     },
-  },
 ];
 
 // Dishes
@@ -86,7 +86,7 @@ export const dishesTourSteps = [
     },
     {
         element: '#dishes-grid',
-        popover:{
+        popover: {
             title: 'Tus platos',
             description: 'Cada card representa un pplato de tu carta. El color del borde indica si tiene  ingredientes con stock bajo.',
             side: 'top',
@@ -94,7 +94,7 @@ export const dishesTourSteps = [
         },
     },
     {
-        element: '#disg-card-first',
+        element: '#dishes-card-first',
         popover: {
             title: 'Detalle de la card',
             description: 'Haz click en cualquier plato para ver sus ingredientes y su esta de stock en detalle. Desde ahí puedes editarlo.',

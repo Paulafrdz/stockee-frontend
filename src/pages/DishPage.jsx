@@ -9,6 +9,8 @@ import StockFilters from '../components/stockFilters/StockFilters';
 import { getStockItems } from '../services/stockService';
 import { createDish, getAllDishes, deleteDish, updateDish } from '../services/dishService';
 import './DishPage.css';
+import usePageTour from '../hooks/usePageTour';
+import { dishesTourSteps } from '../hooks/tourSteps';
 
 const DishPage = ({ user }) => {
     const [dishes, setDishes] = useState([]);
@@ -16,6 +18,8 @@ const DishPage = ({ user }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
+
+    usePageTour('dishes', dishesTourSteps);  
 
     // CreateDishModal 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -163,13 +167,16 @@ const DishPage = ({ user }) => {
                 {!isLoading && dishes.length > 0 && (
                     <div className="dc-grid">
                         {filteredDishes.map(dish => (
+                            <div id="dishes-grid" >
                             <DishCard
+                                id="dishes-card-first"
                                 key={dish.id}
                                 dish={dish}
                                 inventoryItems={stockItems}
                                 onViewDetails={handleViewDetails}
                                 onDelete={handleDelete}
                             />
+                            </div>
                         ))}
                     </div>
                 )}
@@ -178,6 +185,7 @@ const DishPage = ({ user }) => {
 
             {/* Floating action button */}
             <FloatingButton
+                id="dishes-add-btn"
                 icon={Plus}
                 variant="primary"
                 size="small"
