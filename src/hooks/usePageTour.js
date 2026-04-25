@@ -32,4 +32,4 @@ const usePageTour = (section, steps) => {
     }, [section])
 };
 
-export default usePageTour();
+export default usePageTour;

@@ -9,6 +9,8 @@ import { getAllDishes } from '../services/dishService';
 import SaleHistory from '../components/saleHistory/SaleHistory';
 import StockFilters from '../components/stockFilters/StockFilters';
 import './SalePage.css';
+import usePageTour from '../hooks/usePageTour';
+import { salesTourSteps } from '../hooks/tourSteps';
 
 
 const SalePage = ({ user }) => {
@@ -18,6 +20,8 @@ const SalePage = ({ user }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('today');
     const [searchTerm, setSearchTerm] = useState('');
+
+    usePageTour('sales', salesTourSteps);
 
     useEffect(() => {
         fetchData();
@@ -103,6 +107,7 @@ const SalePage = ({ user }) => {
                 {isLoading ? (
                     <div className="sales-page-loading">Cargando ventas...</div>
                 ) : activeTab === 'today' ? (
+                    <div id="sales-table">
                     <SalesTable
                         sales={sales}
                         onDelete={handleDelete}
@@ -111,12 +116,14 @@ const SalePage = ({ user }) => {
                         activeTab={activeTab}
                         onTabChange={setActiveTab}
                     />
+                    </div>
                 ) : (
                     <SaleHistory sales={sales} />
                 )}
             </div>
 
             <FloatingButton
+                id="sales-add-btn"
                 icon={Plus}
                 variant="primary"
                 size="small"

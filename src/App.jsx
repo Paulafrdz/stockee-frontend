@@ -3,6 +3,7 @@ import React from 'react';
 import "./components/styles/Variables.css";
 import './App.css';
 import AppRouter from './router/AppRouter';
+import "./driver-theme.css"
 
 function App() {
   return (

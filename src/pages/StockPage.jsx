@@ -5,6 +5,8 @@ import StockTable from '../components/stockTable/StockTable';
 import AddIngredientModal from '../components/addIngredientModal/AddIngredientModal';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import './StockPage.css';
+import usePageTour from '../hooks/usePageTour';
+import { stockTourSteps } from '../hooks/tourSteps';
 import {
   getStockItems,
   addStockItem,
@@ -20,6 +22,9 @@ const StockPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  usePageTour('stock', stockTourSteps);
+
 
   // Cargar stock desde el backend
   useEffect(() => {
@@ -175,6 +180,7 @@ const StockPage = () => {
         </div>
 
         <FloatingButton
+          id="stock-add-btn"
           variant="primary"
           size="small"
           icon={Plus}
@@ -184,6 +190,7 @@ const StockPage = () => {
         </FloatingButton>
 
         <div className="stock-content">
+          <div id="stock-table">
           <StockTable
             stockItems={stockItems}
             onEditIngredient={handleOpenModal}
@@ -194,6 +201,7 @@ const StockPage = () => {
             filterStatus={filterStatus}
             onFilterChange={setFilterStatus}
           />
+          </div>
         </div>
 
         {isModalOpen && (
