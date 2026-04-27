@@ -167,16 +167,13 @@ const DishPage = ({ user }) => {
                 {!isLoading && dishes.length > 0 && (
                     <div className="dc-grid">
                         {filteredDishes.map(dish => (
-                            <div id="dishes-grid" >
                             <DishCard
-                                id="dishes-card-first"
                                 key={dish.id}
                                 dish={dish}
                                 inventoryItems={stockItems}
                                 onViewDetails={handleViewDetails}
                                 onDelete={handleDelete}
                             />
-                            </div>
                         ))}
                     </div>
                 )}

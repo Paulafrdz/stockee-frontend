@@ -226,7 +226,6 @@ const OrdersPage = () => {
         switch (activeTab) {
             case 'recommendations':
                 return (
-                    <div id="order-table">
                     <RecommendedOrdersTable
                         recommendedOrders={recommendedOrders}
                         onQuantityChange={handleQuantityAdjustment}
@@ -236,7 +235,6 @@ const OrdersPage = () => {
                         onDeleteItem={handleDeleteItem}
                         isSubmitting={submittingOrder}
                     />
-                    </div>
                 );
             case 'history':
                 return <OrderHistory orderHistory={orderHistory} />;
@@ -307,7 +305,7 @@ const OrdersPage = () => {
                     </div>
                 </div>
 
-                <OrderTabs id="order-tabs" activeTab={activeTab} onTabChange={handleTabChange} />
+                <OrderTabs activeTab={activeTab} onTabChange={handleTabChange} />
                 <div className="orders-content">{renderTabContent()}</div>
 
                 <FloatingButton

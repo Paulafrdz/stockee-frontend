@@ -107,7 +107,7 @@ const SalePage = ({ user }) => {
                 {isLoading ? (
                     <div className="sales-page-loading">Cargando ventas...</div>
                 ) : activeTab === 'today' ? (
-                    <div id="sales-table">
+                    <div>
                     <SalesTable
                         sales={sales}
                         onDelete={handleDelete}

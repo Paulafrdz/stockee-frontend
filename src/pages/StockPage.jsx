@@ -190,7 +190,6 @@ const StockPage = () => {
         </FloatingButton>
 
         <div className="stock-content">
-          <div id="stock-table">
           <StockTable
             stockItems={stockItems}
             onEditIngredient={handleOpenModal}
@@ -201,7 +200,6 @@ const StockPage = () => {
             filterStatus={filterStatus}
             onFilterChange={setFilterStatus}
           />
-          </div>
         </div>
 
         {isModalOpen && (
