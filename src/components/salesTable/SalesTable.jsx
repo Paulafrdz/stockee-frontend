@@ -120,7 +120,7 @@ const SalesTable = ({
                                 );
                             })
                         ) : (
-                            <tr>
+                            <tr style={{ display: 'block', width: '100%' }}>
                                 <td colSpan={5} className="st-empty">
                                     <h3>
                                         {activeTab === 'today'

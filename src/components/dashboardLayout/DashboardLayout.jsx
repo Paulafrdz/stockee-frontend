@@ -3,6 +3,8 @@ import Sidebar from '../sidebar/Sidebar';
 import MainContent from '../mainContent/MainContent';
 import './DashboardLayout.css';
 import Logo from "../../assets/logoPositive.svg";
+import useOnboarding from '../../hooks/useOnboarding';
+
 
 const DashboardLayout = ({ 
   children, 
@@ -14,6 +16,8 @@ const DashboardLayout = ({
 }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  useOnboarding();
+  
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   const handleTabChange = (tabId) => {

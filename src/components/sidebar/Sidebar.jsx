@@ -114,6 +114,7 @@ const Sidebar = ({ user }) => {
                             <Link
                                 key={item.id}
                                 to={item.path}
+                                id={`nav-${item.id}`}
                                 className={`nav-item ${isActive ? 'nav-item-active' : ''}`}
                                 onClick={handleNavClick} 
                             >

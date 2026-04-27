@@ -13,8 +13,8 @@ const usePageTour = (section, steps) => {
             driverRef.current = driver ({
                 showProgress: true, 
                 progressText: '{{current}} de {{total}}',
-                nextBtnText: 'Sigueinte ->',
-                prevBtnText: '<- Anterior',
+                nextBtnText: 'Sigueinte →',
+                prevBtnText: '← Anterior',
                 doneBtnText: '¡Entendido!',
                 steps,
                 onDestroyed: () => {
