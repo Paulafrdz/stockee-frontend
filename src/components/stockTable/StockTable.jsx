@@ -33,6 +33,7 @@ const StockTable = ({
     }
   };
 
+
   const processedItems = stockItems.map(item => ({
     ...item,
     status: getStockStatus(item.currentStock, item.minimumStock),
@@ -86,6 +87,8 @@ const StockTable = ({
     </td>
   );
 
+  const badgesRendered = new Set();
+
   return (
     <div className="stock-table-container">
 
@@ -135,66 +138,76 @@ const StockTable = ({
 
           <tbody className="table-body">
             {filteredItems.length > 0 ? (
-              filteredItems.map((item) => (
-                <tr
-                  key={item.id}
-                  className={`table-row status-row-${item.status}`}
-                  aria-expanded={expandedRow === item.id}
-                >
-                  <td className="td stock-ingredient-name">{item.name}</td>
+              filteredItems.map((item) => {
 
-                  <td className="td stock-currentStock">
-                    <span className={`stock-value stock-${item.status}`}>
-                      {item.currentStock}
-                    </span>
-                  </td>
+                const badgeId = !badgesRendered.has(item.status)
+                  ? (badgesRendered.add(item.status), `stock-badge-${item.status}`)
+                  : undefined;
 
-                  <td className="td stock-minimum">{item.minimumStock}</td>
+                return (
+                  <tr
+                    key={item.id}
+                    className={`table-row status-row-${item.status}`}
+                    aria-expanded={expandedRow === item.id}
+                  >
+                    <td className="td stock-ingredient-name">{item.name}</td>
 
-                  <td className="td stock-unit">{item.unit}</td>
+                    <td className="td stock-currentStock">
+                      <span className={`stock-value stock-${item.status}`}>
+                        {item.currentStock}
+                      </span>
+                    </td>
 
-                  <td className="td stock-status">
-                    <span className={`status-badge status-${item.status}`}>
-                      {item.statusLabel}
-                    </span>
-                  </td>
+                    <td className="td stock-minimum">{item.minimumStock}</td>
 
-                  <td className="td lotes-cell">
-                    <button
-                      className="lotes-toggle-btn"
-                      onClick={() => toggleLotes(item.id)}
-                      aria-expanded={expandedRow === item.id}
-                      aria-controls={`lotes-${item.id}`}
-                      aria-label={`${expandedRow === item.id ? 'Ocultar' : 'Ver'} lotes de ${item.name}`}
-                    >
-                      {expandedRow === item.id
-                        ? <ChevronUp size={16} aria-hidden="true" />
-                        : <ChevronDown size={16} aria-hidden="true" />
-                      }
-                    </button>
-                  </td>
+                    <td className="td stock-unit">{item.unit}</td>
 
-                  <td className="td actions">
-                    <button
-                      className="action-btn edit-btn"
-                      onClick={() => onEditIngredient && onEditIngredient(item)}
-                      aria-label={`Editar ${item.name}`}
-                    >
-                      <Edit size={16} aria-hidden="true" />
-                    </button>
-                    <button
-                      className="action-btn delete-btn"
-                      onClick={() => onDeleteIngredient && onDeleteIngredient(item.id)}
-                      aria-label={`Eliminar ${item.name}`}
-                    >
-                      <Trash2 size={16} aria-hidden="true" />
-                    </button>
-                  </td>
+                    <td className="td stock-status">
+                      <span
+                        id={badgeId}
+                        className={`status-badge status-${item.status}`}
+                        >
+                        {item.statusLabel}
+                      </span>
+                    </td>
 
-                  {/* Panel de lotes — inline dentro del mismo <tr> */}
-                  {expandedRow === item.id && <LotesPanel item={item} />}
-                </tr>
-              ))
+                    <td className="td lotes-cell">
+                      <button
+                        className="lotes-toggle-btn"
+                        onClick={() => toggleLotes(item.id)}
+                        aria-expanded={expandedRow === item.id}
+                        aria-controls={`lotes-${item.id}`}
+                        aria-label={`${expandedRow === item.id ? 'Ocultar' : 'Ver'} lotes de ${item.name}`}
+                      >
+                        {expandedRow === item.id
+                          ? <ChevronUp size={16} aria-hidden="true" />
+                          : <ChevronDown size={16} aria-hidden="true" />
+                        }
+                      </button>
+                    </td>
+
+                    <td className="td actions">
+                      <button
+                        className="action-btn edit-btn"
+                        onClick={() => onEditIngredient && onEditIngredient(item)}
+                        aria-label={`Editar ${item.name}`}
+                      >
+                        <Edit size={16} aria-hidden="true" />
+                      </button>
+                      <button
+                        className="action-btn delete-btn"
+                        onClick={() => onDeleteIngredient && onDeleteIngredient(item.id)}
+                        aria-label={`Eliminar ${item.name}`}
+                      >
+                        <Trash2 size={16} aria-hidden="true" />
+                      </button>
+                    </td>
+
+                    {/* Panel de lotes — inline dentro del mismo <tr> */}
+                    {expandedRow === item.id && <LotesPanel item={item} />}
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan={7} className="table-empty">

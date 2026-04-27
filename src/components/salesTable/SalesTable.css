@@ -145,6 +145,8 @@
     padding: 40px 20px;
     text-align: center;
     color: var(--neutral-750);
+    display: block;
+    width: 100%;
 }
 
 .st-empty h3 {

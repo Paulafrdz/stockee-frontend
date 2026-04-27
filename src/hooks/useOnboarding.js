@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import axios from 'axios';
@@ -74,18 +74,18 @@ const useOnboarding = () => {
         const checkAndStartTour = async () => {
             try {
                 const {data} = await axios.get('/api/users/onboarding-status');
-                if (data.complete) return;
+                if (data.completed) return;
 
                 driverRef.current = driver ({
                     showProgress: true,
                     progressText: '{{current}} de {{total}}',
-                    nextBtnText: 'Sigueinte ->',
-                    prevBtnText: '<- Anterior',
+                    nextBtnText: 'Siguiente →',
+                    prevBtnText: '← Anterior',
                     doneBtnText: '¡Empezar!',
                     steps: TOUR_STEPS,
-                    onDestroyed: async = () => {
+                    onDestroyed: async () => {
                         try {
-                            await.axios.patch('/api/users/complete-onboarding');
+                            await axios.patch('/api/users/complete-onboarding');
                         } catch (err) {
                             console.error('Error al marcar onboarding como completado:', err);
                         }
@@ -93,7 +93,7 @@ const useOnboarding = () => {
                 })
 
                 setTimeout(() => {
-                    driverRef.current.driver();
+                    driverRef.current.drive();
                 }, 800);
             } catch (err) {
                 console.error('Error al comprobar estado de onboarding:', err);
@@ -108,4 +108,4 @@ const useOnboarding = () => {
     }, []);
 };
 
-export default useOnboarding();
+export default useOnboarding;

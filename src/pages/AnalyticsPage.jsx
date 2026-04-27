@@ -14,11 +14,15 @@ import { getStockItems } from '../services/stockService';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import './AnalyticsPage.css';
 import { areaElementClasses } from '@mui/x-charts';
+import usePageTour from '../hooks/usePageTour';
+import { analyticsTourSteps } from '../hooks/tourSteps';
 
 const AnalyticsPage = ({ user }) => {
   const [stockItems, setStockItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+
+  usePageTour('order', analyticsTourSteps);
 
   useEffect(() => {
     fetchStockIngredients();
@@ -44,22 +48,22 @@ const AnalyticsPage = ({ user }) => {
 
   const handleWasteRegistered = (wasteData) => {
     console.log('✅ Nuevo desperdicio registrado:', wasteData);
-    
+
     // Forzar recarga de todos los componentes
     setRefreshKey(prev => prev + 1);
-    
+
     // Recargar ingredientes por si el stock cambió
     fetchStockIngredients();
   };
 
   const handleWasteDeleted = (wasteId) => {
     console.log('🗑️ Desperdicio eliminado:', wasteId);
-    
+
     // Forzar recarga de componentes
     setRefreshKey(prev => prev + 1);
   };
 
-  
+
   return (
     <DashboardLayout
       user={user}
@@ -68,63 +72,66 @@ const AnalyticsPage = ({ user }) => {
       subtitle="Visualiza y analiza el rendimiento de tu inventario"
     >
       <div className='analytics-page'>
-      <div className="analytics-page-header">
+        <div className="analytics-page-header">
           <div className="anatylics-page-title-section">
             <h1 className="analytics-page-title">Eficiencia</h1>
           </div>
         </div>
 
-      {/* Contenedor principal con Grid */}
-      <div className="analytics-page-container">
-        
-        {/* 4 Stats Cards */}
-        <div className="analytics-efficiency">
-          <EfficiencyCardWrapper key={`efficiency-${refreshKey}`} />
+        {/* Contenedor principal con Grid */}
+        <div className="analytics-page-container">
+
+          {/* 4 Stats Cards */}
+          <div id="analytics-stats">
+            <div className="analytics-efficiency">
+              <EfficiencyCardWrapper key={`efficiency-${refreshKey}`} />
+            </div>
+            <div className="analytics-totalWaste" >
+              <TotalWasteCardWrapper key={`total-${refreshKey}`} />
+            </div>
+            <div className="analtytics-cookingError" >
+              <CookingErrorsCardWrapper key={`errors-${refreshKey}`} />
+            </div>
+            <div className="analytics-expiredWaste" >
+              <ExpiredWasteCardWrapper key={`expired-${refreshKey}`} />
+            </div>
           </div>
-          <div className="analytics-totalWaste" >
-          <TotalWasteCardWrapper key={`total-${refreshKey}`} />
+
+          {/* 2 Charts en paralelo */}
+          <div className="analytics-charts-pie" id="analytics-pie-chart">
+            <WasteTypesPieChartWrapper key={`pie-${refreshKey}`} />
           </div>
-          <div className="analtytics-cookingError" >
-          <CookingErrorsCardWrapper key={`errors-${refreshKey}`} />
+          <div className="analytics-charts-trend"  id="analytics-trend-chart">
+            <WasteTrendChartWrapper key={`trend-${refreshKey}`} />
           </div>
-          <div className="analytics-expiredWaste" >
-          <ExpiredWasteCardWrapper key={`expired-${refreshKey}`} />
+
+          {/* Tabla */}
+          <div className="analytics-table-section" id="analytics-efficiency-table">
+            <ProductEfficiencyWrapper key={`table-${refreshKey}`} />
+          </div>
+
+          {/* Lista */}
+          <div className="analytics-list-section">
+            <WasteList
+              key={`waste-list-${refreshKey}`}
+              onWasteDeleted={handleWasteDeleted}
+            />
+          </div>
+
         </div>
 
-        {/* 2 Charts en paralelo */}
-        <div className="analytics-charts-pie" >
-          <WasteTypesPieChartWrapper key={`pie-${refreshKey}`} />
-          </div>
-          <div className="analytics-charts-trend" >
-          <WasteTrendChartWrapper key={`trend-${refreshKey}`} />
-        </div>
-
-        {/* Tabla */}
-        <div className="analytics-table-section" >
-          <ProductEfficiencyWrapper key={`table-${refreshKey}`} />
-        </div>
-
-        {/* Lista */}
-        <div className="analytics-list-section">
-          <WasteList 
-            key={`waste-list-${refreshKey}`}
-            onWasteDeleted={handleWasteDeleted}
+        {/* Floating Button */}
+        <div className="analytics-actions">
+          <FloatingButton
+            id="analytics-add-btn"
+            icon={Plus}
+            variant="primary"
+            size="small"
+            tooltip="Registrar desperdicio"
+            onClick={() => setIsModalOpen(true)}
           />
         </div>
-
       </div>
-
-      {/* Floating Button */}
-      <div className="analytics-actions">
-        <FloatingButton
-          icon={Plus}
-          variant="primary"
-          size="small"
-          tooltip="Registrar desperdicio"
-          onClick={() => setIsModalOpen(true)}
-        />
-      </div>
-    </div>
       {/* Modal */}
       <WasteRegistrationModal
         isOpen={isModalOpen}
