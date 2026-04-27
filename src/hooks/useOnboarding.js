@@ -53,7 +53,7 @@ const TOUR_STEPS = [
     {
         element: '#nav-analytics',
         popover: {
-            title: '📊 Eficiencia',
+            title: 'Eficiencia',
             description: 'Analiza el desperdicio, la eficiencia por producto y registra mermas.',
             side: 'right',
             align: 'start',
@@ -61,7 +61,7 @@ const TOUR_STEPS = [
     },
     {
         popover: {
-            titel: '¡Todo listo!',
+            title: '¡Todo listo!',
             description: 'Ya conoces las secciones principales. Puedes empezar añadiendo tus primeros ingredientes en Stock.',
         },
     },
@@ -73,10 +73,20 @@ const useOnboarding = () => {
     useEffect(() => {
         const checkAndStartTour = async () => {
             try {
-                const {data} = await axios.get('/api/users/onboarding-status');
+                const token = localStorage.getItem('token');
+
+                const { data } = await axios.get(
+                    'http://localhost:8080/api/users/onboarding-status',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
                 if (data.completed) return;
 
-                driverRef.current = driver ({
+                driverRef.current = driver({
+                    stageRadius: 15,
+                    stagePadding: 3,
                     showProgress: true,
                     progressText: '{{current}} de {{total}}',
                     nextBtnText: 'Siguiente →',
@@ -85,7 +95,15 @@ const useOnboarding = () => {
                     steps: TOUR_STEPS,
                     onDestroyed: async () => {
                         try {
-                            await axios.patch('/api/users/complete-onboarding');
+                            await axios.patch(
+                                'http://localhost:8080/api/users/onboarding-status',
+                                {},
+                                {
+                                    headers: {
+                                        Authorization: `Bearer ${token}`
+                                    }
+                                }
+                            );
                         } catch (err) {
                             console.error('Error al marcar onboarding como completado:', err);
                         }
@@ -101,10 +119,6 @@ const useOnboarding = () => {
         };
 
         checkAndStartTour();
-
-        return () => {
-            driverRef.current?.destroy();
-        };
     }, []);
 };
 

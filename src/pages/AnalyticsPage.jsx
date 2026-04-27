@@ -82,7 +82,6 @@ const AnalyticsPage = ({ user }) => {
         <div className="analytics-page-container">
 
           {/* 4 Stats Cards */}
-          <div id="analytics-stats">
             <div className="analytics-efficiency">
               <EfficiencyCardWrapper key={`efficiency-${refreshKey}`} />
             </div>
@@ -95,13 +94,13 @@ const AnalyticsPage = ({ user }) => {
             <div className="analytics-expiredWaste" >
               <ExpiredWasteCardWrapper key={`expired-${refreshKey}`} />
             </div>
-          </div>
+          
 
           {/* 2 Charts en paralelo */}
-          <div className="analytics-charts-pie" id="analytics-pie-chart">
+          <div className="analytics-charts-pie" >
             <WasteTypesPieChartWrapper key={`pie-${refreshKey}`} />
           </div>
-          <div className="analytics-charts-trend"  id="analytics-trend-chart">
+          <div className="analytics-charts-trend" >
             <WasteTrendChartWrapper key={`trend-${refreshKey}`} />
           </div>
 
