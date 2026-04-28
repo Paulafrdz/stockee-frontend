@@ -305,7 +305,7 @@ const OrdersPage = () => {
                 <div className="orders-content">{renderTabContent()}</div>
 
                 <FloatingButton
-                    id="order-submit-btn"
+                    id="order-add-btn"
                     icon={Plus}
                     variant="primary"
                     size="small"

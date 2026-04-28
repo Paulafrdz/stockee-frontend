@@ -78,19 +78,19 @@ const AnalyticsPage = ({ user }) => {
         <div className="analytics-page-container">
 
           {/* 4 Stats Cards */}
-            <div className="analytics-efficiency">
-              <EfficiencyCardWrapper key={`efficiency-${refreshKey}`} />
-            </div>
-            <div className="analytics-totalWaste" >
-              <TotalWasteCardWrapper key={`total-${refreshKey}`} />
-            </div>
-            <div className="analtytics-cookingError" >
-              <CookingErrorsCardWrapper key={`errors-${refreshKey}`} />
-            </div>
-            <div className="analytics-expiredWaste" >
-              <ExpiredWasteCardWrapper key={`expired-${refreshKey}`} />
-            </div>
-          
+          <div className="analytics-efficiency">
+            <EfficiencyCardWrapper key={`efficiency-${refreshKey}`} />
+          </div>
+          <div className="analytics-totalWaste" >
+            <TotalWasteCardWrapper key={`total-${refreshKey}`} />
+          </div>
+          <div className="analtytics-cookingError" >
+            <CookingErrorsCardWrapper key={`errors-${refreshKey}`} />
+          </div>
+          <div className="analytics-expiredWaste" >
+            <ExpiredWasteCardWrapper key={`expired-${refreshKey}`} />
+          </div>
+
 
           {/* 2 Charts en paralelo */}
           <div className="analytics-charts-pie" >
@@ -116,16 +116,16 @@ const AnalyticsPage = ({ user }) => {
         </div>
 
         {/* Floating Button */}
-        <div className="analytics-actions">
-          <FloatingButton
-            id="analytics-add-btn"
-            icon={Plus}
-            variant="primary"
-            size="small"
-            tooltip="Registrar desperdicio"
-            onClick={() => setIsModalOpen(true)}
-          />
-        </div>
+
+        <FloatingButton
+          id="analytics-add-btn"
+          icon={Plus}
+          variant="primary"
+          size="small"
+          tooltip="Registrar desperdicio"
+          onClick={() => setIsModalOpen(true)}
+        />
+
       </div>
       {/* Modal */}
       <WasteRegistrationModal

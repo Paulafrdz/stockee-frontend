@@ -61,6 +61,7 @@ const useOnboarding = () => {
                  }
 
                 const steps = [
+                    // 1. Bienvenida 
                     {
                         popover: {
                             title: 'Bienvenido a Stockee.',
@@ -72,6 +73,7 @@ const useOnboarding = () => {
                             },
                         },
                     },
+                    // 2. Stock
                     {
                         element: '#stock-add-btn',
                         popover: {
@@ -87,6 +89,7 @@ const useOnboarding = () => {
                             },
                         },
                     },
+                    // 3. Platos
                     {
                         element: '#dishes-add-btn',
                         popover: {
@@ -102,6 +105,7 @@ const useOnboarding = () => {
                             },
                         },
                     },
+                    // 4. Ventas
                     {
                         element: '#sales-add-btn',
                         popover: {
@@ -117,6 +121,7 @@ const useOnboarding = () => {
                             },
                         },
                     },
+                    // 5. Pedidos
                     {
                         element: '#order-add-btn',
                         popover: {
@@ -132,6 +137,8 @@ const useOnboarding = () => {
                             },
                         },
                     },
+
+                    // 6. Eficiencia
                     {
                         element: '#analytics-add-btn',
                         popover: {
@@ -147,6 +154,8 @@ const useOnboarding = () => {
                             },
                         },
                     },
+
+                    // 7. Fin
                     {
                         popover: {
                             title: '¡Ya estás listo!',
