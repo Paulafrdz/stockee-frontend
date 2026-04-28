@@ -14,8 +14,6 @@ import {
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import { Plus } from 'lucide-react';
 import AddOrderModal from '../components/addOrderModal/AddOrderModal';
-import usePageTour from '../hooks/usePageTour';
-import { orderTourSteps } from '../hooks/tourSteps';
 
 
 const OrdersPage = () => {
@@ -27,8 +25,6 @@ const OrdersPage = () => {
     const [submittingOrder, setSubmittingOrder] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [stockItems, setStockItems] = useState([]);
-
-    usePageTour('order', orderTourSteps);
 
     const recommendedOrders = [...autoRecommendedOrders, ...manualOrders];
 

@@ -9,8 +9,6 @@ import StockFilters from '../components/stockFilters/StockFilters';
 import { getStockItems } from '../services/stockService';
 import { createDish, getAllDishes, deleteDish, updateDish } from '../services/dishService';
 import './DishPage.css';
-import usePageTour from '../hooks/usePageTour';
-import { dishesTourSteps } from '../hooks/tourSteps';
 
 const DishPage = ({ user }) => {
     const [dishes, setDishes] = useState([]);
@@ -18,8 +16,6 @@ const DishPage = ({ user }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('all');
-
-    usePageTour('dishes', dishesTourSteps);  
 
     // CreateDishModal 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);

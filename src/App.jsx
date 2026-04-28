@@ -3,16 +3,19 @@ import React from 'react';
 import "./components/styles/Variables.css";
 import './App.css';
 import AppRouter from './router/AppRouter';
-import "./driver-theme.css"
 import useOnboarding from './hooks/useOnboarding';
+import "./driver-theme.css"
+
+function AppContent() {
+  useOnboarding();
+  return <AppRouter/>;
+}
 
 function App() {
-
-  useOnboarding();
   
   return (
     <Router>
-      <AppRouter />
+      <AppContent />
     </Router>
   );
 }

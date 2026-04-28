@@ -9,8 +9,6 @@ import { getAllDishes } from '../services/dishService';
 import SaleHistory from '../components/saleHistory/SaleHistory';
 import StockFilters from '../components/stockFilters/StockFilters';
 import './SalePage.css';
-import usePageTour from '../hooks/usePageTour';
-import { salesTourSteps } from '../hooks/tourSteps';
 
 
 const SalePage = ({ user }) => {
@@ -21,7 +19,6 @@ const SalePage = ({ user }) => {
     const [activeTab, setActiveTab] = useState('today');
     const [searchTerm, setSearchTerm] = useState('');
 
-    usePageTour('sales', salesTourSteps);
 
     useEffect(() => {
         fetchData();
