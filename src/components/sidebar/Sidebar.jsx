@@ -140,7 +140,7 @@ const Sidebar = ({ user }) => {
                     <div className="sidebar-actions">
                         <button className="action-button" title="Configuración">
                             <Settings size={18} />
-                            <span>Settings</span>
+                            <span>Ajustes</span>
                         </button>
                         <button
                             className="action-button logout-button"
@@ -148,7 +148,7 @@ const Sidebar = ({ user }) => {
                             title="Cerrar sesión"
                         >
                             <LogOut size={18} />
-                            <span>Sign out</span>
+                            <span>Cerrar sesión</span>
                         </button>
                     </div>
                 </div>

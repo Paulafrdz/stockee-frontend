@@ -44,7 +44,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
     { value: 'g', label: 'g' },
     { value: 'L', label: 'L' },
     { value: 'ml', label: 'ml' },
-    { value: 'units', label: 'unites' },
+    { value: 'units', label: 'unidades' },
     { value: 'packages', label: 'paquetes' }
   ];
 

@@ -97,7 +97,7 @@ const StockTable = ({
           <AlertTriangle className="alert-icon" size={20} aria-hidden="true" />
           <div className="alert-content">
             <div className="alert-title">
-              {statusCounts.critical + statusCounts.low} items necesitan atención
+              {statusCounts.critical + statusCounts.low} ingredientes necesitan atención
             </div>
             <div className="alert-text">
               {statusCounts.critical > 0 && `${statusCounts.critical} críticos, `}
@@ -232,7 +232,7 @@ const StockTable = ({
       <div className="table-stats" aria-label="Resumen del inventario">
         <div className="stats-row">
           <div className="stat-item">
-            <span className="stat-label">Total items:</span>
+            <span className="stat-label">Total ingredientes:</span>
             <span className="stat-value">{statusCounts.total}</span>
           </div>
           <div className="stat-item">
