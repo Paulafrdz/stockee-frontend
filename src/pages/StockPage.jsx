@@ -5,8 +5,7 @@ import StockTable from '../components/stockTable/StockTable';
 import AddIngredientModal from '../components/addIngredientModal/AddIngredientModal';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import './StockPage.css';
-import usePageTour from '../hooks/usePageTour';
-import { stockTourSteps } from '../hooks/tourSteps';
+
 import {
   getStockItems,
   addStockItem,
@@ -23,7 +22,6 @@ const StockPage = () => {
   const [editingItem, setEditingItem] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  usePageTour('stock', stockTourSteps);
 
 
   // Cargar stock desde el backend

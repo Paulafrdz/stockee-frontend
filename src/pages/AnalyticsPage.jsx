@@ -14,15 +14,11 @@ import { getStockItems } from '../services/stockService';
 import FloatingButton from '../components/floatingButton/FloatingButton';
 import './AnalyticsPage.css';
 import { areaElementClasses } from '@mui/x-charts';
-import usePageTour from '../hooks/usePageTour';
-import { analyticsTourSteps } from '../hooks/tourSteps';
 
 const AnalyticsPage = ({ user }) => {
   const [stockItems, setStockItems] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
-
-  usePageTour('order', analyticsTourSteps);
 
   useEffect(() => {
     fetchStockIngredients();
@@ -105,7 +101,7 @@ const AnalyticsPage = ({ user }) => {
           </div>
 
           {/* Tabla */}
-          <div className="analytics-table-section" id="analytics-efficiency-table">
+          <div className="analytics-table-section">
             <ProductEfficiencyWrapper key={`table-${refreshKey}`} />
           </div>
 
