@@ -86,8 +86,8 @@ const DashboardPreview = () => {
   <div className="preview-feature-pills">
     <div className="preview-pill">Control de Inventario</div>
     <div className="preview-pill">Gestión de Ventas</div>
-    <div className="preview-pill">Analytics en Tiempo Real</div>
-    <div className="preview-pill">Recetas y Costos</div>
+    <div className="preview-pill">Eficiencia en Tiempo Real</div>
+    <div className="preview-pill">Recetas</div>
   </div>
 </div>
 

@@ -134,7 +134,7 @@
 
 .status-critical { background: var(--terciary-200); color: var(--terciary-700); }
 .status-low      { background: var(--secondary-200); color: var(--secondary-500); }
-.status-ok       { background: #e7fdce; color: #84cc16; }
+.status-ok       { background: var(--ok-background); color: var(--ok-font); }
 
 /* ==================== LOTES INLINE PANEL ==================== */
 

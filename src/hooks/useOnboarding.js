@@ -58,7 +58,8 @@ const useOnboarding = () => {
                 const goPrev = async (path, elementSelector) => {
                     await navigateAndWait(navigate, path, elementSelector);
                     driverRef.current?.movePrevious();
-                 }
+                }
+                
 
                 const steps = [
                     // 1. Bienvenida 
