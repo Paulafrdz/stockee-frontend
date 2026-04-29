@@ -203,8 +203,8 @@
 }
 
 .preview-status-ok {
-  background: #e7fdce;
-    color: #84cc16;
+  background: var(--ok-background);
+    color: var(--ok-font);
 }
 
 .preview-status-low {
