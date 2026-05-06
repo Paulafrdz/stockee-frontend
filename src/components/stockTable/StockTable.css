@@ -253,6 +253,9 @@
     padding: 40px 20px;
     text-align: center;
     color: var(--neutral-750);
+    width: 100%;
+    display: block;
+    width: 100%;
 }
 
 .table-empty h3 {

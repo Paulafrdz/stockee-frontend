@@ -36,15 +36,7 @@ const STATUS_CONFIG = {
     },
 };
 
-/**
- * DishCard
- *
- * Props:
- *  - dish           {Object}    { id, icon, name, description, ingredients }
- *  - inventoryItems {Array}     [{ id, name, currentStock, minimumStock, unit }]
- *  - onViewDetails  {function}  Called with dish when "Ver detalles" is clicked
- *  - onDelete       {function}  Called with dish.id when delete is clicked
- */
+
 const DishCard = ({ dish, inventoryItems = [], onViewDetails, onDelete }) => {
     const status = getDishStockStatus(dish.ingredients, inventoryItems);
     const statusConfig = STATUS_CONFIG[status];

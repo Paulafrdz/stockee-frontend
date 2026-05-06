@@ -31,6 +31,22 @@ export default function AppRouter({ onUserAuthenticated }) {
           </PublicRoute>
         }
       />
+      <Route 
+        path="/forgot-password" 
+        element={
+        <PublicRoute>
+          <AuthPage />
+        </PublicRoute>
+        } 
+      />
+      <Route 
+        path="/reset-password" 
+        element={
+          <PublicRoute>
+            <AuthPage />
+          </PublicRoute>
+          } 
+        />
 
       {/* PRIVATE ROUTES */}
        <Route

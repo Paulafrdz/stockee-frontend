@@ -363,7 +363,10 @@
   padding: 60px 20px;
   color: var(--neutral-750);
   font-family: var(--font-family);
+  display: block;
+  width: 100%;
 }
+
 
 .recommended-orders-table .empty-message {
   font-size: var(--body-size);
