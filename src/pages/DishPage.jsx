@@ -134,19 +134,6 @@ const DishPage = ({ user }) => {
                     </p>
                 </div>
 
-                {isLoading && (
-                    <div className="dish-page-loading">Cargando platos...</div>
-                )}
-
-                {!isLoading && dishes.length === 0 && (
-                    <div className="dish-page-empty">
-                        <p className="dish-page-empty-title">Aún no hay platos</p>
-                        <p className="dish-page-empty-subtitle">
-                            Pulsa el botón + para crear tu primer plato.
-                        </p>
-                    </div>
-                )}
-
                 <StockFilters
                     searchTerm={searchTerm}
                     onSearchChange={setSearchTerm}
@@ -160,6 +147,20 @@ const DishPage = ({ user }) => {
                     searchPlaceholder="Buscar platos..."
                 />
                 </div>
+
+                {isLoading && (
+                    <div className="dish-page-loading">Cargando platos...</div>
+                )}
+
+                {!isLoading && dishes.length === 0 && (
+                    <div className="dish-page-empty">
+                        <p className="dish-page-empty-title">Aún no hay platos</p>
+                        <p className="dish-page-empty-subtitle">
+                            Pulsa el botón + para crear tu primer plato.
+                        </p>
+                    </div>
+                )}
+                
                 {!isLoading && dishes.length > 0 && (
                     <div className="dc-grid">
                         {filteredDishes.map(dish => (

@@ -260,7 +260,7 @@ const OrderTable = ({
               </tr>
             ))
           ) : (
-            <tr>
+            <tr style={{ display: 'block', width: '100%' }}>
             <td colSpan={6} className="empty-state">
               <div className="empty-message">
                 {searchTerm ? "No se han encontrado inggredientes" : "Ingrediente no encontrado"}

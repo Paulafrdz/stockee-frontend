@@ -120,9 +120,9 @@ const LoginForm = ({ onSuccess, onToggleMode }) => {
         />
         
         <div className="form-options">
-          <button type="button" className="forgot-password">
+          <Link to="/forgot-password" className="forgot-password">
             ¿Olvidaste tu contraseña?
-          </button>
+          </Link>
         </div>
 
         {errors.submit && (

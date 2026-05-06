@@ -143,6 +143,9 @@ const OrdersPage = () => {
 
             // ✅ Only clear auto-recommended items, KEEP manual items
             setAutoRecommendedOrders([]);
+            setManualOrders([]);
+            localStorage.removeItem('manualOrders');    
+
             // Manual items stay in the table until YOU remove them!
 
             const updatedHistory = await getOrderHistory();

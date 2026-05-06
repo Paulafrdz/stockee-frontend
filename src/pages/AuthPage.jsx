@@ -4,6 +4,8 @@ import LoginForm from '../components/loginForm/LoginForm.jsx';
 import RegisterForm from '../components/registerForm/RegisterForm.jsx';
 import DashboardPreview from '../components/preview/Preview.jsx';
 import { AuthService } from '../services/AuthService.js';
+import ResetPasswordForm from '../components/resetPasswordForm/ResetPasswordForm.jsx';
+import ForgotPasswordForm from '../components/forgotPasswordForm/ForgotPasswordForm.jsx';
 
 import './AuthPage.css';
 
@@ -15,6 +17,10 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
   useEffect(() => {
     if (location.pathname === '/register') {
       setAuthMode('register');
+    } else if (location.pathname === '/forgot-password') {
+      setAuthMode('forgot')
+    } else if (location.pathname === '/reset-password') {
+      setAuthMode('reset')
     } else {
       setAuthMode('login');
     }
@@ -25,20 +31,20 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
     if (currentUser && (currentUser.token || currentUser.username)) {
       navigate('/dashboard', { replace: true });
     }
-  }, []); 
+  }, []);
 
   const handleAuthSuccess = (user) => {
     console.log('Usuario autenticado:', user);
-    
+
     if (!user || (!user.token && !user.username)) {
       console.error('Error: Usuario autenticado sin datos válidos', user);
       return;
     }
-    
+
     if (onUserAuthenticated) {
       onUserAuthenticated(user);
     }
-    
+
     setTimeout(() => {
       console.log('🔄 Redirigiendo a /dashboard');
       navigate('/dashboard', { replace: true });
@@ -48,7 +54,7 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
   const toggleAuthMode = () => {
     const newMode = authMode === 'login' ? 'register' : 'login';
     setAuthMode(newMode);
-    
+
     navigate(newMode === 'login' ? '/login' : '/register', { replace: true });
   };
 
@@ -61,17 +67,10 @@ const AuthPage = ({ onUserAuthenticated = null }) => {
 
       {/* Right Side - Formularios de Auth */}
       <div className="auth-form-section">
-        {authMode === 'login' ? (
-          <LoginForm 
-            onSuccess={handleAuthSuccess}
-            onToggleMode={toggleAuthMode}
-          />
-        ) : (
-          <RegisterForm 
-            onSuccess={handleAuthSuccess}
-            onToggleMode={toggleAuthMode}
-          />
-        )}
+        {authMode === 'login' && <LoginForm onSuccess={handleAuthSuccess} onToggleMode={toggleAuthMode} />}
+        {authMode === 'register' && <RegisterForm onSuccess={handleAuthSuccess} onToggleMode={toggleAuthMode} />}
+        {authMode === 'forgot' && <ForgotPasswordForm />}
+        {authMode === 'reset' && <ResetPasswordForm />}
       </div>
     </div>
   );

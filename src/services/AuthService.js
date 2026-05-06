@@ -42,31 +42,6 @@ export const AuthService = {
         }
     },
 
-    logout: async () => {
-        try {
-            const token = localStorage.getItem("token");
-
-            await axios.post(
-                `${API_URL}/api/auth/logout`,
-                {},
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                    withCredentials: true,
-                }
-            );
-
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            console.log("✅ Sesión cerrada correctamente");
-            return true;
-        } catch (error) {
-            console.error("❌ Error en logout:", error);
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            throw new Error("Error al cerrar sesión");
-        }
-    },
-
     register: async ({ username, email, password }) => {
         try {
             const response = await axios.post(

@@ -209,7 +209,7 @@ const StockTable = ({
                 );
               })
             ) : (
-              <tr>
+              <tr style={{ display: 'block', width: '100%' }}>
                 <td colSpan={7} className="table-empty">
                   {searchTerm || filterStatus !== 'all' ? (
                     <>

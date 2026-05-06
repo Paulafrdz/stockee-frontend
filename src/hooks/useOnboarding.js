@@ -65,7 +65,7 @@ const useOnboarding = () => {
                     // 1. Bienvenida 
                     {
                         popover: {
-                            title: 'Bienvenido a Stockee.',
+                            title: 'Bienvenido a stockee.',
                             description: 'Tu app de gestión de stock. En este tour rápido te enseñamos cómo empezar a sacarle partido, solo te llevará un par de minutos.',
                             align: 'center',
                             nextBtnText: 'Empezar tour →',
@@ -95,7 +95,7 @@ const useOnboarding = () => {
                         element: '#dishes-add-btn',
                         popover: {
                             title: 'Crea tus platos',
-                            description: 'Aquí defines tu carta. Cada plato lleva asociados los ingredientes del inventario así Stockee. sabe qué se consume.',
+                            description: 'Aquí defines tu carta. Cada plato lleva asociados los ingredientes del inventario así stockee. sabe qué se consume.',
                             side: 'left',
                             align: 'start',
                             onNextClick: async () => {
@@ -127,7 +127,7 @@ const useOnboarding = () => {
                         element: '#order-add-btn',
                         popover: {
                             title: 'Gestiona tus pedidos',
-                            description: 'Cuando el stock baje, Stockee. te sugiere automáticamente qué pedir y en qué cantidad. También puedes añadir ingredientes manualmente.',
+                            description: 'Cuando el stock baje, stockee. te sugiere automáticamente qué pedir y en qué cantidad. También puedes añadir ingredientes manualmente.',
                             side: 'left',
                             align: 'start',
                             onNextClick: async () => {
