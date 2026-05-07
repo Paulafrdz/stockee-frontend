@@ -8,8 +8,8 @@ import Logo from '../../assets/logoPositive.svg';
 import './ResetPasswordForm.css';
 
 const ResetPasswordForm = () => {
-    const [useSearchParams] = useSearchParams();
-    const token = useSearchParams.get('token');
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
     const navigate = useNavigate();
 
 
@@ -21,6 +21,11 @@ const ResetPasswordForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [done, setDone] = useState(false);
 
+    const handleChange = (field) => (e) => {
+        setFormData(prev => ({ ...prev, [field]: e.target.value }));
+        if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }))
+    };
+
     const validate = () => {
         const newErrors = {};
         if (!formData.newPassword) {
@@ -30,7 +35,7 @@ const ResetPasswordForm = () => {
         }
         if (!formData.confirmPassword) {
             newErrors.confirmPassword = 'Confirma tu contraseña';
-        } else if (formData.confirmPassword !== formData.confirmPassword) {
+        } else if (formData.newPassword !== formData.confirmPassword) {
             newErrors.confirmPassword = 'La contraseña no coincide';
         }
         setErrors(newErrors);
