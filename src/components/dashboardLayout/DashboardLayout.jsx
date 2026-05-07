@@ -8,7 +8,6 @@ import useOnboarding from '../../hooks/useOnboarding';
 
 const DashboardLayout = ({ 
   children, 
-  user, 
   activeTab = 'dashboard', 
   onTabChange,
   title,
@@ -16,6 +15,7 @@ const DashboardLayout = ({
 }) => {
   useOnboarding();
 
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
