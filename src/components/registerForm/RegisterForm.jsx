@@ -49,8 +49,15 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
     setIsLoading(true);
 
     try {
-      const user = await AuthService.register(formData);
+      await AuthService.register(formData);
+
+      const user = await AuthService.login({
+        email: formData.email,
+        password: formData.password,
+      });
+
       onSuccess?.(user);
+
     } catch (err) {
       setErrors({ submit: err.response?.data?.message || err.message });
     } finally {

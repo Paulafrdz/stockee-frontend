@@ -39,9 +39,12 @@ const useOnboarding = () => {
 
     useEffect(() => {
         const checkAndStartTour = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+            
+            const headers = { Authorization: `Bearer ${token}` };
+            
             try {
-                const token = localStorage.getItem('token');
-                const headers = { Authorization: `Bearer ${token}` };
 
                 const { data } = await axios.get(
                     'http://localhost:8080/api/users/onboarding-status',
@@ -59,7 +62,7 @@ const useOnboarding = () => {
                     await navigateAndWait(navigate, path, elementSelector);
                     driverRef.current?.movePrevious();
                 }
-                
+
 
                 const steps = [
                     // 1. Bienvenida 
@@ -163,6 +166,17 @@ const useOnboarding = () => {
                             description: 'Empieza añadiendo tus ingredientes en Stock y crea tu primer plato.',
                             align: 'center',
                             doneBtnText: '¡Empezar!',
+                            onNextClick: async () => {
+                                try {
+                                    await axios.patch('http://localhost:8080/api/users/complete-onboarding',
+                                        {},
+                                        { headers }
+                                    );
+                                } catch (err) {
+                                    console.error('Error al completar onboarding:', err);
+                                }
+                                driverRef.current?.moveNext();
+                            },
                             onPrevClick: async () => {
                                 await goPrev('/analytics', '#analytics-add-btn');
                             },
@@ -180,17 +194,6 @@ const useOnboarding = () => {
                     prevBtnText: '← Anterior',
                     doneBtnText: '¡Empezar!',
                     steps,
-                    onDestroyed: async () => {
-                        try {
-                            await axios.patch(
-                                'http://localhost:8080/api/users/complete-onboarding',
-                                {},
-                                { headers }
-                            );
-                        } catch (err) {
-                            console.error('Error al marcar onboarding como completado:', err);
-                        }
-                    },
                 });
 
                 setTimeout(() => {
