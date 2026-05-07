@@ -3,6 +3,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import './InputLog.css';
 
 const InputLog = ({
+  id,
   type = 'text',
   placeholder,
   value,
@@ -28,7 +29,10 @@ const InputLog = ({
   return (
     <div className={`input-group ${className}`}>
       {label && (
-        <label className={`input-label ${required ? 'required' : ''}`}>
+        <label 
+          className={`input-label ${required ? 'required' : ''}`}
+          htmlFor={id}
+        >
           {label}
         </label>
       )}
@@ -39,6 +43,7 @@ const InputLog = ({
         )}
         
         <input
+          id={id}
           type={inputType}
           placeholder={placeholder}
           value={value}
