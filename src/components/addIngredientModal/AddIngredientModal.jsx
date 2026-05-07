@@ -187,6 +187,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           {/* Nombre del Ingrediente */}
           <div className="form-field">
             <Input
+              id="Nombre del ingrediente"
               type="text"
               label="Nombre del Ingrediente"
               placeholder="Ej: Tomates Cherry"
@@ -202,6 +203,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
           <div className="form-row">
             <div className="form-field">
               <Input
+                id="Stock actual"
                 type="number"
                 label="Stock Actual"
                 placeholder="10"
@@ -216,6 +218,7 @@ const AddIngredientModal = ({ isOpen, onClose, onSubmit, initialData }) => {
             </div>
             <div className="form-field">
               <Input
+                id="stock mínimo"
                 type="number"
                 label="Stock Mínimo"
                 placeholder="5"
