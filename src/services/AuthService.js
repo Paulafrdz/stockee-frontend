@@ -19,10 +19,12 @@ export const AuthService = {
             const token = response.data;
 
             const payload = JSON.parse(atob(token.split('.')[1]));
+            console.log(payload);
+
 
             const userData = {
                 token: token,
-                username: payload.sub, 
+                username: payload.username, 
                 role: payload.scope,   
             };
 
