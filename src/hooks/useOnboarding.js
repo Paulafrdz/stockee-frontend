@@ -4,6 +4,8 @@ import { driver } from 'driver.js';
 import 'driver.js/dist/driver.css';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const waitForElement = (selector, timeout = 3000) =>
     new Promise((resolve, reject) => {
         const el = document.querySelector(selector);
@@ -47,7 +49,7 @@ const useOnboarding = () => {
             try {
 
                 const { data } = await axios.get(
-                    'http://localhost:8080/api/users/onboarding-status',
+                    `${API_URL}/api/users/onboarding-status`,
                     { headers }
                 );
 
@@ -168,7 +170,7 @@ const useOnboarding = () => {
                             doneBtnText: '¡Empezar!',
                             onNextClick: async () => {
                                 try {
-                                    await axios.patch('http://localhost:8080/api/users/complete-onboarding',
+                                    await axios.patch(`${API_URL}/api/users/complete-onboarding`,
                                         {},
                                         { headers }
                                     );
