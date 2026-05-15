@@ -58,6 +58,12 @@ const useOnboarding = () => {
 
                 if (data.completed) return;
 
+                const onboardingStarted = sessionStorage.getItem('onboardingStarted');
+
+                if (onboardingStarted === 'true') {
+                    return;
+                }
+
                 const goNext = async (path, elementSelector) => {
                     await navigateAndWait(navigate, path, elementSelector);
                     driverRef.current?.moveNext();
@@ -180,6 +186,7 @@ const useOnboarding = () => {
                                 } catch (err) {
                                     console.error('Error al completar onboarding:', err);
                                 }
+                                sessionStorage.removeItem('onboardingStarted');
                                 driverRef.current?.moveNext();
                             },
                             onPrevClick: async () => {
@@ -202,6 +209,8 @@ const useOnboarding = () => {
                 });
 
                 setTimeout(() => {
+                    sessionStorage.setItem('onboardingStarted', 'true');
+
                     driverRef.current.drive();
                 }, 800);
             } catch (err) {
@@ -211,7 +220,7 @@ const useOnboarding = () => {
 
         checkAndStartTour();
 
-        return () => {};
+        return () => { };
     }, []);
 };
 
