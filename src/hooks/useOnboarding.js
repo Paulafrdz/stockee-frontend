@@ -37,15 +37,18 @@ const navigateAndWait = async (navigate, path, elementSelector) => {
 
 const useOnboarding = () => {
     const driverRef = useRef(null);
+    const initializedRef = useRef(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const checkAndStartTour = async () => {
+            if (initializedRef.current) return;
+            initializedRef.current = true;
             const token = localStorage.getItem('token');
             if (!token) return;
-            
+
             const headers = { Authorization: `Bearer ${token}` };
-            
+
             try {
 
                 const { data } = await axios.get(
@@ -208,9 +211,7 @@ const useOnboarding = () => {
 
         checkAndStartTour();
 
-        return () => {
-            driverRef.current?.destroy();
-        };
+        return () => {};
     }, []);
 };
 
