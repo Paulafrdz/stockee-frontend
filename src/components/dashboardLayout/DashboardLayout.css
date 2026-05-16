@@ -103,29 +103,7 @@
   justify-content: center;
 }
 
-/* Tema oscuro (futuro) */
-@media (prefers-color-scheme: dark) {
-  .dashboard-layout {
-    background: var(--black);
-  }
-  
-  .mobile-header {
-    background: var(--neutral-750);
-    border-bottom-color: var(--neutral-500);
-  }
-  
-  .mobile-menu-button {
-    color: var(--white);
-  }
-  
-  .mobile-menu-button:hover {
-    background: var(--black);
-  }
-  
-  .mobile-title {
-    color: var(--white);
-  }
-}
+
 /* HEADER MÓVIL */
 .mobile-header {
   display: none; /* Oculto por defecto */

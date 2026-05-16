@@ -95,23 +95,3 @@
   font-size: 14px;
   margin: 0;
 }
-
-/* Tema oscuro (futuro) */
-@media (prefers-color-scheme: dark) {
-  .main-content {
-    background: var(--black);
-  }
-  
-  .content-title {
-    color: var(--white);
-  }
-  
-  .content-subtitle {
-    color: var(--neutral-500);
-  }
-  
-  .content-body {
-    background: var(--neutral-750);
-    border-color: var(--neutral-500);
-  }
-}
