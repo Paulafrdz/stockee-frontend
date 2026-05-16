@@ -308,7 +308,7 @@
   /* MAKE CHART SMALLER IN MOBILE */
   .waste-trend-chart-wrapper > * {
     transform: scale(0.85);
-    transform-origin: left center;
+    transform-origin: center center;
   }
   
   .waste-trend-title,
@@ -323,13 +323,13 @@
 @media (max-width: 480px) {
   .waste-trend-chart-wrapper > * {
     transform: scale(0.75);
-    transform-origin: left center;
+    transform-origin: center center;
   }
 }
 
 @media (max-width: 374px) {
   .waste-trend-chart-wrapper > * {
     transform: scale(0.7);
-    transform-origin: left center;
+    transform-origin: center center;
   }
 }

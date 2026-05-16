@@ -24,6 +24,7 @@ const EfficiencyGauge = ({ value = 0, title = "Eficiencia Total" }) => {
           height={200}
           innerRadius="80%"
           outerRadius="100%"
+          cornerRadius="50%"
           sx={{
             [`& .${gaugeClasses.valueText}`]: {
               fontSize: 32,

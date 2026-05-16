@@ -45,7 +45,7 @@ const WasteGaugeWrapper = () => {
   // Función para calcular el porcentaje de desperdicio
   const calculateWastePercentage = (stockItems, wasteItems) => {
     if (!stockItems.length || !wasteItems.length) {
-      return 8; 
+      return 0; 
     }
 
     try {
@@ -85,7 +85,7 @@ const WasteGaugeWrapper = () => {
 
     } catch (error) {
       console.error('Error in waste percentage calculation:', error);
-      return 8; 
+      return 0; 
     }
   };
 

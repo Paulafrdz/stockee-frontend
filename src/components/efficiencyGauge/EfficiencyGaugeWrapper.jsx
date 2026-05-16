@@ -46,7 +46,7 @@ const EfficiencyGaugeWrapper = () => {
   // Función para calcular la eficiencia
   const calculateEfficiency = (stockItems, wasteItems) => {
     if (!stockItems.length || !wasteItems.length) {
-      return 85; 
+      return 0; 
     }
 
     try {
@@ -78,7 +78,7 @@ const EfficiencyGaugeWrapper = () => {
 
     } catch (error) {
       console.error('Error in efficiency calculation:', error);
-      return 85; 
+      return 0; 
     }
   };
 
