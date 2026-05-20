@@ -21,17 +21,20 @@ const ForgotPasswordForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const validationError =validateEmail(email);
+        const validationError = validateEmail(email);
         if (validationError) {
             setError(validationError);
-            return ; 
+            return;
         }
 
         setIsLoading(true);
         setError('');
 
         try {
-            await axios.post('http://localhost:8080/api/auth/forgot-password', { email });
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/api/auth/forgot-password`,
+                { email }
+            );
             setSent(true);
         } catch (err) {
             setSent(true);
@@ -54,24 +57,24 @@ const ForgotPasswordForm = () => {
                         {sent ? '¡Correo enviado!' : 'Recuperar contraseña'}
                     </h2>
                     <p className="welcome-subtitle">
-                        {sent 
-                         ? `Si ${email} está registrado, recibirás un enlace para restablecer tu contraseña en unos minutos.`
-                         : 'Introduce tu email y te enviaremos un enlace para restablecer tu contraseña.'
-                         }
+                        {sent
+                            ? `Si ${email} está registrado, recibirás un enlace para restablecer tu contraseña en unos minutos.`
+                            : 'Introduce tu email y te enviaremos un enlace para restablecer tu contraseña.'
+                        }
                     </p>
                 </div>
             </div>
 
             {!sent && (
                 <form onSubmit={handleSubmit} className="form-flex">
-                    <Input 
+                    <Input
                         type="email"
                         label="Email"
                         placeholder="tu@email.com"
                         value={email}
                         onChange={(e) => {
                             setEmail(e.target.value);
-                            if (error) setError(''); 
+                            if (error) setError('');
                         }}
                         icon={Mail}
                         error={error}
