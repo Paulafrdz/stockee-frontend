@@ -92,7 +92,7 @@
 }
 
 .btn-warning:hover:not(.btn-disabled):not(.btn-loading) {
-  background: var(--secondary-600);
+  background: var(--secondary-700);
   box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
   transform: translateY(-1px);
 }

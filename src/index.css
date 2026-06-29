@@ -1,13 +1,18 @@
 :root {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   color: var(--font-color);
-  color-scheme: light;
 }
 
 html, body, #root {
   height: 100vh;
+  background: var(--white);
 }
 
 #root {
   padding: 8px;
+}
+
+.MuiGauge-valueText text,
+[class*="MuiChartsSurface"] .MuiGauge-valueText text {
+    fill: var(--font-color) !important;
 }

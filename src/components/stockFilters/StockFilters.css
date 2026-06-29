@@ -99,17 +99,28 @@
 .filter-buttons .status-low:hover{
   color: var(--secondary-500)
 }
+
+.filter-buttons .status-ok:hover{
+  color: var(--primary-500)
+}
+.filter-buttons .status-ok.active:hover{
+  color: var(--font-color)
+}
+
 .filter-buttons .status-critical{
   background-color: var(--white);
   color: var(--font-color);
+  border: none;
 }
 .filter-buttons .status-low{
   background-color: var(--white);
   color: var(--font-color);
+  border: none;
 }
 .filter-buttons .status-ok{
   background-color: var(--white);
   color: var(--font-color);
+  border: none;
 }
 
 @media (max-width: 768px) {

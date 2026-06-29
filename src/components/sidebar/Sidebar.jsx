@@ -1,14 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BarChart3, ShoppingCart, ChefHat, Package, Settings, LogOut, NotebookPen, Gauge, Menu, X } from 'lucide-react';
 import { AuthService } from '../../services/AuthService';
 import './Sidebar.css';
-import Logo from "../../assets/logoPositive.svg";
+import LogoLight from "../../assets/logoPositive.svg";
+import LogoDark from "../../assets/logoNegative.svg";
+import OptionsPopover from '../optionsPopover/OptionsPopover';
+
+const getInitialTheme = () => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
 
 const Sidebar = ({ user }) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+    const [theme, setTheme] = useState(getInitialTheme);
+    const optionsRef = useRef(null);
+
+    useEffect(() => {
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    useEffect (() => {
+        const handleClickOutside = (e) => {
+            if (optionsRef.current && !optionsRef.current.contains(e.target)) {
+                setIsOptionsOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside); 
+    }, []);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    };
 
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: BarChart3, path: '/dashboard' },
@@ -100,7 +130,8 @@ const Sidebar = ({ user }) => {
                 {/* Logo */}
                 <div className="sidebar-header">
                     <Link to="/dashboard" onClick={handleNavClick}> 
-                        <img src={Logo} alt="logotype" className="logo" />
+                        <img src={theme === 'dark' ? LogoDark : LogoLight} alt="logotype" className="logo" />
+
                     </Link>
                 </div>
 
@@ -138,10 +169,25 @@ const Sidebar = ({ user }) => {
 
                     {/* Settings and Logout */}
                     <div className="sidebar-actions">
-                        <button className="action-button" title="Configuración">
-                            <Settings size={18} />
-                            <span>Ajustes</span>
-                        </button>
+                        <div className="options-wrapper" ref={optionsRef}>
+                            <button 
+                                className="action-button"
+                                onClick={() => setIsOptionsOpen(prev => !prev)}
+                                title="Opciones"
+                            >
+                                <Settings size={18}/>
+                                <span>Opciones</span>
+                            </button>
+
+                            {isOptionsOpen && (
+                                <OptionsPopover
+                                    theme={theme}
+                                    onToggleTheme={toggleTheme}
+                                />
+                            )}
+                        </div>
+
+
                         <button
                             className="action-button logout-button"
                             onClick={handleLogout}

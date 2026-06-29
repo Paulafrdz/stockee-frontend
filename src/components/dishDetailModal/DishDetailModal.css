@@ -144,16 +144,28 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: var(--small-radius);
     font-family: var(--font-family);
     font-size: 13px;
     font-weight: 600;
 }
 
-.ddm-badge--ok       { background: #dcfce7; color: #15803d; }
-.ddm-badge--low      { background: var(--secondary-200); color: var(--secondary-600); }
-.ddm-badge--critical { background: var(--terciary-200);  color: var(--terciary-700); }
+.ddm-badge--ok { 
+    background: var(--ok-background);
+    color: var(--ok-font); 
+    border: 1px solid var(--ok-border);
+}
+.ddm-badge--low {
+    background: var(--secondary-200);
+    color: var(--secondary-700); 
+    border: 1px solid var(--low-border);
+}
+.ddm-badge--critical {
+    background: var(--terciary-200);  
+    color: var(--terciary-700); 
+    border: 1px solid var(--critical-border);
+}
 
 
 @media (max-width: 600px) {

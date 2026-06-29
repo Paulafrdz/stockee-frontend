@@ -102,7 +102,7 @@
 }
 
 .fab-warning:hover:not(.fab-disabled):not(.fab-loading) {
-  background: var(--secondary-600);
+  background: var(--secondary-700);
   box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
   transform: scale(1.1);
 }

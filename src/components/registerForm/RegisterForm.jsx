@@ -4,8 +4,18 @@ import { Link } from "react-router-dom";
 import Input from '../inputLog/InputLog';
 import Button from '../button/Button';
 import { AuthService } from '../../services/AuthService.js';
-import Logo from "../../assets/logoPositive.svg";
+import LogoLight from "../../assets/logoPositive.svg";
+import LogoDark from "../../assets/logoNegative.svg";
+
 import './RegisterForm.css';
+
+
+const getInitialTheme = () => {
+    const saved = localStorage.getItem('theme');
+    if (saved) return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
 
 const RegisterForm = ({ onSuccess, onToggleMode }) => {
   const [formData, setFormData] = useState({
@@ -16,6 +26,9 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState(getInitialTheme);
+  
+  
 
   const handleChange = (field) => (e) => {
     setFormData(prev => ({
@@ -71,7 +84,7 @@ const RegisterForm = ({ onSuccess, onToggleMode }) => {
       <div className="form-header">
           <div className="sidebar-header-register">
                         <Link to="/dashboard">
-                            <img src={Logo} alt="logotype" className="logo" />
+                            <img src={theme === 'dark' ? LogoDark : LogoLight} alt="logotype" className="logo" />
                         </Link>
                     </div>
         <div className="welcome-section">

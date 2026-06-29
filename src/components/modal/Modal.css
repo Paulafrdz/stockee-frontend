@@ -215,3 +215,19 @@
         font-size: 16px;
     }
 }
+
+/* Dark mode — modal needs more contrast against dark backdrop */
+[data-theme="dark"] .modal-container {
+    border: 1px solid var(--neutral-500);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .modal-overlay {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme="dark"] .select-field {
+    background: var(--white);
+    color: var(--black);
+    border-color: var(--neutral-500);
+}

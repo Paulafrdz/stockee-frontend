@@ -117,12 +117,13 @@
 .stock-value {
     padding: 4px 8px;
     border-radius: 6px;
-    font-weight: 700;
+    font-weight: 600;
 }
 
-.stock-critical { background: var(--terciary-200); color: var(--terciary-700); }
-.stock-low      { background: var(--secondary-200); color: var(--secondary-500); }
+.stock-critical { background: var(--terciary-200); color: var(--terciary-700); border: 1px solid var(--critical-border); }
+.stock-low      { background: var(--secondary-200); color: var(--secondary-700); border: 1px solid var(--low-border); }
 .stock-ok       { color: var(--neutral-700); font-weight: 500; }
+
 
 .status-badge {
     padding: 4px 12px;
@@ -132,9 +133,9 @@
     font-family: var(--font-primary);
 }
 
-.status-critical { background: var(--terciary-200); color: var(--terciary-700); }
-.status-low      { background: var(--secondary-200); color: var(--secondary-500); }
-.status-ok       { background: var(--ok-background); color: var(--ok-font); }
+.status-critical { background: var(--terciary-200); color: var(--terciary-700); border: 1px solid var(--critical-border); }
+.status-low      { background: var(--secondary-200); color: var(--secondary-700); border: 1px solid var(--low-border); }
+.status-ok       { background: var(--ok-background); color: var(--ok-font); border: 1px solid var(--ok-border); }
 
 /* ==================== LOTES INLINE PANEL ==================== */
 

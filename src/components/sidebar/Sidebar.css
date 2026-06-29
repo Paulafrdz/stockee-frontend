@@ -143,14 +143,18 @@ img{
   width: 100%;
 }
 
-.action-button:hover {
-  background: var(--neutral-250);
-  color: var(--black);
+.action-button:hover{
+  background: var(--background-red);
+  color: var(--border-red);
 }
 
 .logout-button:hover {
   background: var(--background-red);
   color: var(--border-red);
+}
+
+.options-wrapper {
+  position: relative;
 }
 
 /* ==================== Mobile ==================== */
@@ -159,7 +163,6 @@ img{
   position: fixed;
   top: 10px;
   left: 16px;
-  z-index: 2000;
   background: var(--primary-500);
   border: none;
   border-radius: 8px;
@@ -187,7 +190,7 @@ img{
   right: 16px;
   background: transparent;
   border: none;
-  color: var(--neutral-750);
+  color: var(--font-color);
   cursor: pointer;
   padding: 8px;
   border-radius: 6px;
@@ -237,9 +240,7 @@ img{
     left: 0;
   }
 
-  .sidebar-header {
-    margin-top: 48px; 
-  }
+ 
 }
 
 @media (min-width: 770px) {

@@ -200,16 +200,19 @@
 .preview-status-critical {
   background: var(--terciary-200);
   color: var(--terciary-700);
+  border: 1px solid var(--critical-border);
 }
 
 .preview-status-ok {
   background: var(--ok-background);
-    color: var(--ok-font);
+  color: var(--ok-font);
+  border: 1px solid var(--ok-border);
 }
 
 .preview-status-low {
   background: var(--secondary-200);
-  color: var(--secondary-500);
+  color: var(--secondary-700);
+  border: 1px solid var(--low-border);
 }
 
 /* Floating Cards */
@@ -250,7 +253,7 @@
 }
 
 .preview-stat-icon-green {
-  color: var(--secondary-600);
+  color: var(--secondary-700);
 }
 
 .preview-stat-icon-red {

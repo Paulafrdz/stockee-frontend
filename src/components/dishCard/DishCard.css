@@ -39,7 +39,7 @@
 /* Low stock — orange / secondary */
 .dc-status--low {
   background: var(--secondary-200);
-  color: var(--secondary-600);
+  color: var(--secondary-700);
 }
 
 /* Critical / no stock — pink / terciary */
@@ -57,7 +57,7 @@
 }
 
 .dc-status--low .dc-status-dot {
-  background: var(--secondary-600);
+  background: var(--secondary-700);
 }
 
 .dc-status--critical .dc-status-dot {
